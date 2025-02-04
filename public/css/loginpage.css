@@ -1,0 +1,398 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    background-color: #ccc;
+}
+
+.imageContainer {
+    width: 180px;
+    height: 80px;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (min-width:360px) {
+
+    .container,
+    .container-xsm {
+        max-width: 320px;
+        position:relative;
+        top:3%;
+  
+    }
+}
+@media (min-width:576px) {
+
+    .container,
+    .container-sm {
+        max-width: 540px;
+        position:relative;
+        top:3%;
+  
+    }
+}
+
+@media (min-width:768px) {
+
+    .container,
+    .container-md,
+    .container-sm {
+        max-width: 720px;
+        position:relative;
+        top:3%;
+  
+    }
+}
+
+@media (min-width:992px) {
+
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm {
+        max-width: 960px;
+        position:relative;
+        top:3%;
+  
+    }
+}
+
+@media (min-width:1200px) {
+
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl {
+        max-width: 1140px;
+        position:relative;
+        top:3%;
+    }
+}
+
+@media (min-width:1400px) {
+
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+        max-width: 1320px;
+        position:relative;
+        top:3%;
+    }
+}
+.container h4 {
+    text-align: left;
+    padding-left:25px;
+    /* margin-top: 15px; */
+
+}
+
+.container a {
+    text-decoration: none;
+    color: rgb(114, 163, 180);
+}
+
+.container a:hover {
+    color: blue;
+}
+
+.form-control label {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    transition: transform 0.3s ease, font-size 0.3s ease, color 0.3s ease;
+}
+
+.form-control label span {
+    display: inline-block;
+    font-size: 18px;
+    min-width: 5px;
+    transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    /* padding-top: -30px; */
+}
+
+.container {
+    position:absolute;
+    top:10%;
+    /* margin-top: 150px; */
+    background-color: white;
+    padding: 15px 30px;
+    border-radius: 6px;
+    /* height: 60%; */
+    box-shadow: #000;
+    
+}
+@media (min-width:570px) {
+    .container {
+        min-width:fit-content ;
+        min-height:fit-content;
+    }
+    .container h4 {
+        margin-left: center;
+        /* text-align: center; */
+    }
+    .imageContainer { 
+        width: 220px;
+        height: 80px;
+    }
+    .form-control input {
+        margin-bottom:20px;
+    }
+}
+@media (max-width:365px){
+    .rememberCheckbox{
+       color:green;
+       width: 100%;
+    }
+}
+
+
+.Newbtn{
+    border-radius: 5px;
+    background: linear-gradient(to right, rgba(70, 130, 180, 1), rgba(72, 209, 204, 1));
+    cursor:pointer;
+    padding:10px;
+    font-family: inherit;
+    font-size: 15px;
+    color:white;
+    border:none;
+    width: 230px;
+}
+.btn {
+    cursor: pointer;
+    display: inline-block;
+    background: linear-gradient(to right, rgba(70, 130, 180, 1), rgba(72, 209, 204, 1));
+    padding: 10px;
+    font-family: inherit;
+    border-radius: 5px;
+    margin-left: 100px;
+    font-size: 15px;
+    color: white;
+    border: none;
+    width: 85px;
+}
+.btnUp{
+    cursor: pointer;
+    display: inline-block;
+    background: linear-gradient(to right, rgba(70, 130, 180, 1), rgba(72, 209, 204, 1));
+    padding: 10px;
+    font-family: inherit;
+    border-radius: 5px;
+    margin-left: 100px;
+    font-size: 15px;
+    color: white;
+    border: none;
+    width: 85px;
+}
+
+.btn :focus {
+    outline: 0;
+}
+
+.btn :active {
+    transform: scale(0.98);
+}
+
+.btn:hover {
+    background-color: seagreen;
+}
+
+.text {
+    margin-top: 20px;
+}
+
+.form-control {
+    position: relative;
+    width: 300px;
+}
+
+
+input[type="checkbox"] {
+    background-color: seagreen;
+    vertical-align: middle;
+    margin-right:5px;
+
+}
+
+.form-control input {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 2px #ccc solid;
+    display: block;
+    width: 100%;
+    padding: 9px 0;
+    font-size: 18px; 
+    color: black;
+}
+
+.form-control input:focus,
+.form-control input:valid {
+    outline: 0;
+}  
+.emailInput:hover~label{
+    transform: translateY(-25px);
+    transition: transform 0.3s ease, color 0.3s ease; 
+    font-size: .75rem;
+    pointer-events: none;
+    cursor:text;
+    color: grey; 
+
+}
+ .passInput:focus~label,
+ .passInput:hover~label,
+ .passInput:valid~label{
+    transform: translateY(-25px);
+    transition: transform 0.3s ease, color 0.3s ease; 
+    font-size: .75rem;
+    pointer-events: none;
+    cursor:text;
+    color: grey; 
+ }
+ .passInput:focus~label,
+ .passInput1:hover~label,
+ .passInput1:valid~label{
+    transform: translateY(-25px);
+    transition: transform 0.3s ease, color 0.3s ease; 
+    font-size: .75rem;
+    pointer-events: none;
+    cursor:text;
+    color: grey; 
+ }
+ 
+  /* Keep the label afloat when the float class is added */
+.float {
+    transform: translateY(-25px);
+    transition:transform 0.4s ease, color 0.3s ease;
+    font-size: 0.75rem;
+    color: grey;
+    cursor: text;
+    pointer-events: none;
+}
+.input-error {
+    border-bottom: 2px solid red; /* Red border for error */
+    /* background-color: #ffe6e6; Optional: Light red background */
+}
+
+.field .error {
+    display: flex;
+    align-items: center;
+    /* margin-top: -4px; */
+    color: #8f1d15;
+    font-size: 12px;
+    display: none;
+    
+}
+
+.invalid .error {
+    display: flex;
+    margin-top: -12%;
+    margin-bottom: -27px;
+}
+
+.error .error-icon {
+    margin-right: 6px;
+    font-size: 15px;
+    /* margin-top: -44px; */
+}
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.separator hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 0 1px;
+}
+
+.separator span {
+    padding: 0 10px;
+    font-size: 1.2em;
+    color: #666;
+}
+.forgot{
+    font-size: 15px;
+    position:relative;
+    top: -15px;
+
+}
+.newto{
+    font-size: 15px;
+    position:relative;
+    bottom:25px;
+
+}
+.member{
+    position:relative;
+    bottom:25px;
+}
+.member:hover{
+    color:green;
+}
+.hidden{
+    display:none;
+}
+.loyverse{
+    background:linear-gradient(to right, rgba(70, 130, 180, 1), rgba(72, 209, 204, 1));
+    border-radius: 5px ;
+    height:30px;
+    padding-left:25px;
+}
+.loyversespan{
+    position: relative;
+    top:-8px;
+    right:20px;
+    color:white;
+}
+.loyverseimg{
+    position: relative;
+    right: 68px;
+    width:30px;
+    height:30px;
+    border-radius: 5px;
+}
+.hr-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top:-10px;
+    padding-bottom: 10px;
+}
+.hr-container hr {
+    width: 100%;
+    border: 1px solid #ccc;
+    margin: 0 10px;
+}
+.hr-container span {
+    padding: 0 10px;
+    white-space: nowrap;
+}
+.wrapper{
+   display:flex;
+   flex-direction: column;
+   margin-bottom: -25px; 
+}
+.signIn{
+    display:flex;
+    flex-direction: inline;
+    
+}
+.remember{
+    vertical-align:middle;
+    margin-top:10px;
+    min-width: fit-content;
+}

@@ -1,0 +1,68 @@
+/* notification */
+/* Basic styles for the notification block */
+#notificationBlock {
+    position: fixed;
+    top: 0;
+    right: 0;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+/* Notification styles */
+.notification {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s, transform 0.5s;
+    visibility: hidden;
+    max-width: 200px;
+
+}
+
+/* Show notification (fade in) */
+.notification.show {
+    opacity: 6;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+
+#loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #f0f0f0;
+    z-index: 99999;
+}
+
+#loading-progress {
+    height: 100%;
+    background-color: #3498db;
+    width: 0;
+    transition: width 0.03s ease;
+
+}
+
+@keyframes dot-keyframes {
+    0% {
+        opacity: .4;
+        transform: scale(1, 1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2, 1.2);
+    }
+
+    100% {
+        opacity: .4;
+        transform: scale(1, 1);
+    }
+}
+

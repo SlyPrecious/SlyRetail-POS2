@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.accSettingContainer {
+    display: block;
+    position: relative;
+    height: 100%;
+    width: 99%;
+    box-shadow: 0px 8px 16px 6px rgba(0, 0, 0, 0.2);
+    /* margin-left: 1%; */
+    background-color: white;
+    z-index: 0;
+}
+
+
+.toolbar {
+    top: 0;
+    position: fixed;
+    width: 100%;
+    background-color: rgb(1, 6, 105);
+    z-index: 100;
+}
+
+#toolbar-text {
+    position: absolute;
+    color: white;
+    top: 20%;
+    margin-left: 5%;
+    font-size: 1.3rem;
+}
+
+#accountingPeriodForm {
+    background-color: #e9e7e7;
+    padding-left: 57px;
+    /* height: 230px; */
+    max-width: 95%;
+    /* margin: 0 1%; */
+    border-radius: 5px;
+    padding-top: 32px;
+}
+
+.periodText {
+    text-align: center;
+    font-weight: bold;
+    padding: 22px;
+    color: #36454F;
+    margin-left: 13%;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.setAccountingPeriodBtn {
+    width: 90%;
+    padding: 10px;
+    background-color: #36454F;
+    ;
+    color: white;
+    border: none;
+    border-radius: 5px !important;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.setAccountingPeriodBtn:hover {
+    color: black;
+    background-color: #b9beba;
+}

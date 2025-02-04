@@ -1,0 +1,750 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-style: normal;
+  font-weight: normal;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+  background-color: rgb(250, 250, 250);
+  overflow: scroll;
+  transition: 0.5s ease;
+  position: absolute;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.toolbar {
+  top: 0;
+  position: fixed;
+  width: 100%;
+  height: 6%;
+  background-color: rgb(1, 6, 105);
+  z-index: 100;
+}
+#toolbar-text {
+  position: absolute;
+  color: white;
+  top: 20%;
+  margin-left: 5%;
+  font-size: 1.3rem;
+}
+
+.icon-nav {
+  position: fixed;
+  box-shadow: 0rem 0.5rem 0.5rem;
+  top: 6%;
+  left: 0;
+  width: 5%;
+  height: 100vh;
+  background: white;
+  padding-top: 1rem;
+  z-index: 102;
+}
+
+.icon-nav .icon-bar {
+  position: absolute;
+  top: 0%;
+  height: 100%;
+  width: 100%;
+  display: block;
+  text-align: center;
+  transition: all 0.5s ease;
+  flex-wrap: wrap;
+}
+
+.icon-nav .nav-icon .user-logo2 {
+  position: relative;
+  color: rgb(133, 134, 133);
+  margin-top: 15%;
+  font-size: 2rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-report {
+  position: relative;
+  color: rgb(0, 255, 21);
+  margin-top: 23%;
+  font-size: 1.3rem;
+}
+.icon-bar .nav-icon .icon-navbar-inventory {
+  color: red;
+  position: relative;
+  margin-top: 23%;
+  font-size: 1.3rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-settings {
+  color: rgb(255, 102, 0);
+  position: relative;
+  margin-top: 23%;
+  font-size: 1.3rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-items {
+  position: relative;
+  color: rgb(231, 10, 84);
+  margin-top: 23%;
+  font-size: 1.3rem;
+}
+.icon-bar .nav-icon .icon-navbar-employee {
+  position: relative;
+  margin-top: 23%;
+  color: rgb(82, 120, 126);
+  font-size: 1.3rem;
+}
+.icon-bar .nav-icon .icon-shift-analysis {
+  position: relative;
+  margin-top: 23%;
+  color: rgb(71, 114, 65);
+  font-size: 1.3rem;
+}
+.icon-bar .nav-icon .icon-navbar-customers {
+  position: relative;
+  margin-top: 23%;
+  font-size: 1.3rem;
+  color: rgb(194, 44, 169);
+}
+.icon-bar .nav-icon .icon-navbar-help {
+  position: relative;
+  margin-top: 23%;
+  font-size: 1.3rem;
+}
+.icon-color {
+  color: rgb(101, 122, 241);
+  word-spacing: normal;
+}
+#select-cols {
+  font-size: 1rem;
+  color: rgb(1, 6, 105);
+  padding: 1rem;
+}
+.custom-checkbox {
+  font-size: 0.8rem;
+  margin-left: 5%;
+  height: 100%;
+}
+.icon-dropdown-columns {
+  margin-left: 50%;
+}
+.icon-dropdown-columns {
+  display: flex;
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  width: 12%;
+  height: 37%;
+  margin-left: 87%;
+  top: 8%;
+  text-align: left;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 100;
+}
+.icon-dropdown-columns a {
+  color: rgb(1, 6, 105);
+  padding: 12px;
+  text-decoration: none;
+  display: block;
+  font-size: 0.8rem;
+  word-wrap: normal;
+}
+.icon-bar .nav-icon .icon {
+  width: 100%;
+  height: 3.5rem;
+  cursor: pointer;
+  background-color: white;
+  margin-left: 0%;
+}
+.icon-bar .nav-icon .icon:hover {
+  background-color: #ddd;
+}
+
+.icon-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  width: 13rem;
+  margin-left: 100%;
+  margin-top: -3.5rem;
+  text-align: left;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 1;
+}
+.icon-dropdown-content a {
+  color: rgb(1, 6, 105);
+  padding: 12px;
+  text-decoration: none;
+  display: block;
+  font-size: 1rem;
+  word-wrap: normal;
+}
+
+.icon-dropdown-content a:hover {
+  background-color: #ddd;
+}
+.columns:hover .icon-dropdown-columns {
+  display: block;
+}
+.nav-icon:hover .icon-dropdown-content {
+  display: block;
+}
+.sales-card {
+  position: absolute;
+  width: 90%;
+  background-color: white;
+  height: 22%;
+  top: 16%;
+  margin-left: 7%;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 20;
+}
+.graph-card {
+  position: absolute;
+  width: 90%;
+  background-color: white;
+  height: 65%;
+  top: 20%;
+  margin-left: 7%;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 20;
+}
+.category-table-card {
+  position: absolute;
+  width: 90%;
+  background-color: white;
+  height: 80%;
+  top: 20%;
+  margin-left: 7%;
+  overflow: auto;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 20;
+}
+#filter-by-employee {
+  position: absolute;
+  width: 10%;
+  height: 6%;
+  font-size: 1rem;
+  color: rgb(1, 6, 105);
+  cursor: pointer;
+  margin-left: 55%;
+  word-break: break-all;
+  top: 8%;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+}
+#filter-by-store {
+  position: absolute;
+  width: 10%;
+  color: rgb(1, 6, 105);
+  cursor: pointer;
+  height: 6%;
+  font-size: 1rem;
+  margin-left: 43%;
+  top: 8%;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  word-break: break-all;
+
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+}
+#filter-by-time {
+  position: absolute;
+  width: 10%;
+  height: 6%;
+  color: rgb(1, 6, 105);
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 31%;
+  top: 8%;
+  word-break: break-all;
+
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+}
+
+#all-day-popup {
+  transition: 2s;
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  width: 10%;
+  height: fit-content;
+  word-break: break-all;
+
+  margin-left: 31%;
+  top: 15%;
+  text-align: left;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 30;
+}
+#all-store-popup {
+  transition: 2s;
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  width: fit-content;
+  height: fit-content;
+  word-break: break-all;
+  margin-left: 43%;
+  top: 15%;
+  text-align: left;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 30;
+}
+#all-employee-popup {
+  transition: 5s;
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  width: fit-content;
+  height: fit-content;
+  word-break: break-all;
+  margin-left: 55%;
+  top: 15%;
+  text-align: left;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 30;
+}
+#shift-date {
+  position: absolute;
+  top: 8%;
+  width: 22%;
+  text-align: center;
+  height: 6%;
+  word-break: break-all;
+
+  margin-left: 7%;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+}
+.btn-primary {
+  background-color: white;
+  width: 100%;
+  border: none;
+  height: 2rem;
+  cursor: pointer;
+  padding: 6px;
+}
+.btn-primary:hover {
+  background-color: rgb(211, 208, 208);
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  word-break: break-all;
+  padding: 10px;
+  align-items: flex-start;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 100;
+}
+.store-name {
+  color: rgb(1, 6, 105);
+  padding: 6px;
+  word-break: break-all;
+}
+#store-checkbox {
+  padding: 6px;
+}
+.employee-name {
+  color: rgb(1, 6, 105);
+  padding: 6px;
+  word-break: break-all;
+}
+#employee-checkbox {
+  padding: 6px;
+}
+.all-employees {
+  color: rgb(1, 6, 105);
+}
+#gross-sales-label {
+  position: absolute;
+  top: 6%;
+  word-break: break-all;
+
+  margin-left: 8%;
+  color: rgb(1, 6, 105);
+  z-index: 100;
+  font-size: 1rem;
+}
+#gross-sales-id {
+  position: absolute;
+  top: 25%;
+  margin-left: 4%;
+  word-break: break-all;
+  width: 15%;
+  height: 65%;
+  background-color: white;
+
+  border: 1px solid rgb(71, 196, 40);
+  border-radius: 6%;
+  z-index: 100;
+}
+
+#netsales-id {
+  position: absolute;
+  top: 25%;
+  margin-left: 61%;
+  width: 15%;
+  height: 65%;
+  background-color: white;
+  color: white;
+  border: 1px solid rgb(62, 178, 194);
+  border-radius: 5%;
+  z-index: 100;
+}
+.amount {
+  top: 35%;
+  justify-content: center;
+  position: absolute;
+  display: flex;
+  font-size: 1.5rem;
+  color: rgb(1, 6, 105);
+  margin-left: 5%;
+}
+#netsales-label {
+  position: absolute;
+  top: 6%;
+  margin-left: 65%;
+  color: rgb(1, 6, 105);
+  z-index: 100;
+  font-size: 1rem;
+  word-break: break-all;
+}
+
+#gross-profit-label {
+  position: absolute;
+  top: 6%;
+  margin-left: 85%;
+  color: rgb(1, 6, 105);
+  z-index: 100;
+  font-size: 1rem;
+}
+#gross-profit-id {
+  position: absolute;
+  top: 25%;
+  margin-left: 81%;
+  width: 15%;
+  height: 65%;
+  background-color: white;
+  color: white;
+  border: 1px solid rgb(236, 36, 176);
+  border-radius: 6%;
+  z-index: 100;
+}
+.graph-card #myChart {
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  margin-left: 40%;
+  top: 12%;
+}
+#refund-label {
+  position: absolute;
+  top: 6%;
+  margin-left: 27%;
+  color: rgb(1, 6, 105);
+  z-index: 100;
+  font-size: 1rem;
+}
+#refund-id {
+  position: absolute;
+  top: 25%;
+  margin-left: 23%;
+  width: 15%;
+  height: 65%;
+  background-color: white;
+  color: white;
+  border: 1px solid rgb(255, 0, 0);
+  border-radius: 6%;
+  z-index: 100;
+}
+
+#discount-label {
+  position: absolute;
+  top: 6%;
+  margin-left: 47%;
+  color: rgb(1, 6, 105);
+  z-index: 100;
+  font-size: 1rem;
+}
+#discount-id {
+  position: absolute;
+  top: 25%;
+  margin-left: 42%;
+  width: 15%;
+  height: 65%;
+  background-color: white;
+  color: white;
+  border: 1px solid rgb(51, 53, 92);
+  border-radius: 6%;
+  z-index: 100;
+}
+#select-chart-type {
+  transition: 2s;
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  width: 10%;
+  height: fit-content;
+
+  margin-left: 75%;
+  top: 17%;
+  text-align: left;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 30;
+}
+#filter-by-chart {
+  position: absolute;
+  width: 10%;
+  height: 9%;
+  color: rgb(1, 6, 105);
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 75%;
+  top: 8%;
+  word-break: break-all;
+
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+}
+input[type="checkbox"] {
+  accent-color: rgb(1, 6, 105);
+}
+input.form-check-input {
+  width: 13px;
+  height: 13px;
+}
+.btn {
+  background-color: white;
+  width: 100%;
+  word-break: break-all;
+
+  border: none;
+  border-top: 1px solid rgb(218, 218, 223);
+  height: 2rem;
+  cursor: pointer;
+}
+#select-chart-period {
+  transition: 2s;
+  display: none;
+  flex-direction: column;
+  word-break: break-all;
+  position: absolute;
+  background-color: white;
+  width: 10%;
+  height: fit-content;
+  margin-left: 87%;
+  top: 17%;
+  text-align: left;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 30;
+}
+#filter-by-period {
+  position: absolute;
+  width: 10%;
+  height: 9%;
+  color: rgb(1, 6, 105);
+  cursor: pointer;
+  word-break: break-all;
+
+  font-size: 1rem;
+  margin-left: 87%;
+  top: 8%;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+}
+.btn:hover {
+  background-color: #ddd;
+}
+
+.export-category-btn {
+  position: absolute;
+  width: 10%;
+  height: 10%;
+  color: rgb(1, 6, 105);
+  cursor: pointer;
+  font-size: 1rem;
+  word-break: break-all;
+
+  margin-left: 3%;
+  top: 5%;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+}
+.category-columns {
+  position: absolute;
+  top: 5%;
+  margin-left: 95%;
+  font-size: 2rem;
+  color: rgb(1, 6, 105);
+  cursor: pointer;
+  z-index: 100;
+}
+#container {
+  position: absolute;
+  width: 100%;
+  height: 80%;
+  top: 20%;
+  margin-left: 0%;
+  border: 0.5px solid rgb(240, 230, 230);
+  overflow: auto;
+}
+table {
+  position: absolute;
+  z-index: 99;
+  width: 100%;
+  z-index: 10;
+  border: none;
+}
+thead {
+  position: sticky;
+  height: 1rem;
+  position: sticky;
+  top: 0%;
+}
+th {
+  padding: 1rem;
+  background-color: rgb(202, 204, 226);
+  text-align: center;
+}
+.expense-list-head {
+  font-size: 1rem;
+  color: rgb(78, 78, 78);
+}
+td {
+  text-align: center;
+  padding: 1rem;
+}
+
+.expense-list-row {
+  cursor: auto;
+}
+
+tr:nth-child(odd) {
+  background-color: rgb(247, 242, 242);
+}
+tr:nth-child(even) {
+  background-color: rgb(202, 204, 226);
+}
+.top-selling-items {
+  position: absolute;
+  background-color: white;
+  width: 35%;
+  height: 85%;
+  top: 5%;
+  margin-left: 2%;
+}
+.vertical-line {
+  position: relative;
+  top: 20%;
+  width: 95%;
+  margin-left: 3%;
+  border: 1px solid rgb(223, 223, 223);
+}
+.top-selling-title {
+  position: absolute;
+  top: 5%;
+  margin-left: 5%;
+  color: rgb(1, 6, 105);
+}
+.net-sales-title {
+  position: absolute;
+  top: 5%;
+  margin-left: 70%;
+  color: rgb(1, 6, 105);
+}
+.top-5-items-list {
+  list-style: none;
+  position: absolute;
+  width: 100%;
+  top: 5%;
+  height: 80%;
+}
+.color-canva1 {
+  top: 20%;
+  margin-left: 2%;
+  position: absolute;
+  width: 7%;
+  height: 53%;
+  background-color: red;
+  border-radius: 50%;
+}
+.color-canva2 {
+  top: 20%;
+  margin-left: 2%;
+  position: absolute;
+  width: 7%;
+  height: 53%;
+  background-color: rgb(157, 255, 0);
+  border-radius: 50%;
+}
+.color-canva3 {
+  top: 20%;
+  margin-left: 2%;
+  position: absolute;
+  width: 7%;
+  height: 53%;
+  background-color: rgb(0, 102, 255);
+  border-radius: 50%;
+}
+.color-canva4 {
+  top: 20%;
+  margin-left: 2%;
+  position: absolute;
+  width: 7%;
+  height: 53%;
+  background-color: rgb(201, 15, 170);
+  border-radius: 50%;
+}
+.color-canva5 {
+  top: 20%;
+  margin-left: 2%;
+  position: absolute;
+  width: 7%;
+  height: 53%;
+  background-color: rgb(34, 10, 65);
+  border-radius: 50%;
+}
+.item-name {
+  position: absolute;
+  margin-left: 13%;
+  top: 35%;
+}
+.item {
+  position: relative;
+  top: 20%;
+  margin-left: 3%;
+  height: 20%;
+  width: 95%;
+}
+.net-sale {
+  position: absolute;
+  top: 35%;
+  margin-left: 65%;
+}

@@ -1,0 +1,404 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.toolbar {
+    top: 0;
+    position: fixed;
+    width: 100%;
+    height: 7%;
+    background-color: seagreen;
+    z-index: 100;
+}
+
+body {
+    background-color: #e1e7ed;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h3 {
+    margin-bottom: 9px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #33363b;
+}
+
+p {
+    font-size: 14px;
+    color: #868d9b;
+}
+
+.card {
+    margin-left: 80px;
+    width: 380px;
+    height: 512px;
+    background-color: #ffffff;
+    /* margin: 0 auto; */
+    margin-top: 50px;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+}
+
+.card_profile_img {
+    width: 120px;
+    height: 100px;
+    background-color: #868d9b;
+    background: url(/images/userlogo.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #ffffff;
+    border-radius: 120px;
+    margin: 0 auto;
+    margin-top: -60px;
+
+}
+
+.card_background_img {
+    width: 100%;
+    height: 139px;
+    background-color: seagreen;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 5px;
+}
+
+.user_details p {
+    margin-bottom: 20px;
+    margin-top: -5px;
+}
+
+.user_details h3 {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.card_count {
+    padding: 23px;
+    border-top: 1px solid #dde1e7;
+}
+
+.count {
+    display: flex;
+    text-align: center;
+
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.count p {
+    margin-top: -10px;
+}
+
+.btnSave {
+    padding: 10px;
+    margin-left: 19px;
+    margin-right: 14px;
+    width: 42%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: seagreen;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 40;
+}
+
+#trashCancel {
+    color: white;
+    margin-left: 95%;
+    cursor: pointer;
+}
+
+.btnSignOut {
+    padding: 10px;
+    margin-left: -10px;
+    width: 42%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: seagreen;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 40;
+    margin-top: 10px;
+}
+
+.a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 40;
+    cursor: pointer;
+}
+
+input[type="email"],
+input[type="password"] {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid #1d1d1d;
+    outline: none;
+    background-color: #ffff;
+    padding: 8px;
+    margin: -1px;
+    width: 97%;
+
+}
+
+select {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid #1d1d1d;
+    outline: none;
+    background-color: #ffff;
+    padding: 4px;
+    margin: -3px;
+    width: 35%;
+    cursor: pointer
+}
+
+.card_actions {
+    margin-top: 15px;
+}
+
+.edit-icon {
+    display: flex;
+    align-items: center;
+    color: black;
+    font-size: 12px;
+    margin-top: -23px;
+    margin-left: 329px;
+    cursor: pointer;
+}
+
+
+
+.fas:hover {
+    color: lightblue;
+
+}
+
+.modall {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.modal-contentt {
+    position: absolute;
+    top: 59%;
+    left: 23%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 9px;
+    border-radius: 5px;
+    width: 19%;
+}
+
+
+.modall button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 5px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 7px;
+    margin-left: 35%;
+}
+
+.modall {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.modal-contentt {
+    position: absolute;
+    top: 59%;
+    left: 19%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 9px;
+    border-radius: 5px;
+    width: 19%;
+}
+
+.modal-cont {
+    position: absolute;
+    top: 65%;
+    left: 19%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 9px;
+    border-radius: 5px;
+    width: 19%;
+}
+
+#modallCancell,
+#modallCancel {
+    position: absolute;
+    color: red;
+    top: 51%;
+    left: 27%;
+    cursor: pointer;
+}
+
+#modalCanc,
+#modallCanc {
+    position: absolute;
+    color: red;
+    top: 57%;
+    left: 27%;
+    cursor: pointer;
+}
+
+
+.modall button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 5px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 7px;
+    margin-left: 35%;
+}
+
+/* DELETE ACCOUNT MODAL */
+#deleteAccountiD {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.deleteAccountContent {
+    position: absolute;
+    top: 75%;
+    left: 19%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 14px;
+    border-radius: 5px;
+    width: 21%;
+}
+
+#closeDelete {
+    position: absolute;
+    color: red;
+    top: 69%;
+    left: 28%;
+    cursor: pointer;
+}
+
+#deleteAccountiD button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 5px 8px;
+    border: none;
+    width: 60px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 7px;
+    margin-left: 15%;
+}
+
+#overallContainer {
+    margin-top: 10px;
+}
+
+#baseCurrDropdownContainer {
+    transition: 2s;
+    display: none;
+    flex-direction: column;
+    word-break: break-all;
+    position: absolute;
+    background-color: white;
+    width: 13%;
+    height: fit-content;
+    margin-left: 10%;
+    top: 78%;
+    text-align: left;
+    box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+    z-index: 30;
+    border-radius: 10px;
+}
+
+#baseCurrDropdownContainer li {
+    list-style: none;
+    cursor: pointer;
+    padding-top: 5px;
+    padding-left: 12px;
+    border-top: 1px solid #ebe7e7;
+}
+
+#baseCurrDropdownContainer li:hover {
+    background-color: rgb(186, 216, 199);
+}
+
+.baseCurrText {
+    /* position: absolute;
+    margin-left: 85%; */
+    cursor: pointer;
+}
+
+.baseCurr {
+    padding-left: 10px;
+}
+
+.baseCurrCaret {
+    position: relative;
+    width: 0;
+    height: 0;
+    margin-left: 210px;
+    vertical-align: middle;
+    border-top: 5px solid black;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin-top: -3%;
+}
+
+
+.content {
+    min-height: 100%;
+    /* Set the bottom margin to include the footer height */
+    margin-bottom: 55px;
+    /* Adjust this value based on your footer height */
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 55px;
+    /* Adjust this value based on your footer height */
+    background-color: #f5f5f5;
+    padding: 15px;
+    text-align: center;
+}

@@ -1,0 +1,586 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-style: normal;
+    font-weight: normal;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+body {
+    height: 100vh;
+    width: 100%;
+    background-color: #ffffff;
+    overflow: scroll;
+    transition: 0.5s ease;
+    position: absolute;
+  }
+.toolbar {
+    background-color: #36454F !important;
+}
+
+#toolbar-text {
+    position: absolute;
+    color: white;
+    top: 20%;
+    margin-left: 5%;
+    font-size: 1.3rem;
+}
+
+.icon-nav {
+    position: fixed;
+    box-shadow: 0rem 0.5rem 0.5rem;
+    top: 6%;
+    left: 0;
+    width: 5%;
+    height: 100vh;
+    background: white;
+    padding-top: 1rem;
+    z-index: 1002;
+}
+
+.icon-nav .icon-bar {
+    /* position: absolute; */
+    top: 0%;
+    height: 100%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    transition: all 0.5s ease;
+    flex-wrap: wrap;
+}
+
+.icon-nav .nav-icon .user-logo2 {
+    position: relative;
+    color: rgb(133, 134, 133);
+    margin-top: 15%;
+    font-size: 2rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-report {
+    position: relative;
+    color: rgb(0, 255, 21);
+    margin-top: 23%;
+    font-size: 1.3rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-inventory {
+    color: red;
+    position: relative;
+    margin-top: 23%;
+    font-size: 1.3rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-settings {
+    color: rgb(255, 102, 0);
+    position: relative;
+    margin-top: 23%;
+    font-size: 1.3rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-items {
+    position: relative;
+    color: rgb(231, 10, 84);
+    margin-top: 23%;
+    font-size: 1.3rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-employee {
+    position: relative;
+    margin-top: 23%;
+    color: rgb(58, 71, 73);
+    font-size: 1.3rem;
+}
+
+.icon-bar .nav-icon .icon-shift-analysis {
+    position: relative;
+    margin-top: 23%;
+    color: rgb(71, 114, 65);
+    font-size: 1.3rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-customers {
+    position: relative;
+    margin-top: 23%;
+    font-size: 1.3rem;
+    color: rgb(194, 44, 169);
+}
+
+.icon-bar .nav-icon .icon-navbar-help {
+    position: relative;
+    margin-top: 23%;
+    font-size: 1.3rem;
+}
+
+.icon-color {
+    color: rgb(101, 122, 241);
+    word-spacing: normal;
+    margin-left: 30%;
+}
+
+.bigContainerCat {
+    height: 100%;
+    width: 94%;
+    margin-left: 76px;
+}
+
+
+.container {
+    /* display: flex; */
+    margin-top: 5%;
+    height: 100%;
+}
+
+
+.tableContainer {
+    max-width: 100%;
+    position: absolute;
+    /* top: 20%; */
+    height: 70%;
+    overflow: auto;
+    max-height: 400px;
+    box-shadow: 0px 8px 16px 6px rgba(0, 0, 0, 0.2);
+    margin-left: 21px;
+    background-color: white;
+    z-index: 0;
+    border-radius: 5px;
+}
+
+.addCategory {
+    position: absolute;
+    top: 8%;
+    margin-left: 14px;
+    width: 6%;
+    height: 11%;
+    border-radius: 50%;
+    color: white;
+    background-color: #36454F;
+    cursor: pointer;
+}
+
+
+
+table {
+    /* height: 100%; */
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+
+}
+
+th,
+td {
+    padding: 13px;
+    text-align: center;
+    white-space: nowrap;
+
+}
+
+thead {
+    background-color: #36454F;
+    color: white;
+
+}
+
+.thead {
+    text-align: justify !important;
+
+}
+
+th {
+    font-weight: bold;
+}
+
+/* tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  tbody tr:nth-child(old) {
+    background-color: peachpuff;
+  } */
+
+tbody td {
+    /* border-top: 1px solid #ddd; */
+    cursor: pointer;
+}
+
+.rowPayOut {
+    background-color: #dcb4a5;
+}
+
+.rowPayIn {
+    background-color: #ced9e1;
+}
+
+.containerWrapper {
+    position: relative;
+    z-index: 1;
+    animation: fade-in-animation 0.5s ease-in forwards;
+}
+
+@keyframes fade-in-animation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+#myForm {
+    background-color: whitesmoke;
+    border-radius: 10px;
+    display: none;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+}
+
+#dailyLimit {
+    margin-left: 31px;
+
+}
+
+#weeklyLimit {
+    margin-left: 15px;
+
+}
+
+#monthlyLimit {
+    margin-left: 10px;
+
+}
+
+#yearlyLimit {
+    margin-left: 21px;
+
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.categoryName,
+.categoryDescription,
+.categoryLimit {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* .limitOption {
+    margin-bottom: 15px;
+} */
+
+.categoryName label,
+.categoryDescription label,
+.categoryLimit label {
+    margin-bottom: 5px;
+}
+
+.categoryName input,
+.categoryDescription input,
+.categoryLimit input {
+    margin-top: 5px;
+}
+
+.categoryName label,
+.categoryDescription label,
+.categoryLimit label,
+.categoryName span,
+.categoryDescription span,
+.categoryLimit span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.spanDebitTitle,
+.spanCreditTitle {
+    margin-right: 5px;
+}
+
+.radioBtn input {
+    margin-right: 5px;
+}
+
+button[type="submit"] {
+    display: block;
+    /* width: 45%; */
+    /* margin-left: 103px; */
+    padding: 5px;
+    background-color: #36454F;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #575e61;
+}
+
+input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+    position: relative;
+}
+
+input[type="radio"]::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #fff;
+    /* Inner circle color */
+}
+
+
+
+input[type="radio"]:checked::before {
+    background-color: white;
+    /* Inner circle color when checked */
+}
+
+#payIn:checked {
+    border-color: blue;
+    /* Outer circle color when checked */
+    background-color: blue;
+}
+
+#payOut:checked {
+    border-color: red;
+    /* Outer circle color when checked */
+    background-color: red;
+}
+
+#credit:checked {
+    border-color: #4caf50;
+    /* Outer circle color when checked */
+    background-color: #4caf50;
+}
+
+#debit:checked {
+    border-color: red;
+    /* Outer circle color when checked */
+    background-color: red;
+    /* Inner circle color when checked */
+}
+
+.myButtons:checked {
+    border-color: blue;
+    /* Outer circle color when checked */
+    background-color: blue;
+}
+
+.limitRange {
+    font-style: italic;
+}
+
+/* .limitOption {
+    cursor: pointer;
+} */
+
+.limitRangeCaret {
+    /* position: absolute; */
+    float: right;
+    width: 0;
+    height: 0;
+    margin-top: 11px;
+    margin-right: 118px;
+    vertical-align: middle;
+    border-top: 5px solid black;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.deleteModal {
+    /* position: fixed;
+    top: 69%;
+    left: 16%; */
+    display: none;
+    /* z-index: 999999; */
+}
+
+#delete-modall {
+    /* position: fixed;
+    bottom: 60px;
+    left: -35%; */
+    display: none;
+    /* z-index: 999999; */
+}
+
+.deletePng {
+    width: 23px;
+}
+
+.confirm_delete {
+    margin-top: 20px;
+    margin-left: -28px;
+    width: 5%;
+    border: none;
+    background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+/* delete */
+#deleteRowsId button {
+    background-color: rgb(140, 187, 168);
+    color: #fff;
+    padding: 5px 8px;
+    border: none;
+    width: 60px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 7px;
+    margin-left: 20%;
+}
+
+.dropdown-toggle::after {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.dropdown-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+    /* Rotate arrow when expanded */
+}
+
+/* The Modal (background) */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    /* 15% from the top and centered */
+    padding: 5px;
+    border: 1px solid #888;
+    /* max-width: 50%; */
+    /* Could be more or less, depending on screen size */
+    border-radius: 5px;
+    padding-bottom: 5% !important;
+}
+
+.categoryAmount span {
+    font-weight: bold;
+}
+
+.thead {
+    position: sticky;
+    top: 0%;
+    z-index: 1;
+}
+
+/* The Close Button */
+.closeContent,
+.closeForm,
+.closeModal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+button:disabled {
+    background-color: grey !important;   /* Grey background */
+    color: lightgray !important;         /* Lighter text */
+    cursor: not-allowed;      /* Change cursor to indicate the button is disabled */
+  }
+.closeForm {
+    margin-top: -23px;
+}
+
+.closeContent:hover,
+.closeContent:focus,
+.closeForm:hover,
+.closeForm:focus,
+.closeModal:hover,
+.closeModal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#yesDiscard,
+#noDiscard {
+    background-color: #212529;
+    color: white;
+    width: 88px;
+}
+
+#myBtn {
+    background-color: #36454F;
+    height: 34px;
+    margin-bottom: 8px;
+    /* margin-left: 106px; */
+    color: #fff;
+}
+
+#save {
+    background-color: #36454F;
+    height: 34px;
+    margin-top: 36px;
+    margin-bottom: 3px;
+    float: inline-end;
+    color: #fff;
+}
+
+#save:hover {
+    background-color: #61696e;
+
+}
+
+.categoryRows:hover {
+    background-color: rgb(241, 241, 253) !important;
+}

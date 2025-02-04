@@ -1,0 +1,780 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-style: normal;
+  font-weight: normal;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+  background-color: rgb(250, 250, 250);
+  overflow: scroll;
+  transition: 0.5s ease;
+  position: absolute;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.toolbar {
+  top: 0;
+  position: fixed;
+  width: 100%;
+  height: 6%;
+  background-color: rgb(1, 6, 105);
+  z-index: 100;
+}
+#toolbar-text {
+  position: absolute;
+  color: white;
+  top: 20%;
+  margin-left: 5%;
+  font-size: 1.3rem;
+}
+
+.icon-nav {
+  position: fixed;
+  box-shadow: 0rem 0.5rem 0.5rem;
+  top: 6%;
+  left: 0;
+  width: 5%;
+  height: 100vh;
+  background: white;
+  padding-top: 1rem;
+  z-index: 102;
+}
+
+.icon-nav .icon-bar {
+  position: absolute;
+  top: 0%;
+  height: 100%;
+  width: 100%;
+  display: block;
+  text-align: center;
+  transition: all 0.5s ease;
+  flex-wrap: wrap;
+}
+
+.icon-nav .nav-icon .user-logo2 {
+  position: relative;
+  color: rgb(133, 134, 133);
+  margin-top: 15%;
+  font-size: 2rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-report {
+  position: relative;
+  color: rgb(0, 255, 21);
+  margin-top: 23%;
+  font-size: 1.3rem;
+}
+.icon-bar .nav-icon .icon-navbar-inventory {
+  color: red;
+  position: relative;
+  margin-top: 23%;
+  font-size: 1.3rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-settings {
+  color: rgb(255, 102, 0);
+  position: relative;
+  margin-top: 23%;
+  font-size: 1.3rem;
+}
+
+.icon-bar .nav-icon .icon-navbar-items {
+  position: relative;
+  color: rgb(231, 10, 84);
+  margin-top: 23%;
+  font-size: 1.3rem;
+}
+.icon-bar .nav-icon .icon-navbar-employee {
+  position: relative;
+  margin-top: 23%;
+  color: rgb(58, 71, 73);
+  font-size: 1.3rem;
+}
+.icon-bar .nav-icon .icon-shift-analysis {
+  position: relative;
+  margin-top: 23%;
+  color: rgb(71, 114, 65);
+  font-size: 1.3rem;
+}
+.icon-bar .nav-icon .icon-navbar-customers {
+  position: relative;
+  margin-top: 23%;
+  font-size: 1.3rem;
+  color: rgb(194, 44, 169);
+}
+.icon-bar .nav-icon .icon-navbar-help {
+  position: relative;
+  margin-top: 23%;
+  font-size: 1.3rem;
+}
+.icon-color {
+  color: rgb(101, 122, 241);
+  word-spacing: normal;
+  margin-left: 30%;
+}
+#select-cols {
+  font-size: 1rem;
+  color: rgb(1, 6, 105);
+  padding: 1rem;
+}
+.custom-checkbox {
+  font-size: 0.8rem;
+  margin-left: 5%;
+  height: 100%;
+}
+.icon-dropdown-columns {
+  margin-left: 50%;
+}
+.icon-dropdown-columns {
+  display: flex;
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  width: 12%;
+  height: 37%;
+  margin-left: 87%;
+  top: 8%;
+  text-align: left;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 100;
+}
+.icon-dropdown-columns a {
+  color: rgb(1, 6, 105);
+  padding: 12px;
+  text-decoration: none;
+  display: block;
+  font-size: 0.8rem;
+  word-wrap: normal;
+}
+.icon-bar .nav-icon .icon {
+  width: 100%;
+  height: 3.5rem;
+  cursor: pointer;
+  background-color: white;
+  margin-left: 0%;
+}
+.icon-bar .nav-icon .icon:hover {
+  background-color: #ddd;
+}
+
+.icon-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  width: 13rem;
+  margin-left: 100%;
+  margin-top: -3.5rem;
+  text-align: left;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 1;
+}
+.icon-dropdown-content a {
+  color: rgb(1, 6, 105);
+  padding: 12px;
+  text-decoration: none;
+  display: block;
+  font-size: 1rem;
+  word-wrap: normal;
+}
+
+.icon-dropdown-content a:hover {
+  background-color: #ddd;
+}
+.columns:hover .icon-dropdown-columns {
+  display: block;
+}
+.nav-icon:hover .icon-dropdown-content {
+  display: block;
+}
+.card {
+  position: absolute;
+  width: 60%;
+  background-color: white;
+  height: 80%;
+  top: 10%;
+  margin-left: 7%;
+  overflow: auto;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+  z-index: 90;
+}
+.create-Category-container {
+  display: none;
+  position: absolute;
+  top: 3%;
+  height: 93%;
+  width: 40%;
+  box-shadow: 0px 8px 16px 6px rgba(0, 0, 0, 0.2);
+  margin-left: 10%;
+  background-color: white;
+  z-index: 123;
+}
+.btn:hover {
+  background-color: #ddd;
+}
+input[type="checkbox"] {
+  accent-color: rgb(1, 6, 105);
+}
+input.form-check-input {
+  width: 13px;
+  height: 13px;
+}
+#category-name {
+  /*the text input of the teacher name in the form popup*/
+  position: absolute;
+  top: 5%;
+  height: 5%;
+  font-size: 1rem;
+  margin-left: 15%;
+  width: 70%;
+  color: rgb(1, 6, 105);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+  background-color: white;
+}
+#price-label {
+  position: absolute;
+  top: 35.5%;
+  color: grey;
+  margin-left: 5%;
+}
+.price {
+  position: absolute;
+  top: 30%;
+  height: 5%;
+  font-size: 1rem;
+  margin-left: 5%;
+  width: 40%;
+  color: rgb(1, 6, 105);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+  background-color: white;
+}
+#track-stock {
+  position: absolute;
+  top: 55%;
+  color: rgb(1, 6, 105);
+  margin-left: 5%;
+  z-index: 120;
+}
+
+#in-stock {
+  position: absolute;
+  top: 20%;
+  color: grey;
+  margin-left: 0%;
+}
+.stock {
+  position: absolute;
+  top: 35%;
+  height: 30%;
+  font-size: 1rem;
+  margin-left: 0%;
+  width: 47%;
+  color: rgb(1, 6, 105);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+  background-color: white;
+}
+#cost-label {
+  position: absolute;
+  top: 35.5%;
+  color: grey;
+  margin-left: 53%;
+}
+.cost {
+  position: absolute;
+  top: 30%;
+  height: 5%;
+  font-size: 1rem;
+  margin-left: 53%;
+  width: 40%;
+  color: rgb(1, 6, 105);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+  background-color: white;
+}
+#sku-label {
+  position: absolute;
+  top: 40%;
+  color: rgb(1, 6, 105);
+  margin-left: 5%;
+  z-index: 20;
+}
+.sku {
+  position: absolute;
+  top: 43%;
+  height: 5%;
+  font-size: 1rem;
+  margin-left: 5%;
+  width: 40%;
+  color: rgb(1, 6, 105);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+  background-color: white;
+}
+#low-stock {
+  position: absolute;
+  top: 69%;
+  color: grey;
+  margin-left: 56.5%;
+  z-index: 20;
+}
+.low-stock {
+  position: absolute;
+  top: 35%;
+  height: 30%;
+  font-size: 1rem;
+  margin-left: 56.5%;
+  width: 47%;
+  color: rgb(1, 6, 105);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+  background-color: white;
+}
+.barcode {
+  position: absolute;
+  top: 43%;
+  height: 5%;
+  font-size: 1rem;
+  margin-left: 53%;
+  width: 40%;
+  color: rgb(1, 6, 105);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+  background-color: white;
+}
+.low-stock:focus {
+  border-bottom: 1px solid rgb(1, 6, 105);
+  outline: 0;
+}
+.stock:focus {
+  border-bottom: 1px solid rgb(1, 6, 105);
+  outline: 0;
+}
+.barcode:focus {
+  border-bottom: 1px solid rgb(1, 6, 105);
+  outline: 0;
+}
+.sku:focus {
+  border-bottom: 1px solid rgb(1, 6, 105);
+  outline: 0;
+}
+.cost:focus {
+  border-bottom: 1px solid rgb(1, 6, 105);
+  outline: 0;
+}
+.price:focus {
+  border-bottom: 1px solid rgb(1, 6, 105);
+  outline: 0;
+}
+#name-id:focus {
+  border-bottom: 1px solid rgb(1, 6, 105);
+  outline: 0;
+}
+.stock-input {
+  position: absolute;
+  top: 60%;
+  margin-left: 5%;
+  width: 85%;
+  height: 20%;
+}
+#filter-by-category {
+  position: absolute;
+  width: 40%;
+  height: 5%;
+  color: rgb(1, 6, 105);
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 53%;
+  top: 5%;
+  word-break: break-all;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+}
+#filter-by-category:focus {
+  border-bottom: 1px solid rgb(1, 6, 105);
+  outline: 0;
+}
+
+.btn {
+  background-color: white;
+  width: 100%;
+  border: none;
+  height: 2rem;
+  cursor: pointer;
+  border-top: 1px solid rgb(212, 203, 203);
+}
+#category-dropdown {
+  transition: 2s;
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  background-color: white;
+  width: 40%;
+  word-break: break-all;
+  height: fit-content;
+  margin-left: 53%;
+  top: 10%;
+  text-align: left;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem rgb(212, 203, 203);
+  z-index: 30;
+}
+.item-sold-by-container {
+  position: absolute;
+  outline: 1px solid rgb(212, 203, 203);
+  top: 15%;
+  width: 88%;
+  height: 10%;
+  margin-left: 5%;
+}
+.form-check {
+  margin-top: 1%;
+  margin-left: 3%;
+  color: rgb(1, 6, 105);
+}
+#color-picker {
+  position: absolute;
+  top: 80%;
+  margin-left: 15%;
+  width: 20%;
+  height: 15%;
+  border: none;
+}
+#color-label {
+  position: absolute;
+  top: 86%;
+  margin-left: 5%;
+  width: 20%;
+  font-size: 0.77rem;
+  color: rgb(1, 6, 105);
+}
+#teacher-image {
+  position: absolute;
+  top: 85%;
+  margin-left: 74%;
+  width: 21.5%;
+  height: 9%;
+  border: 1px solid grey;
+  background-color: transparent;
+}
+#image-picker {
+  position: absolute;
+  top: 95%;
+  margin-left: 15%;
+  width: 10%;
+
+  border: 1px solid grey;
+}
+
+.btn-save {
+  position: absolute;
+  top: 88%;
+  margin-left: 77%;
+  width: 15%;
+  height: 9%;
+  border: none;
+  color: white;
+  background-color: rgb(1, 6, 105);
+  box-shadow: 0px 8px 16px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.btn-cancel {
+  position: absolute;
+  top: 88%;
+  margin-left: 60%;
+  width: 15%;
+  height: 9%;
+  border: none;
+  background-color: white;
+  box-shadow: 0px 8px 16px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.export-gross-sales-btn {
+  position: absolute;
+  width: 10%;
+  height: 6%;
+  color: rgb(1, 6, 105);
+  cursor: pointer;
+  font-size: 1rem;
+  word-break: break-all;
+
+  margin-left: 3%;
+  top: 5%;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  box-shadow: 0rem 0.1rem 0.4rem 0.1rem grey;
+}
+.add-item {
+  position: absolute;
+  top: 3%;
+  margin-left: 3%;
+  font-size: 1rem;
+  display: block;
+  width: 8%;
+  height: 14%;
+  border-radius: 50%;
+  color: white;
+  background-color: rgb(1, 6, 105);
+  box-shadow: 0px 2.5px 10px 0px rgb(174, 174, 180);
+  cursor: pointer;
+  z-index: 100;
+}
+#container {
+  position: absolute;
+  width: 90%;
+  height: 70%;
+  top: 25%;
+  margin-left: 5%;
+
+  overflow: auto;
+}
+table {
+  position: absolute;
+  z-index: 99;
+  width: 100%;
+
+  z-index: 10;
+}
+thead {
+  position: sticky;
+  height: 1rem;
+  position: sticky;
+
+  top: 0%;
+}
+th {
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid rgb(216, 216, 216);
+}
+.items-list-head {
+  font-size: 1rem;
+
+  color: rgb(78, 78, 78);
+}
+td {
+  text-align: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgb(216, 216, 216);
+}
+
+.items-list-row {
+  cursor: auto;
+}
+.table-row:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+.fa-user {
+  position: absolute;
+  left: 45%;
+  top: 10%;
+  font-size: 4rem;
+  color: rgb(197, 75, 75);
+}
+.fa-tablet {
+  position: absolute;
+  left: 5%;
+  top: 48%;
+  font-size: 2.5rem;
+  color: rgb(0, 174, 255);
+}
+.fa-signal {
+  position: absolute;
+  left: 5%;
+  transform: rotateY(180deg);
+  top: 70%;
+  font-size: 2.5rem;
+  color: rgb(144, 197, 75);
+}
+.delete {
+  position: absolute;
+  top: 3%;
+  margin-left: 20%;
+  font-size: 1rem;
+  display: none;
+  width: 8%;
+  height: 14%;
+  border-radius: 50%;
+  color: white;
+  background-color: rgb(1, 6, 105);
+  box-shadow: 0px 2.5px 10px 0px rgb(174, 174, 180);
+  cursor: pointer;
+  z-index: 100;
+}
+.date-cell {
+  position: absolute;
+  justify-content: flex-start;
+  margin-left: 2%;
+}
+.owner-icon {
+  position: relative;
+  font-size: 1.5rem;
+  color: rgb(79, 197, 75);
+}
+.admin-icon {
+  position: relative;
+  font-size: 1.5rem;
+  color: rgb(75, 197, 187);
+}
+.manager-icon {
+  position: relative;
+  font-size: 1.5rem;
+  color: rgb(250, 92, 0);
+}
+.cashier-icon {
+  position: relative;
+  font-size: 1.5rem;
+  color: rgb(75, 87, 197);
+}
+#add-role-Form {
+  display: none;
+  position: absolute;
+  height: 80%;
+  width: 70%;
+  margin-left: 15%;
+  top: 10%;
+  background-color: white;
+  box-shadow: 0px 8px 16px 6px rgba(0, 0, 0, 0.2);
+  z-index: 200;
+}
+#name-id:focus {
+  border-bottom: 1px solid rgb(1, 6, 105);
+  outline: 0;
+}
+#name-id {
+  /*the text input of the teacher name in the form popup*/
+  position: absolute;
+  top: 33%;
+  height: 5%;
+  font-size: 1rem;
+  margin-left: 5%;
+  width: 90%;
+  color: rgb(1, 6, 105);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid rgb(212, 203, 203);
+  background-color: white;
+}
+.back-office {
+  position: absolute;
+  height: 10%;
+  width: 90%;
+  padding: 3%;
+  top: 65%;
+  margin-left: 10%;
+}
+.pos {
+  position: absolute;
+  height: 10%;
+  width: 90%;
+  padding: 3%;
+  top: 45%;
+  margin-left: 10%;
+}
+.feature-label {
+  position: absolute;
+  color: rgb(1, 6, 105);
+  font-size: 1.5rem;
+  padding: 6px;
+  top: 10%;
+}
+.caption {
+  position: absolute;
+  color: grey;
+  top: 90%;
+  margin-left: 1%;
+}
+.caption-bo {
+  position: absolute;
+  color: grey;
+  top: 90%;
+  margin-left: 1%;
+}
+.create-role-toggle {
+  position: absolute;
+  height: 20px;
+  width: 40px;
+  top: 50%;
+  margin-left: 84%;
+  border-radius: 25px;
+  background-color: rgb(185, 189, 185);
+  transition: 0.5s;
+  z-index: 100;
+  cursor: pointer;
+}
+.create-role-toggle .switch {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  top: 15%;
+  cursor: pointer;
+  left: 10%;
+  background-color: rgb(255, 255, 255);
+  transition: 0.5s;
+}
+.create-role-toggle.create-role-active {
+  background: rgb(121, 124, 180);
+}
+.create-role-toggle.create-role-active .switch {
+  background-color: rgb(1, 6, 105);
+  left: 55%;
+}
+.create-role-bo-toggle {
+  position: absolute;
+  height: 20px;
+  width: 40px;
+  top: 50%;
+  margin-left: 84%;
+  border-radius: 25px;
+  background-color: rgb(185, 189, 185);
+  transition: 0.5s;
+  z-index: 100;
+  cursor: pointer;
+}
+.create-role-bo-toggle .switch {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  top: 15%;
+  cursor: pointer;
+  left: 10%;
+  background-color: rgb(255, 255, 255);
+  transition: 0.5s;
+}
+.create-role-bo-toggle.create-role-bo-active {
+  background: rgb(121, 124, 180);
+}
+.create-role-bo-toggle.create-role-bo-active .switch {
+  background-color: rgb(1, 6, 105);
+  left: 55%;
+}
