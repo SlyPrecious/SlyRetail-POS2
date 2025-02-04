@@ -865,6 +865,6 @@ app.delete('/deletePaymentTypeRows', async (req, res) => {
 })
 //================================================================================================
 app.listen(2000, function () {
-  console.log("Server started on port 5000");
+  console.log("Server started on port 2000");
 });
 
