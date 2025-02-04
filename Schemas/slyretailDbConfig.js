@@ -1,15 +1,18 @@
 import mongoose from 'mongoose';
 
 let isConnected = false; // Track the connection status
-
 const connectDB = async (databaseName) => {
     if (isConnected) {
         console.log('Reusing existing MongoDB connection');
         return mongoose.connection; // Return existing connection
     }
+    //    const uri = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/<database>?retryWrites=true&w=majority";
+    const uri = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/<" + databaseName + ">?retryWrites=true&w=majority";
 
     try {
-        await mongoose.connect('mongodb://localhost/' + databaseName, {
+        // await mongoose.connect('mongodb://localhost/' + databaseName, {
+        //THIS IS THE FREE CLUSTER ON MONGO DB CURRENTLY USED FOR DEVELOPMENT
+        await mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000,
@@ -32,4 +35,4 @@ const logout = () => {
 };
 
 // export default connectDB;
-export  {connectDB,logout} ;
+export { connectDB, logout };
