@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sly School TimeTable Scheduler">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="Sly Time Table Scheduler,School TimeTable, Sly Scheducate">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>category List</title>
+    <link rel="stylesheet" href="css/category-list.css">
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text">Category List </span>
+    </div>
+    <div class="card">
+
+        <!--The MENU ITEMS-->
+        <div class="icon-nav">
+            <script src="js/common-icons.js"></script>
+        </div>
+
+        <!--The page Content-->
+        <div class="body-card">
+            <a href="create-category.html"><button class="add-item">+</button></a>
+            <button type="button" class="export-categories-btn">EXPORT</button>
+            <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+
+            <label class="filter-by-store-label">Store</label>
+            <div id="">
+                <button type="button" name="" id="filter-by-store" onclick="selectStore()">All Stores <i
+                        class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+                <div id="select-store">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class=" btn-primary active">
+                            <input type="checkbox" name="" id="store-checkbox" checked autocomplete="off">
+                            <span class="store-name">All Stores</span>
+                        </label>
+                        <label class=" btn-primary">
+                            <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                            <span class="store-name">MUFATECH</span>
+                        </label>
+                        <label class=" btn-primary">
+                            <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                            <span class="store-name">ENTERPRISES</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div id="container">
+                <table class="category-list-table" cellspacing="0">
+                    <thead class="category-list-headings">
+                        <tr class="category-list-row">
+                            <th>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="" onclick="myFunction()"
+                                        id="myCheck" value="checkedValue">
+                                </div>
+                            </th>
+                            <th><span class="category-list-head">Category Name</span></th>
+                            <th><span class="category-list-head">Items Available</span></th>
+                            <th><span class="category-list-head">Store Name</span></th>
+                            <th><span class="category-list-head">.</span></th>
+                            <th><span class="category-list-head">.</span></th>
+                            <th><span class="category-list-head">.</span></th>
+                            <th><span class="category-list-head">.</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body-create-category">
+                        <tr id="table-row">
+                            <td><input type="checkbox" class="form-check-input" name="" id="myCheck"
+                                    value="checkedValue"></td>
+                            <td><span class="date-cell">$</span></td>
+                            <td><span class="shift-no-cell">$ </span></td>
+                            <td><span class="income-description-cell">$</span></td>
+                            <td><span class="usd-cell">$</span></td>
+                            <td><span class="bondRated-cell">$</span></td>
+                            <td><span class="ecoCashRated-cell">$</span></td>
+                            <td><span class="swipeRated-cell">$</span></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+<script src="js/category-list.js"></script>

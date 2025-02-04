@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sly School TimeTable Scheduler">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="Sly Time Table Scheduler,School TimeTable, Sly Scheducate">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Create Receipt</title>
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link rel="stylesheet" href="css/create-receipt.css">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text">Create Receipt</span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav">
+        <script src="js/common-icons.js"></script>
+    </div>
+
+    <!--The page Content-->
+
+    <div class="receipts-container">
+        <h3 class="receipt-title">Reciept Settings</h3>
+        <label for="logo" class="logo">Logo</label>
+        <label for="email" class="email-receipt">Email Receipt</label>
+        <div class="email-reciept-logo">
+            <i class="fa fa-image" aria-hidden="true"></i>
+            <label for="upload" class="uploadButton" onchange="readFile()">Upload</label>
+            <input type="file" name="upload" id="upload" />
+        </div>
+        <div class="printed-reciept-logo">
+            <i class="fa fa-image" aria-hidden="true"></i>
+            <label for="upload" class="uploadButton" onchange="readFile()">Upload</label>
+            <input type="file" name="upload" id="upload" />
+        </div>
+        <textarea class="header" placeholder="Header"></textarea>
+        <textarea class="footer" placeholder="Footer"></textarea>
+        <label for="printed" class="printed-receipt">Printed Receipt</label>
+        <label class="filter-by-store-label">Store</label>
+        <div id="select-store-container">
+            <button type="button" name="" id="filter-by-store" onclick="selectStore()">All Stores <i
+                    class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+            <div id="select-store">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class=" btn-primary">
+                        <span class="store-name">MUFATECH</span>
+                    </label>
+                    <label class=" btn-primary">
+                        <span class="store-name">ENTERPRISES</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="feature-and-switch">
+            <label type="" class="customer-information feature-label">Show Customer information</label>
+            <div class=" customer-information-toggle" onclick="animateToggleShift()" checked>
+                <span class="switch"></span>
+            </div>
+        </div>
+        <div class="feature-and-switch">
+            <label type="" class="customer-comments feature-label">Show Customer Comments</label>
+            <div class=" customer-comments-toggle" onclick="animateToggleTimeClock()">
+                <span class="customer-comments-switch"></span>
+            </div>
+        </div>
+        <hr class="horizontal">
+        <button type="button" class="save-btn">SAVE</button>
+        <button type="button" class="cancel-btn">CANCEL</button>
+    </div>
+    </div>
+</body>
+
+</html>
+<script src="js/create-receipt.js"></script>

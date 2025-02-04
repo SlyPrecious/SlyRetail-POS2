@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sly School TimeTable Scheduler">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="Sly Time Table Scheduler,School TimeTable, Sly Scheducate">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Credit Sales</title>
+    <link rel="stylesheet" href="css/credit-sales.css">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text" >Credit Sales</span>
+    </div>
+    <!--The MENU ITEMS-->    
+    <div class="icon-nav">
+        <script src="js/common-icons.js"></script>
+    </div>
+
+    <!--The page Content-->    
+    <div class="payment-type-container">
+        <div class="payment-type"> 
+            <label class="filter-by-store-label">Store</label>
+        <div  id = ""> 
+            <button type="button" name="" id="filter-by-store"onclick="selectStore()">All Stores <i class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+            <div id="select-store">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class=" btn-primary active">
+                        <span class="store-name">All Stores</span>
+                    </label>
+                    <label class=" btn-primary">
+                        <span class="store-name">MUFATECH</span>
+                    </label>
+                    <label class=" btn-primary">
+                        <span class="store-name">ENTERPRISES</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+            <button name="add-payment-type" type="button" class="add-payment-type-btn">EXPORT</button>
+        <div id="container">
+            <table  class="credit-sale-list-table"  cellspacing="0">
+                <thead class="credit-sale-list-headings" > 
+                    <tr class="credit-sale-list-row" >
+                        <th><span class="credit-sale-list-head">  Date</span></th>
+                        <th><span class="credit-sale-list-head"> Name </span></th>
+                        <th><span class="credit-sale-list-head">Item</span></th>
+                        <th><span class="credit-sale-list-head">  Amount Due </span></th>
+                        <th><span class="credit-sale-list-head">Amount Paid</span></th>
+                        <th><span class="credit-sale-list-head">  Total Balance </span></th>
+
+                    </tr>
+                </thead>
+                <tbody class="table-body-create-discount">
+                    <tr class="table-row" onclick="openCreditPurchase()">
+                        <td ><span class="" >01/01/2022 10:37 AM </span></td>
+                        <td ><span class="" >Mr Mangezi </span></td>
+                        <td ><span class="">ECCO TV 42"</span></td>
+                        <td><span class=""> USD200.00</span></td>
+                        <td><span class=""> USD100.00</span></td>
+                        <td><span class=""> USD100.00</span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="" id="add-store-Form">
+            <form action="#" class="form-container">
+                <!--the button  for saving or cancelling information of the teacher-->
+                <span class="comparison-figure-net"><i class="fas fa-user    "></i></span>
+                <span class="customer-name">Mr Mangezi</span>
+                <span class="credit-sale-label">CREDIT SALE</span>
+                <label for="total-income" id="item-name-label">ECCO TV 42"</label>
+                <div class="credit-sale-info-container">
+                    <label for="total-income" id="total-income-label">Amount Due</label>
+                    <div type="text" id="total-income-id" ><span class="amount">ZWL$200.00</span></div>
+                    <div type="text" id="total-income-id2" ></div>
+                    <label for="total-expenses" id="expenses-label">Amount Paid</label></a>
+                    <div type="text" id="expenses-id" ></div>
+                    <div type="text" id="total-expenses-id" ><span class="amount">ZWL$100.00</span></div>
+                    <label for="banking" id="banking-label">Balance </label>
+                    <div type="text" id="banking-id" ><span class="amount">ZWL$100.00</span></div>
+                    <div type="text" id="banking-id2" ></div>
+                </div>
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                <label class="next-payment-label">Next Payment is On:</label>
+                <p class="next-payment-date">01/02/2022, 10:48 AM</p>
+                <div class="payment-history-container">
+                    <h3 class="payment-history-title">PAYMENT HISTORY</h3>
+                    <hr class="horizontal">
+                    <ul class="list-of-payments">
+                        <li class="payment-details">
+                            <span class="item-paid-for">ECCO TV 42"</span>
+                            <span class="date-paid">01/02/2022, 15:55 PM</span>
+                            <span class="amount-paid">ZWL$50.00</span>
+                            <span class="balance-after-payment">BAL: ZWL$150.00</span>
+                            <span class="receipt-number">Receipt no:1-10034</span>
+                        </li>
+                        <li class="payment-details">
+                            <span class="item-paid-for">ECCO TV 42"</span>
+                            <span class="date-paid">01/03/2022, 10:55 AM</span>
+                            <span class="amount-paid">ZWL$50.00</span>
+                            <span class="balance-after-payment">BAL: ZWL$100.00</span>
+                            <span class="receipt-number">Receipt no:1-10034</span>
+
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+<script src="js/credit-sales.js"></script>

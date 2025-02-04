@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Sly School TimeTable Scheduler" />
+    <meta name="author" , content="Germany Mangezi" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width initial-scale=1.0" />
+    <title>PayOuts Summary</title>
+    <link rel="stylesheet" href="css/payout.css" />
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="/images/newslylogo.jpg">
+    <link rel="stylesheet" href="css/notification.css" />
+    <link rel="stylesheet" href="css/daterangepicker.css" />
+</head>
+
+<body style="margin: 0;">
+    <!-- PAGE LOADER -->
+    <div class="loader-container">
+        <div class="loader"></div>
+        <p class="loader-text">Loading...</p>
+    </div>
+    <div class="myloader"></div>
+    <div id="tool-bar" class="toolbar" style="display: none;">
+        <div class="menu-icon iconbtn">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <span id="toolbar-text">PayOuts Summary </span>
+    </div>
+
+    <!--The MENU ITEMS-->
+    <div class="icon-nav close" style="display: none;">
+        <script src="js/common-iconsFE.js"></script>
+    </div>
+    <div class="main-card-second">
+        <div id="expense-date">
+            <input class="form-control form-control-solid" type="text" name="dateRange" id="dateRange">
+            <div class="input-group rounded">
+                <input id="searchInput" type="search" class="form-control rounded" placeholder="Search"
+                    aria-label="Search" aria-describedby="search-addon" maxlength="5">
+                <span class="input-group-text border-0" id="search-addon">
+                    <img src="images/payoutsearch.png" alt="Search" style="width: 23px;">
+                </span>
+
+            </div>
+
+        </div>
+        <div class="totalContainer">
+
+            <div class="box firstBox" id="openingBalBox">
+                <span class="paragraph">
+                </span>
+                <span class="openingBalance">
+                    0.00
+                </span>
+                <h4>Opening Balance</h4>
+
+            </div>
+            <div class="box secondBox" id="incomeBox">
+                <span class="incomeCategory" style="font-weight: bold;"></span>
+                <span class="paragraph">
+                    <%=isoCode %>
+                </span>
+
+                <span class="totalIncome">
+                    0.00
+                </span>
+                <h4>PayIns</h4>
+
+            </div>
+            <div class="box thirdBox" id="expenseBox">
+                <span class="expenseCategory" style="font-weight: bold;"></span>
+                <span class="paragraph">
+                    <%=isoCode %>
+                </span>
+                <span class="totalExpenses">
+                    0.00
+                </span>
+                <h4>PayOuts </h4>
+
+            </div>
+
+            <div class="box fourthBox" id="cashBalanceBox">
+                <span class="paragraph">
+
+                </span>
+
+                <span class="CashBalance">
+                    <%=isoCode %>
+                        0.00
+                </span>
+                <h4>Cash Balance</h4>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="expense">
+        <!-- test of the new edit form -->
+        <div class="form-expenses-input" id="expense-details-Form" style=" z-index: 9999;position: absolute;">
+            <form class="editForm" id="add-expense-form" method="POST" action="/myExpenses">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="Description">Description:</label>
+                        <input type="text" name="" id="description-input" minlength="3" maxlength="25" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="category">Category</label>
+                        <input type="text" name="" id="" disabled="true">
+                        <div class=" catemenu">
+                            <div class="cate-btn">
+                                <span class="cate-Btn-Span">No Category </span>
+                                <div class="ccaret"></div>
+                            </div>
+                        </div>
+
+                        <ul class="categories">
+                            <% expenseCategories.forEach(option=> { %>
+                                <li class="cate-option">
+                                    <option>
+                                        <%= option.category %>
+                                    </option>
+                                </li>
+                                <% }) %>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="currency">Currency</label>
+                        <input type="text" name="" id="" disabled="true">
+                        <div class="selectmenu">
+                            <div class="select-btn">
+                                <span class="btn-text">Payment Type... </span>
+                                <div class="caretForm"></div>
+                            </div>
+                        </div>
+
+                        <ul class="currencies">
+                            <% currencies.forEach(option=> { %>
+                                <li class="option">
+                                    <option>
+                                        <%= option.Currency_Name %>
+                                    </option>
+                                </li>
+                                <% }) %>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="amount">Amount</label>
+                        <input type="number" name="amount" pattern="[0-9]+([.][0-9]+)?" step="any"
+                            class="current-amount" id="current-amount-input">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="rate">Rate</label>
+                        <span for="sub" class="current-rate" id="label-rate">RATE</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="invoiceNo">Invoice No</label>
+                        <input type="text" name="" class="invoice" id="invoice-input">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="shiftNo">Shift No</label>
+                        <input type="text" name="" class="shift" id="shift-input">
+                    </div>
+                </div>
+                <button type="submit" class="add-expense">ADD</button>
+                <label class="myCurrentId" for="dep" hidden>Id</label>
+                <label class="myCurrentDate" for="dep" hidden>Date</label>
+            </form>
+        </div>
+
+
+    </div>
+
+
+    </div>
+    <div class="main-card" style="height: 90%;">
+        <div class="btnContainer">
+            <button class="export">Export</button>
+            <div class="dropdown">
+                <button type="button" class="import" data-bs-toggle="dropdown" aria-expanded="false"
+                    data-bs-auto-close="outside">
+                    Import
+                </button>
+                <form class="importForm dropdown-menu">
+                    <h2>File Import</h2>
+                    <div class="mb-3">
+                        <label for="csv-file">Select CSV file:</label>
+                        <input type="file" name="file" id="csv-file" accept=".csv" required>
+                        <p class="form-text">Drag and drop your file here</p>
+                    </div>
+                    <div class="mb-3">
+                        <p> You can download our <a id="download-template-link" href="Templates/ExpensesTemplate.csv"
+                                download>CSV
+                                Template</a>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" id="upload-btn">Upload</button>
+                        <button type="button" id="cancel-btn">Retry</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="columns" style="margin-top: 25px;">
+                <div class="dropdown" style="display:inline-block;">
+                    <button class="btn" type="button" id="columnId" data-bs-toggle="dropdown" aria-expanded="false"
+                        style="background-color: transparent;">
+                        <i class="fa fa-columns payoutColumn" style="margin-top: -28px;" aria-hidden="true"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <label class="dropdown-item custom-control custom-checkbox">
+                                <input type="checkbox" id="checkbox-id-shift" value="ShiftNo"
+                                    class="custom-control-input">
+                                <span class="custom-control-label">ShiftNo</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-item custom-control custom-checkbox">
+                                <input type="checkbox" id="checkbox-id-vat" value="Tax" class="custom-control-input">
+                                <span class="custom-control-label">Tax</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-item custom-control custom-checkbox">
+                                <input type="checkbox" id="checkbox-id-invoice" value="InvoiceRef"
+                                    class="custom-control-input">
+                                <span class="custom-control-label">InvoiceRef</span>
+                            </label>
+                        </li>
+
+                        <li>
+                            <label class="dropdown-item custom-control custom-checkbox">
+                                <input type="checkbox" id="checkbox-id-cashEquiv" value="CashEquiv"
+                                    class="custom-control-input">
+                                <span class="custom-control-label">CashEquiv</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-item custom-control custom-checkbox">
+                                <input type="checkbox" id="checkbox-id-balance" value="RunningBalance"
+                                    class="custom-control-input">
+                                <span class="custom-control-label">RunningBalance</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="deleteModal" style="margin-top: -8px;">
+            <button id="confirm-delete-btn" class="confirm_delete" style="background-color: transparent;"><img
+                    src="images/payOutdelete.png" alt="" srcset="" style="width: 23px;margin-left: 9px;"></i>
+            </button>
+            <!-- <button id="confirm-delete-btn" class="confirm_delete"> <i class="fas fa-trash" style="color: red;"
+                style="width: 23px;margin-left: 23px;"></i>
+        </button> -->
+
+        </div>
+
+        <div class="table_container">
+            <table id="" class="expense-list-table" cellspacing="0">
+                <thead class="expense-list-headings">
+                    <tr class="expense-list-row" id="">
+                        <th><input type="checkbox" class="form-check-input" name="" id="myCheck" value="checkedValue">
+                        </th>
+                        <th hidden><span class="" id=""></span>Id</th>
+                        <th><span class="" id="">Date <p style="color: black; font-size: 11px; font-style: italic; margin-top: -7px; 
+                            margin-bottom: -31px;">(dd/mm/yyyy)</p>
+                                </p>
+                                <div class="sorting-arrows">
+                                    <span id="sortDateAsc" class="sort-arrow">&#8593;</span>
+                                    <span id="sortDateDesc" class="sort-arrow">&#8595;</span>
+
+                                </div>
+                            </span>
+                        </th>
+                        <th><span class="" id=""></span>ShiftNo</th>
+                        <th><span class="" id=""></span>Tax</th>
+                        <th><span class="" id=""></span>InvoiceRef</th>
+                        <th><span class="" id=""></span>Description</th>
+                        <th class="categoryHeader">
+                        </th>
+                        <th><span class="" id=""></span>Currency
+                        </th>
+                        <th><span class="" id=""></span>Amount</th>
+                        <th> <span class="" id="">Rate
+                                <p style="color: black; font-size: 10px; font-style: italic; margin-top: -7px; 
+                                margin-bottom: -11px;">(Relative to <%=isBaseCurrency %>)</p>
+                            </span>
+                        </th>
+                        <th><span class="" id=""> CashEquiv <br>
+                                <p style="color: black; font-size: 11px; font-style: italic; margin-top: -7px; 
+                          margin-bottom: -11px;">{<%=isBaseCurrency %>}</p>
+                            </span>
+                        </th>
+                        <th><span class=""> RunningBalance
+                                <p style="color: black; font-size: 11px; font-style: italic; margin-top: -7px; 
+                        margin-bottom: -11px;">( <%=isBaseCurrency %>)</p>
+                            </span></th>
+                    </tr>
+                </thead>
+                <tbody class="expenses-table-body">
+                    <div id="Table_messages" style="display: none; color: grey; position: absolute;text-align: center;top: 50%;left: 50%;
+                    transform: translate(-50%, -50%);">
+                        <div>
+                            <div class="addRow" style="cursor: pointer;">
+                                <i class="fa-solid fa-receipt" style="font-size: 74px;"></i>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                            <div class="noDataText" style="font-size: 30px;margin-top: 10px;"></div>
+                            <div class="noDataText2" style="font-size: 20px;"></div>
+
+                        </div>
+                </tbody>
+            </table>
+
+
+        </div>
+        <div class="footer" style="display: none;">
+            <div class="pagination">
+                <span id="previous" style="font-size: 25px; margin-right: 15px;">&laquo;</span>
+                <div id="pagination"></div>
+                <p class="statusText" style="color: black; margin-top: 13px;"> <span class="spanText"></span> of
+                    <span class="spanText1"></span> |
+                <div class="dropdown" style="margin-top: 7px;">
+                    <button class="btn dropdown-toggle paginationBtn" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="outline: none;border: none;background-color: transparent;">
+                        <span class="statusSpan" style="width: 20px;">Rows Per Page</span>
+                        <span class="rowsPerPage"></span>
+                    </button>
+                    <!-- <div class="paginationContainer" style="margin-top:-6%;"> -->
+                    <ul class="dropdown-menu">
+                        <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId0"
+                                href="#">5</a></li>
+                        <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId1"
+                                href="#">10</a></li>
+                        <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId2"
+                                href="#">50</a></li>
+                    </ul>
+                </div>
+                </p>
+                <span id="next" style="font-size: 25px;margin-left: 15px;">&raquo;</span>
+            </div>
+        </div>
+        <!-- undo vat modal -->
+        <div class="undoVat" id="undoVatId">
+            <div class="undoVatContent">
+                <p class="undoVatMsg"></p>
+                <!-- Ordered list of VAT and ZTF items -->
+                <ol style="margin-top: 15px; margin-left: 23px;" id="itemList">
+                    <!-- Items will be dynamically populated here -->
+                </ol>
+                <div class="undoVatButtonContainer" style="margin-top: 10px;">
+                    <button id="yesUndoVat" style="margin-right: -23px;">Yes</button>
+                    <button id="noUndoVat">No</button>
+                </div>
+
+            </div>
+            <!-- <img src="images/redCross.png" id="closeVatModal" alt="" srcset=""> -->
+        </div>
+        <!-- delete row -->
+        <div class="deleteAcc" id="deleteRowsId">
+            <div class="deleteRowsContent">
+                <p class="deleteMsg" style="margin-top: 11%;"></p>
+                <div class="deleteButtonContainer" style="margin-top: 30px;">
+                    <button id="yesDelete" style="margin-right: -23px;">Yes</button>
+                    <button id="noDelete">No</button>
+                </div>
+
+            </div>
+            <img src="images/redCross.png" id="closeDelete2" alt="" srcset="">
+        </div>
+
+
+        <!-- Modal -->
+        <div id="success_tic" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal_Content" style="margin-top: -30px;margin-left: 49px;">
+                    <div class="page-body">
+                        <h1 style="text-align:center;">
+                            <div class="checkmark-circle">
+                                <div class="background"></div>
+                                <div class="checkmark draw"></div>
+                            </div>
+                            <h1>
+                                <div class="head">
+                                    <h3 style="margin-top:20px;color:#1ab394 ;font-weight: 200;">Import Completed
+                                    </h3>
+                                    <h4 class="uploadData" style="margin-top:20px;color:black;display: none;">Your list
+                                        of <span class="itemsCount"></span> payOuts has
+                                        been successfully uploaded</h4>
+                                    <h4 class="noUploadData" style="margin-top:20px;color:black;display: none;">No
+                                        payouts
+                                        uploaded,payouts already exist</h4>
+                                    <button id="okay">Ok</button>
+                                </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="notificationBlock"></div>
+    <div id="spinner"></div>
+    <script type="module" src="js/payoutFE.js"></script>
+    <script src="js/intlTelInput.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script type="text/javascript" src="js/daterangepicker.min.js"></script>
+
+
+</body>
+
+</html>

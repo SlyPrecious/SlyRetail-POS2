@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="SLY RETAIL POINT OF SALE">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="SLY RETAIL POS, BACK OFFICE">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Receipts</title>
+    <link rel="stylesheet" href="css/receipts.css">
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text"> Receipts </span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav">
+        <script src="js/common-icons.js"></script>
+    </div>
+
+    <!--The page Content-->
+    <!--all day popup that is opened by clicking the all day button-->
+    <div id="all-day-container">
+        <button type="button" name="" id="filter-by-time" onclick="openAllDayPopup()">All Day <i
+                class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+        <div id="all-day-popup">
+            <button type="button" class="all-day-btn btn">All Day</button>
+            <button type="button" class="custom-time-btn btn">CUSTOM</button>
+        </div>
+    </div>
+    <!--all store popup that is opened by clicking the all day button-->
+    <div id="all-store-container">
+        <button type="button" name="" id="filter-by-store" onclick="openStorePopup()"><i class="fa fa-hotel icon-color"
+                aria-hidden="true"></i> All Stores <i class="fa fa-caret-down icon-color"
+                aria-hidden="true"></i></button>
+        <div id="all-store-popup">
+            <div class="btn-group" data-toggle="buttons">
+                <label class=" btn-primary active">
+                    <input type="checkbox" name="" id="store-checkbox" checked autocomplete="off">
+                    <span class="store-name">All Stores</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                    <span class="store-name">MUFATECH</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                    <span class="store-name">ENTERPRISES</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <!--the employee button that pops up the employees available and filters the sales per employee-->
+    <div id="all-employee-container">
+        <button type="button" name="" id="filter-by-employee" onclick="openEmployeePopup()"> All Employees <i
+                class="fa fa-caret-down icon-color" aria-hidden="true"></i></button>
+        <div id="all-employee-popup">
+            <div class="btn-group" data-toggle="buttons">
+                <label class=" btn-primary active">
+                    <input type="checkbox" name="" id="employee-checkbox" checked autocomplete="off">
+                    <span class="all-employees">All Employees</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="employee-checkbox" autocomplete="off">
+                    <span class="employee-name">Owner</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="employee-checkbox" autocomplete="off">
+                    <span class="employee-name">GERMANY</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <input type="datetime-local" id="shift-date">
+    <div class="sales-card">
+        <div type="" id="gross-sales-id">
+            <label for="gross-sales" id="gross-sales-label">All Receipts</label>
+            <span class="gross-sales-amount amount">50</span>
+            <div class="comparison-container">
+                <span class="comparison-figure"><i class="fas fa-receipt    "></i></span>
+            </div>
+        </div>
+        <div type="" id="netsales-id">
+            <label for="netsales" id="netsales-label">Sales</label>
+            <span class="net-sales-amount amount">45</span>
+            <div class="comparison-container">
+                <span class="comparison-figure-net"><i class="fas fa-receipt    "></i></span>
+            </div>
+        </div>
+
+        <div type="" id="gross-profit-id">
+            <label for="gross-profit" id="gross-profit-label"> Refunds </label>
+            <span class="net-sales-amount amount">5</span>
+            <div class="comparison-container">
+                <span class="comparison-percentage-net"><i class="fas fa-receipt    "></i></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="receipts-table-card">
+        <!--the card showing the table containing all the gross receipts fof each day from the start of the month-->
+        <button type="button" class="export-receipts-btn">EXPORT</button>
+        <i class="fa fa-columns receipts-columns" aria-hidden="true"></i>
+        <div id="container">
+            <table class="receipts-list-table" cellspacing="0">
+                <thead class="receipts-list-headings">
+                    <tr class="receipts-list-row">
+                        <th><span class="">Receipt No</span></th>
+                        <th><span class="">Date </span></th>
+                        <th><span class="">Store</span></th>
+                        <th><span class="">Employee</span></th>
+                        <th><span class=""> Customer</span></th>
+                        <th><span class=""> Type </span></th>
+                        <th><span class=""> Total</span></th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <tr id="table-row">
+                        <td><span class=""></span></td>
+                        <td><span class=""> </span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="js/receipts.js"></script>

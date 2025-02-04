@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title> Settings</title>
+    <link rel="icon" type="image/x-icon" href="/images/newslylogo.jpg">
+    <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/payment-types.css">
+    <link rel="stylesheet" href="css/accountingPeriod.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/notification.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <div class="menu-icon iconbtn">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <span id="toolbar-text"> Settings</span>
+    </div>
+
+    <!--The MENU ITEMS-->
+    <div class="icon-nav close">
+        <script src="js/common-iconsFE.js"></script>
+    </div>
+
+    <!--The page Content-->
+    <div class="general-settings-card">
+        <label for="features" class="general-settings-label">GENERAL SETTINGS</label>
+
+        <div class="form-container">
+            <div id="">
+                <div id="select-chart-period">
+                    <button type="button" class="payment-type-btn bttn active">Payment Types</button>
+                    <button type="button" class="accountingPeriod-btn bttn">Accounting Period</button>
+                    <!-- <a href="licensingsubscription"> <button type="button" class="bills-subscritions-btn btn">Billing -->
+                    <!-- and Subscriptions</button></a>
+                    <a href="createstores"> <button type="button" class="create-stores-btn btn">Stores</button>
+                        <a href="posdevices"> <button type="button" class="pos-btn btn">POS Devices</button></a>
+                        <a href="createreceipt"><button type="button" class="edit-recepts-btn btn">Receipt</button></a>
+                        <a href="creatediscount"><button type="button" class="discounts-btn btn">Create
+                                Discount</button></a>
+                        <a href="createcategory"> <button type="button" class="categories-btn btn">Create
+                                Category</button></a>
+                        <a href="#"> <button type="button" class="loyalty-btn btn">Loyalty</button></a>
+                        <a href="#"> <button type="button" class="taxes-btn btn">Taxes</button></a> -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="features-card">
+        <!-- <div class="features"> -->
+        <div class="payment-type-container">
+            <div id="alert-box"></div>
+            <div class="title" style="text-align: center; font-weight: bold;padding: 22px; ">
+                Payment Types
+            </div>
+            <div class="payment-type">
+                <button name="add-payment-type" type="button" class="add-payment-type-btn" id="addPayment">+ </button>
+                <div class="" id="payment-details-Form">
+                    <form class="form-container" method="post" action="/paymenttypes">
+                        <label class="myPaymentId" for="dep" hidden>Id</label>
+                        <button type="submit" class="btn-save">SAVE</button>
+                        <button type="button" class="btn-cancel" onclick="closeForm()"> CANCEL</button>
+                        <!-- <button type="button" name="" id="selectPay1" onclick="openPaymentType()">
+                                Select Payment Type
+                                <i class="fa fa-caret-down icon-color " aria-hidden="true"></i>
+                            </button> -->
+                            <div class="dropdown" id="currDrop" style="margin-top: 12px;margin-left: 17px;">
+                                <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false" style="background-color: transparent;">
+                                    <span class="selectPay1" style="color: gray;">Select Payment Type</span>
+                                </a>
+                                <ul class="dropdown-menu myCurrencydrop">
+                                    <li><a class="dropdown-item btn" id="cash-option" href="#">Cash </a></li>
+                                    <li><a class="dropdown-item btn" id="card-option" href="#">Card </a></li>
+                                    <li><a class="dropdown-item btn" id="mobile-option" href="#">Mobile </a></li>
+                                    <li><a class="dropdown-item btn" id="other-option" href="#">Other</a></li>
+                                </ul>
+                            </div>
+                        <input type="text" id="paymentnameid" placeholder="Name">
+                        <input type="number" name="amount" pattern="[0-9]+([.][0-9]+)?" step="any" id="rateid"
+                            required="true" placeholder="Rate">
+                    </form>
+                </div>
+                <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            </div>
+            <div class="currencyContainer">
+                <table class="currency-list" cellspacing="0">
+                    <thead class="currency-list-headings">
+                        <tr class="table-row" id="currency-row">
+                            <td><input type="checkbox" class="form-check-input" name="" id="myCheck"
+                                    value="checkedValue">
+                            </td>
+                            <td><span class="base-currency-cell" id="base-currency">Base Currency</span></td>
+                            <td><span class="currencyType" id="currencyType"></span>Currency Type</td>
+                            <td><span class="currency-cell" id="currency-name">Currency Name</span></td>
+                            <td><span class="rate" id="rate"></span>Rate</td>
+
+                        </tr>
+                    </thead>
+                    <tbody class="table-body-create-discount">
+                    </tbody>
+                </table>
+            </div>
+            <div id="notificationBlock"></div>
+            <div id="delete-modal" class="modal" style="margin-bottom:-27px ;">
+                <div class="modal-content">
+                    <button id="confirm-delete-btn" class="confirm_delete"><i class="fa fa-trash"
+                            aria-hidden="true"></i></button>
+                </div>
+            </div>
+          
+        </div>
+        <div class="accSettingContainer" style="display: none;">
+            <div class="periodText">Set Accounting Period</div>
+            <span class="hiddenId" hidden></span>
+
+            <form id="accountingPeriodForm">
+                <!-- store the document id in a hidden span
+                  -->
+                <div class="form-group startDate" style="display: inline-block;">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" class="startDate" id="startDate" name="startDate" required>
+                </div>
+                <div class="form-group" style="display: inline-block;">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" class="endDate" id="endDate" name="endDate" disabled>
+                </div>
+                <button class="setAccountingPeriodBtn" type="submit">Save</button>
+            </form>
+        </div>
+
+    </div>
+    <!-- <div id="notificationBlock"></div> -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/accountingPeriodFE.js"></script>
+    <script src="js/paymenttypesFE.js"></script>
+    <script src="js/settingsFE.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Categories</title>
+    <link rel="stylesheet" href="css/categories.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/notification.css">
+    <link rel="icon" type="image/x-icon" href="/images/newslylogo.jpg">
+    <link href="css/all.min.css" rel="stylesheet">
+    <link href="css/fontawesome.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <style>
+        .dropdown-toggle {
+            color: white;
+        }
+
+        .dropdown-toggle:hover {
+            color: white;
+        }
+    </style>
+     <!-- PAGE LOADER -->
+     <div class="loader-container">
+        <div class="loader"></div>
+        <p class="loader-text">Loading...</p>
+    </div>
+    <div class="myloader" style="display: none;"></div>
+    <div id="tool-bar" class="toolbar" style="display: none;">
+        <div class="menu-icon iconbtn">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <span id="toolbar-text">Categories </span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav close" style="display: none;">
+        <script src="js/common-iconsFE.js"></script>
+    </div>
+    <div class="BigContainerCat" style="display: none; ">
+        <!-- <div class="container"> -->
+            <button class="addCategory">Add +</button>
+            <!-- <div class="row" style="margin-bottom: 60px;"> -->
+                <div class="containerWrapper">
+                    <form action="/categories" method="post" id="myForm">
+                        <span class="closeForm">&times;</span>
+                        <div class="categoryName">
+                            <label for="">Category Name:</label>
+                            <input type="text" name="" id="categoryNameId" maxlength="25">
+                        </div>
+                        <span hidden class="myCategoryId"></span>
+                        <div class="categoryLimit">
+                            <label for="">Category Limit for the <span class="categoryLimitSpan"></span>
+                                Range:</label>
+                            <input type="number" name="" id="categoryLimitId">
+                        </div>
+                        <div class="dropdown limitOption">
+                            <button class="btn dropdown-toggle " type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false" style="outline: none;border: none;background-color: transparent;">
+                                <span class="limitRnge" style="color: black;margin-left: -12px;">Limit Range:</span>
+                                <span class="limitOptionSpan" style="color: black;"></span>
+                            </button>
+                            <ul class="dropdown-menu optionModal">
+                                <li class="myButtons"><a class="dropdown-item btns" id="paginationId0"
+                                        href="#">Daily</a></li>
+                                <li class="myButtons"><a class="dropdown-item btns" id="paginationId1"
+                                        href="#">Weekly</a></li>
+                                <li class="myButtons"><a class="dropdown-item btns" id="paginationId2"
+                                        href="#">Monthly</a></li>
+                                <li class="myButtons"><a class="dropdown-item btns" id="paginationId2"
+                                        href="#">Yearly</a></li>
+                            </ul>
+                            <!-- DISPLAY MODAL WITH LIMIT OPTIONS -->
+                        </div>
+
+                        <div class="categoryName">
+                            <!-- <label for="">DR/CR Balance:</label> -->
+                            <!-- <br> -->
+                            <span class="spanDebitTitle">PayOut</span>
+                            <span class="radioBtn"><input type="radio" name="" value="PayOut" id="debit"></span>
+                            <span class="spanCreditTitle">PayIn</span>
+                            <span class="radioBtn"><input type="radio" name="" value="PayIn" id="credit"></span>
+                        </div>
+                        <!-- Button to trigger modal -->
+                        <!-- Trigger/Open The Modal -->
+                        <button class="btn" id="myBtn">Assign Categories</button>
+                        <!-- <button class="assignCategory" type="submit">Assign Category</button> -->
+                        <button class=" btn submitCategory" type="submit">Add Category</button>
+                        <div class="deleteModal" style="margin-top:-42px ; float: right;">
+                            <div class="modall-content">
+                                <!-- <button id="confirm-delete-btn" class="confirm_delete"> <img src="images/payIndelete.png"
+                                            class="deletePng" srcset=""></button> -->
+                                <button id="confirm-delete-btn" class="confirm_delete"><i
+                                        class="fas fa-trash-can deletePng"></i></button>
+
+                            </div>
+                        </div>
+                    </form>
+                    <!-- The Modal -->
+                    <div id="myModal" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="closeContent">&times;</span>
+                            <div class="catName"
+                                style="text-align: justify; font-weight: 500;margin-left: 23px;white-space: nowrap;margin-bottom: -15px;">
+                            </div>
+                            <div class="categoryAmount" style="margin-bottom: -46px;margin-left: 23px;text-align: justify;">
+                                <span class="isoCode"></span>
+                                <span class="catAmount"></span>
+                        </div>
+                            <div><button class="btn" id="save">Save</button></div>
+                            <!-- create table -->
+                            <div class="container" style="max-height: 368px;overflow: auto;">
+                                <table id="categoryTable">
+                                    <thead class="thead">
+                                        <th hidden></th>
+                                        <th></th>
+                                        <th style="text-align: justify !important;">Transactions</th>
+                                        <th style="text-align: justify !important;">Amount</th>
+                                    </thead>
+                                    <tr class="categoryRows"></tr>
+                                </table>
+                            </div>
+                            <div class="footer" style="display: none;">
+                                <div class="pagination">
+                                    <span id="previous" style="font-size: 25px; margin-right: 15px;">&laquo;</span>
+                                    <div id="pagination"></div>
+                                    <p class="statusText" style="color: black; margin-top: 14px;"> <span
+                                            class="spanText"></span> of
+                                        <span class="spanText1"></span> |
+                                    <div class="dropdown" style="margin-top: 8px;">
+                                        <button class="btn dropdown-toggle paginationBtn" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false"
+                                            style="outline: none;border: none;background-color: transparent;">
+                                            <span class="statusSpan" style="width: 20px;color: black;">Rows Per
+                                                Page</span>
+                                            <span class="rowsPerPage" style="color: black;"></span>
+                                        </button>
+                                        <!-- <div class="paginationContainer" style="margin-top:-6%;"> -->
+                                        <ul class="dropdown-menu">
+                                            <li class="paginationList"><a class="dropdown-item paginationItems"
+                                                    id="paginationId0" href="#">5</a></li>
+                                            <li class="paginationList"><a class="dropdown-item paginationItems"
+                                                    id="paginationId1" href="#">10</a></li>
+                                            <li class="paginationList"><a class="dropdown-item paginationItems"
+                                                    id="paginationId2" href="#">50</a></li>
+                                        </ul>
+                                    </div>
+                                    </p>
+                                    <span id="next" style="font-size: 25px;margin-left: -25px;">&raquo;</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="mainContainer">
+                    <div class="tableContainer">
+                        <table id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th hidden></th>
+                                    <th><input type="checkbox" name="" id="myCheck" value="checkedValue">
+                                    </th>
+                                    <th>
+                                        <div class="dropdown">
+                                            <a class="btn dropdown-toggle typeBtn" href="#" role="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false"
+                                                style="background-color: transparent;" style=" margin-bottom: -22px;">
+                                                <span class="typeText" style="color: white;font-weight: bold;">Category
+                                                    Name</span>
+                                            </a>
+                                            <ul class="dropdown-menu typeDropdwnMenu">
+                                                <li class="typeOptions"><a class="dropdown-item" id="typeOptionID0"
+                                                        href="#">All Types</a></li>
+                                                <li class="typeOptions"><a class="dropdown-item" id="typeOptionID1"
+                                                        href="#">PayIn</a></li>
+                                                <li class="typeOptions"><a class="dropdown-item" id="typeOptionID2"
+                                                        href="#">PayOut</a></li>
+                                            </ul>
+                                        </div>
+                                        <span class="typeSpan" style="font-size: 10px;"></span>
+                                    </th>
+                                    <th>Category Limit</th>
+                                    <th><a href="/payIn" style="color: white; font-weight: bold;">PayIn</a>/ <a
+                                            href="/payOut" style="color: white;font-weight: bold;">PayOut</a> </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div id="delete-modall" style="float: inline-end;">
+                        <div class="modall-content">
+                            <button id="confirm-delete-btn2" class="confirm_delete"> <i
+                                    class="fas fa-trash-can deletePng"></i></button>
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+        <!-- </div> -->
+    </div>
+    <div id="theConfirmModal" class="modal" style="display: none; ">
+        <!-- Modal content -->
+        <div class="modal-content confirmModal " style="position: relative;top: 30%;z-index: 2;">
+            <span class="closeModal">&times;</span>
+            <p style="margin-top: 38px;">Do you want to discard the changes to <span class="selectedTransactions"></span> transaction(s) selected?</p>
+            <button class="btn" id="yesDiscard">Yes</button>
+            <button class="btn" id="noDiscard">No</button>
+           
+        </div>
+
+    </div>
+
+    <div class="deleteAcc" id="deleteRowsId">
+        <div class="deleteRowsContent">
+            <div>
+                <p class="deleteMsg"></p>
+            </div>
+            <button id="yesDelete">Yes</button>
+            <button id="noDelete">No</button>
+        </div>
+        <i class="fa fa-times" id="closeDelete2" aria-hidden="true"></i>
+
+    </div>
+
+    </div>
+    <div id="notificationBlock"></div>
+
+    <script type="module" src="js/categoriesFE.js"></script>
+    <script type="module" src="js/slim.min.js"></script>
+    <script src="js/intlTelInput.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

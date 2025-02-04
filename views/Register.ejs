@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/images/newslylogo.jpg">
+    <title>Register Account</title>
+    <link rel="stylesheet" href="css/register.css">
+    <link rel="stylesheet" href="css/notification.css" />
+    <link rel="stylesheet" href="css/image.css">
+    <link rel="stylesheet" href="css/all.min.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="imageContainer">
+            <img src="images/slylogo.png" alt="" srcset="" class="image">
+        </div>
+        <H4>Sign Up Your SlyRetail Account</H4>
+        <form action="/AdvancedCashManagement" id="regForm">
+            <div class="field emailFIeld">
+                <div class="form-control">
+                    <input class="emailInput" type="email" required>
+                    <label for="">Email</label>
+                </div>
+                <span class="error email-error">
+                    <i class="fa fa-exclamation-circle error-icon"></i>
+                    <p class="error-text">Please Enter A Valid Email With A <strong>gmail</strong> tag</p><br>
+
+                </span>
+            </div>
+
+            <div class="field passwordField">
+                <div class="form-control">
+                    <input type="password" required id="password">
+                    <label for="">Password</label>
+
+                    <i class="fa fa-eye-slash" aria-hidden="true" id="eyeSlash"
+                        style="position: absolute;top: 15px; left: 90%;cursor: pointer; color: #919191;"></i>
+
+                </div>
+                <span class="error password-error">
+                    <i class="fa fa-exclamation-circle error-icon"></i>
+                    <p class="error-text">Please Enter A Password of at least 8 Characters <br>
+                    </p>
+                </span>
+
+            </div>
+            <div class="field cPasswordField">
+                <div class="form-control">
+                    <input type="password" required id="cPassword">
+                    <label for=""> Password</label>
+
+                    <i class="fa fa-eye-slash" aria-hidden="true" id="eyeSlash"
+                        style="position: absolute;top: 15px; left: 90%;cursor: pointer; color: #919191;"></i>
+
+                </div>
+                <span class="error cPassword-error">
+                    <i class="fa fa-exclamation-circle error-icon"></i>
+                    <p class="error-text">Password do not match!!</p>
+                </span>
+
+            </div>
+
+            <input type="checkbox" name="" id="rememberMe">
+            <label for="">Remember Me</label>
+            <button class=" btn">SIGN UP</button>
+            <p><a href="/">Already Have An Account?</a></p>
+            <!-- <p><a href="#">New To Sly Retail?</a></p> -->
+            <!-- <i class="fa fa-eye" aria-hidden="true"></i> -->
+        </form>
+
+    </div>
+    <div id="notificationBlock"></div>
+    <div id="spinner"></div>
+
+</body>
+</html>
+<script src="js/register.js"></script>
+<script src="js/rememberMe.js"></script>

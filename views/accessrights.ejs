@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sly School TimeTable Scheduler">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="Sly Time Table Scheduler,School TimeTable, Sly Scheducate">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Access Rights</title>
+    <link rel="stylesheet" href="css/access-rights.css">
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text">Access Rights</span>
+    </div>
+
+    <!--The MENU ITEMS-->
+    <div class="icon-nav">
+        <script src="common-icons.js"></script>
+    </div>
+
+    <div class="card">
+        <button class="add-item" onclick="openForm()">+</button>
+        <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+
+        <div id="container">
+            <table class="access-rights-table" cellspacing="0">
+                <thead class="access-rights-headings">
+                    <tr class="access-rights-row">
+                        <th>
+                            <div class="form-check">
+                                <input type="checkbox" class="check" name="" id="myCheck" onclick="showDeleteAll()"
+                                    value="checkedValue">
+                            </div>
+                        </th>
+                        <th><span class="access-rights-head"> Role</span></th>
+                        <th><span class="access-rights-head"> Access </span></th>
+                        <th><span class="access-rights-head">Employees</span></th>
+                    </tr>
+                </thead>
+                <tbody class="table-body-create-discount">
+                    <tr class="table-row">
+                        <td><input type="checkbox" class="form-check-input" onclick="showDeleteStore()" name=""
+                                id="myCheck" value="checkedValue"></td>
+                        <td><i class="fa fa-users owner-icon" aria-hidden="true"></i><span class="date-cell">
+                                Owner</span></td>
+                        <td><span class="shift-no-cell">Back Office and POS </span></td>
+                        <td><span class="income-description-cell">1</span></td>
+
+                    </tr>
+                    <tr class="table-row">
+                        <td><input type="checkbox" class="form-check-input" onclick="showDeleteStore()" name=""
+                                id="myCheck" value="checkedValue"></td>
+                        <td><i class="fa fa-users admin-icon" aria-hidden="true"></i><span class="date-cell">
+                                Administrator</span></td>
+                        <td><span class="shift-no-cell">Back Office and POS </span></td>
+                        <td><span class="income-description-cell">0</span></td>
+
+                    </tr>
+                    <tr class="table-row">
+                        <td><input type="checkbox" class="form-check-input" onclick="showDeleteStore()" name=""
+                                id="myCheck" value="checkedValue"></td>
+                        <td><i class="fa fa-users manager-icon" aria-hidden="true"></i><span class="date-cell">
+                                Manager</span></td>
+                        <td><span class="shift-no-cell">Back Office and POS </span></td>
+                        <td><span class="income-description-cell">0</span></td>
+
+                    </tr>
+                    <tr class="table-row">
+                        <td><input type="checkbox" class="form-check-input" onclick="showDeleteStore()" name=""
+                                id="myCheck" value="checkedValue"></td>
+                        <td><i class="fa fa-users cashier-icon" aria-hidden="true"></i><span class="date-cell">
+                                Cashier</span></td>
+                        <td><span class="shift-no-cell">POS </span></td>
+                        <td><span class="income-description-cell">1</span></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="" id="add-role-Form">
+            <form action="#" class="form-container">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <i class="fa fa-tablet" aria-hidden="true"></i>
+                <i class="fa fa-signal" aria-hidden="true"></i>
+                <input type="text" id="name-id" placeholder="  Name">
+                <div class="pos">
+                    <label type="" class="create-role feature-label">POS</label>
+                    <p class="caption">Employees can log into the app using personal PIN code.</p>
+                    <div class=" create-role-toggle" onclick="animateToggleShift()" checked>
+                        <span class="switch"></span>
+                    </div>
+                </div>
+                <div class="back-office">
+                    <label type="" class="create-role-bo feature-label">Back Office</label>
+                    <p class="caption-bo">Employees can log into the app using personal email and <br> password</p>
+                    <div class=" create-role-bo-toggle" onclick="animateToggleBO()" checked>
+                        <span class="switch"></span>
+                    </div>
+                </div>
+                <!--the button  for saving or cancelling information of the teacher-->
+                <button type="submit" class="btn-save" onclick="closeForm()">SAVE</button>
+                <button type="button" class="btn-cancel" onclick="closeForm()">Cancel</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="js/access-rights.js"></script>

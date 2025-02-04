@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="SLY RETAIL POINT OF SALE">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="SLY RETAIL POS, BACK OFFICE">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Sales By Item</title>
+    <link rel="stylesheet" href="css/sale-by-item.css">
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text"> Sales By Item </span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav">
+        <script src="js/common-icons.js"></script>
+    </div>
+
+    <!--The page Content-->
+    <!--all day popup that is opened by clicking the all day button-->
+    <div id="all-day-container">
+        <button type="button" name="" id="filter-by-time" onclick="openAllDayPopup()">All Day <i
+                class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+        <div id="all-day-popup">
+            <button type="button" class="all-day-btn btn">All Day</button>
+            <button type="button" class="custom-time-btn btn">CUSTOM</button>
+        </div>
+    </div>
+    <!--all store popup that is opened by clicking the all day button-->
+    <div id="all-store-container">
+        <button type="button" name="" id="filter-by-store" onclick="openStorePopup()"><i class="fa fa-hotel icon-color"
+                aria-hidden="true"></i> All Stores <i class="fa fa-caret-down icon-color"
+                aria-hidden="true"></i></button>
+        <div id="all-store-popup">
+            <div class="btn-group" data-toggle="buttons">
+                <label class=" btn-primary active">
+                    <input type="checkbox" name="" id="store-checkbox" checked autocomplete="off">
+                    <span class="store-name">All Stores</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                    <span class="store-name">MUFATECH</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                    <span class="store-name">ENTERPRISES</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <!--the employee button that pops up the employees available and filters the sales per employee-->
+    <div id="all-employee-container">
+        <button type="button" name="" id="filter-by-employee" onclick="openEmployeePopup()"> All Employees <i
+                class="fa fa-caret-down icon-color" aria-hidden="true"></i></button>
+        <div id="all-employee-popup">
+            <div class="btn-group" data-toggle="buttons">
+                <label class=" btn-primary active">
+                    <input type="checkbox" name="" id="employee-checkbox" checked autocomplete="off">
+                    <span class="all-employees">All Employees</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="employee-checkbox" autocomplete="off">
+                    <span class="employee-name">Owner</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="employee-checkbox" autocomplete="off">
+                    <span class="employee-name">GERMANY</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <input type="datetime-local" id="shift-date">
+    <div class="graph-card">
+        <!--the card showing the graphical representation of gross sales comparing with previous dates-->
+        <div class="top-selling-items">
+            <h3 class="top-selling-title">Top 5 Items</h3>
+            <h3 class="net-sales-title">Net Sales</h3>
+            <hr class="vertical-line">
+            <ul class="top-5-items-list">
+                <li class="item">
+                    <canvas class="color-canva1"></canvas>
+                    <span class="item-name">SUGAR</span>
+                    <span class="net-sale">ZWL$1,000.00</span>
+                </li>
+                <li class="item">
+                    <canvas class="color-canva2"></canvas>
+                    <span class="item-name">BREAD</span>
+                    <span class="net-sale">ZWL$900.00</span>
+                </li>
+                <li class="item">
+                    <canvas class="color-canva3"></canvas>
+                    <span class="item-name">ITEL A58</span>
+                    <span class="net-sale">ZWL$850.00</span>
+                </li>
+                <li class="item">
+                    <canvas class="color-canva4"></canvas>
+                    <span class="item-name">SAMSUNG A03</span>
+                    <span class="net-sale">ZWL$700.00</span>
+                </li>
+                <li class="item">
+                    <canvas class="color-canva5"></canvas>
+                    <span class="item-name">3 PIECE SUIT</span>
+                    <span class="net-sale">ZWL$50.00</span>
+                </li>
+            </ul>
+        </div>
+        <canvas id="myChart" style="width:100%;max-width:50rem; height:370px"></canvas>
+        <div id="filter-by-graph-container">
+            <button type="button" name="" id="filter-by-chart" onclick="selectChart()">Area <i
+                    class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+            <div id="select-chart-type">
+                <button type="button" class="area-btn btn">Area</button>
+                <button type="button" class="bars-btn btn">Bars</button>
+            </div>
+        </div>
+        <div id="filter-by-graph-container">
+            <button type="button" name="" id="filter-by-period" onclick="selectPeriod()">Hours <i
+                    class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+            <div id="select-chart-period">
+                <button type="button" class="hours-btn btn">Hours</button>
+                <button type="button" class="days-btn btn">Days</button>
+                <button type="button" class="weeks-btn btn">Weeks</button>
+                <button type="button" class="months-btn btn">Months</button>
+                <button type="button" class="quaters-btn btn">Quaters</button>
+                <button type="button" class="years-btn btn">Years</button>
+            </div>
+        </div>
+    </div>
+    <div class="sales-by-item-table-card">
+        <!--the card showing the table containing all the gross sales fof each day from the start of the month-->
+        <button type="button" class="export-sales-by-item-btn">EXPORT</button>
+        <i class="fa fa-columns sales-by-item-columns" aria-hidden="true"></i>
+        <div id="container">
+            <table class="sales-by-item-list-table" cellspacing="0">
+                <thead class="sales-by-item-list-headings">
+                    <tr class="sales-by-item-list-row">
+                        <th><span class="sales-by-item-list-head">Item</span></th>
+                        <th><span class="sales-by-item-list-head">Category</span></th>
+                        <th><span class="sales-by-item-list-head">Items Sold</span></th>
+                        <th><span class="sales-by-item-list-head">Net Sales</span></th>
+                        <th><span class="sales-by-item-list-head">Cost Of Goods</span></th>
+                        <th><span class="sales-by-item-list-head">Gross Profit</span></th>
+
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <tr id="table-row">
+                        <td><span class=""></span></td>
+                        <td><span class=""> </span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="js/salesbyitem.js"></script>

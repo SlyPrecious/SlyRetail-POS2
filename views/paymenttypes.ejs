@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sly School TimeTable Scheduler">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="Sly Time Table Scheduler,School TimeTable, Sly Scheducate">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Payment Types</title>
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link rel="stylesheet" href="css/payment-types.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/notification.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text">Payment Types</span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav">
+        <script src="js/common-icons.js"></script>
+    </div>
+
+    <!--The page Content-->
+
+    <div class="payment-type-container">
+        <div id="alert-box"></div>
+        <div class="payment-type">
+            <button name="add-payment-type" type="button" class="add-payment-type-btn" id="addPayment">+ New
+                currency</button>
+
+            <div class="" id="payment-details-Form">
+                <form class="form-container" method="post" action="/paymenttypes">
+                    <label class="myPaymentId" for="dep" hidden>Id</label>
+                    <button type="submit" class="btn-save">SAVE</button>
+                    <button type="button" class="btn-cancel" onclick="closeForm()"> CANCEL</button>
+                    <div class="dropdown" id="currDrop" style="margin-top: 12px;margin-left: 17px;">
+                        <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false" style="background-color: transparent;">
+                            <span class="selectPay1" style="color: gray;">Select Payment Type</span>
+                        </a>
+                        <ul class="dropdown-menu myCurrencydrop">
+                            <li><a class="dropdown-item btn" id="cash-option" href="#">Cash </a></li>
+                            <li><a class="dropdown-item btn" id="card-option" href="#">Card </a></li>
+                            <li><a class="dropdown-item btn" id="mobile-option" href="#">Mobile </a></li>
+                            <li><a class="dropdown-item btn" id="other-option" href="#">Other</a></li>
+                        </ul>
+                    </div>
+            </div>
+            <input type="text" id="paymentnameid" placeholder="Name">
+            <input type="number" name="amount" pattern="[0-9]+([.][0-9]+)?" step="any" id="rateid" required="true"
+                placeholder="Rate">
+            </form>
+        </div>
+        <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+
+        <!-- <label class="filter-by-store-label">Store</label>
+            <div id="">
+                <button type="button" name="" id="filter-by-store" onclick="selectStore()">All Stores <i
+                        class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+                <div id="select-store"> 
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class=" btn-primary active">
+                            <input type="checkbox" name="" id="store-checkbox" checked autocomplete="off">
+                            <span class="store-name">All Stores</span>
+                        </label>
+                        <label class=" btn-primary">
+                            <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                            <span class="store-name">MUFATECH</span>
+                        </label>
+                        <label class=" btn-primary">
+                            <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                            <span class="store-name">ENTERPRISES</span>
+                        </label>
+                    </div>
+                </div> -->
+    </div>
+
+
+    <div class="container">
+        <table class="currency-list" cellspacing="0">
+            <thead class="currency-list-headings">
+                <tr class="table-row" id="currency-row">
+                    <th><input type="checkbox" class="form-check-input" name="" id="myCheck" value="checkedValue">
+                    </th>
+                    <th><span class="base-currency-cell" id="base-currency">Base Currency</span></th>
+                    <th><span class="currencyType" id="currencyType"></span>Currency Type</th>
+                    <th><span class="currency-cell" id="currency-name">Currency Name</span></th>
+                    <th><span class="rate" id="rate"></span>Rate</th>
+
+                </tr>
+            </thead>
+            <tbody class="table-body-create-discount">
+                <% currencies.forEach((option,index)=> { %>
+                    <tr class="paymentTypesTable">
+                        <td hidden class="paymentId " id="paymentId<%= index %>">
+                            <%= option._id %>
+                        </td>
+
+                        <td><input type="checkbox" value="checkedValue" class="form-check-input"></td>
+                        <td><label class="switchh small">
+                                <input type="checkbox" class="base-currency" id="toggle-switch<%=index %>"
+                                    <%=option.BASE_CURRENCY==='Y' ? 'checked' : '' %>>
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td class="currencies">
+                            <div class="TableDropdown" id="currency_Name">
+                                <span class="paymentDropdown" id="myPayments<%=index %>">
+                                    <%= option.paymentType %>
+                                </span>
+                                <div class="caret"></div>
+                                <ul id="CurrDrpdwnid<%= index %>" class="CurrencyDropdown-content">
+                                    <li class="CurrencyTypeClass">
+                                        Cash
+                                    </li>
+                                    <li class="CurrencyTypeClass">
+                                        Card
+                                    </li>
+                                    <li class="CurrencyTypeClass">
+                                        Mobile
+                                    </li>
+                                    <li class="CurrencyTypeClass">
+                                        Other
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="currency" id="theCurrencies<%= index %>">
+                            <%= option.Currency_Name %>
+                        </td>
+                        <td id="rateDataId<%= index %>" class="rate-id">
+                            <div class="currDropdown">
+                                <span class=" currDropdown-btn" id="rate<%= index %>">
+                                    <%= option.RATE %>
+                                </span>
+                                <div id="editRate<%= index %>" class="editRateClass">
+                                    <form id="editRateFormId<%= index %>" class="editRateForm">
+                                        <table class="editTable">
+                                            <tbody style="height: 1px;">
+                                                <tr>
+                                                    <td>
+                                                        <span id="rateCancel<%= index %>" class="cancel">&#10005;</span>
+                                                        <!-- cancel -->
+                                                    </td>
+                                                    <td>
+                                                        <span id="rateTick<%= index %>" class="tick">&#10003;</span>
+                                                        <!-- tick -->
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="rateAmount"
+                                                            id="rateAmount<%= index %>" pattern="[0-9]+([.][0-9]+)?"
+                                                            step="any">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <div id="notificationBlock"></div>
+    <div id="delete-modal" class="modal" style="margin-bottom:-27px ;">
+        <div class="modal-content">
+            <button id="confirm-delete-btn" class="confirm_delete"><i class="fa fa-trash"
+                    aria-hidden="true"></i></button>
+        </div>
+    </div>
+    </div>
+    </div>
+    <script src="js/paymenttypes.js"></script>
+</body>
+
+</html>

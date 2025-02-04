@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="icon" type="image/x-icon" href="/images/newslylogo.jpg">
+    <link rel="stylesheet" href="css/notification.css" />
+    <link rel="stylesheet" href="css/loginpage.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/image.css">
+    <link rel="stylesheet" href="css/all.min.css">
+</head>
+
+<body onload="myFunction()">
+  <!-- PAGE LOADER -->
+  <div class="loader-container">
+    <div class="loader"></div>
+    <p class="loader-text">Loading...</p>
+</div>
+    <div class="myloader"></div>
+    <div class="container" align="center" style="display:none;">
+        <div class="imageContainer">
+            <img src="images/newslylogo.jpg" alt="" srcset="" class="image">
+        </div>
+        <H4 align="center" id="heading">Sign In To Your SlyRetail Account</H4>
+        <div class="hr-container">
+            <hr>
+            <span>or</span>
+            <hr>
+        </div>
+        <div class="loyverse">
+            <img src="images/loyverse25.png" class="loyverseimg">
+            <Span class="loyversespan">Sign in with Loyverse</Span>
+        </div>
+        <form id="loginForm">
+            <form action="/" id="loginForm">
+                <div class="field emailFIeld">
+                    <div class="form-control">
+                        <input class="emailInput" type="email" id="emailID" required>
+                        <label for="emailInput">Email</label>
+                    </div>
+                    <span class="error email-error">
+                        <i class="fa fa-exclamation-circle error-icon"></i>
+                        <p class="error-text">Please Enter A Valid Email With A <strong>gmail</strong> tag</p><br>
+                    </span>
+                </div>
+                <div class="field passwordField">
+                    <div class="form-control">
+                        <input class="passInput" type="password" required id="password">
+                        <label for="">Password</label>
+                        <i class="fa fa-eye-slash" aria-hidden="true" id="eyeSlash"
+                            style="position: absolute;top: 15px; left: 90%;cursor: pointer; color: #919191;"></i>
+                    </div>
+                    <span class="error password-error">
+                        <i class="fa fa-exclamation-circle error-icon"></i>
+                        <p class="error-text">Please Enter A Password of at least 8 Characters</p>
+                    </span>
+                </div>
+                <div class="field passwordField1 hidden" id="confirm">
+                    <div class="form-control">
+                        <input class="passInput1" type="password" required id="password1">
+                        <label for="">Confirm Password</label>
+                        <i class="fa fa-eye-slash" aria-hidden="true" id="confirmPassword"
+                            style="position: absolute;top: 15px; left: 90%;cursor: pointer; color: #919191;"></i>
+                    </div>
+                    <span class="error password-error">
+                        <i class="fa fa-exclamation-circle error-icon"></i>
+                        <p class="error-text">Please Enter A Password of at least 8 Characters</p>
+                    </span>
+                </div>
+                <div class="wrapper">
+                    <div class="signIn">
+                        <input type="checkbox" name="" id="rememberMe">
+                        <label class="remember" for="">Remember Me</label>
+                        <button class=" btn">Sign In</button>
+                    </div>
+                    <div class="options">
+                        <p align="left" class="forgot"><a href="#">Forgot Password?</a>
+                        <p align="left" class="newto" id="newuser"><a href="#">New To SlyRetail?</a>
+                        <p align="left" class="member hidden" id="user"><a href="#">Already have an account</a></p>
+                    </div>
+                </div>
+            </form>
+    </div>
+
+    <div id="notificationBlock"></div>
+    <div id="spinner"></div>
+
+</body>
+
+
+</html>
+<script src="js/loginpageFE.js"></script>
+<script src="js/rememberMe.js"></script>
+<script>
+    var myVar;
+
+    function myFunction() {
+        myVar = setTimeout(showPage, 2000);
+    }
+
+    function showPage() {
+        document.querySelector(".container").style.display = "block";
+        document.querySelector(".loader-container").style.display = "none";
+    }
+</script>

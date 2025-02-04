@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sly School TimeTable Scheduler">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="Sly Time Table Scheduler,School TimeTable, Sly Scheducate">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Create Stores</title>
+    <link rel="stylesheet" href="css/create-stores.css">
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text">Create Stores</span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav">
+        <script src="js/common-icons.js"></script>
+    </div>
+
+    <!--The page Content-->
+    <div class="payment-type-container">
+        <div class="payment-type">
+            <button name="add-payment-type" type="button" class="add-payment-type-btn" onclick="openForm()">+</button>
+            <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <div id="container">
+                <table class="store-list-table" cellspacing="0">
+                    <thead class="store-list-headings">
+                        <tr class="store-list-row">
+                            <th>
+                                <div class="form-check">
+                                    <input type="checkbox" class="check" name="" id="myCheck" onclick="showDeleteAll()"
+                                        value="checkedValue">
+                                </div>
+                            </th>
+                            <th><span class="store-list-head"> Store Name</span></th>
+                            <th><span class="store-list-head"> Address </span></th>
+                            <th><span class="store-list-head">Phone Number</span></th>
+                            <th><span class="store-list-head">Number Of POS </span></th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="table-body-create-discount">
+                        <tr class="table-row">
+                            <td><input type="checkbox" class="form-check-input" onclick="showDeleteStore()" name=""
+                                    id="myCheck" value="checkedValue"></td>
+                            <td><span class="date-cell">MUFATECH</span></td>
+                            <td><span class="shift-no-cell">2 dawlish, paddonhurst </span></td>
+                            <td><span class="income-description-cell">0773577552</span></td>
+                            <td><span class=""> 1</span></td>
+                        </tr>
+                        <tr class="table-row">
+                            <td><input type="checkbox" class="form-check-input" onclick="showDeleteStore()" name=""
+                                    id="myCheck" value="checkedValue"></td>
+                            <td><span class="">MUFATECH</span></td>
+                            <td><span class="">2 dawlish, paddonhurst </span></td>
+                            <td><span class="">0773577552</span></td>
+                            <td><span class=""> 1</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="" id="add-store-Form">
+                <form action="#" class="form-container">
+                    <!--the button  for saving or cancelling information of the teacher-->
+                    <button type="submit" class="btn-save" onclick="closeForm()">SAVE</button>
+                    <button type="button" class="btn-cancel" onclick="closeForm()">Cancel</button>
+                    <i class="fa fa-store" aria-hidden="true"></i>
+
+                    <label for="dep" class="store-name-label "> Store Name</label>
+                    <input type="text" id="name-id" placeholder="  Name">
+
+                    <label for="dep" class="address-label "> Store address</label>
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <input type="text" id="address-id" placeholder="Address">
+
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    <input type="number" id="phone-number-id" placeholder="Phone Number">
+
+                    <i class="fa fa-file" aria-hidden="true"></i>
+                    <input type="text" id="description-id" placeholder="Description">
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
+<script src="js/create-stores.js"></script>

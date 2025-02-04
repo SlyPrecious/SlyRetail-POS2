@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="SLY RETAIL POINT OF SALE">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="SLY RETAIL POS, BACK OFFICE">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Sales By Payment Type</title>
+    <link rel="stylesheet" href="css/sales-by-payment-type.css">
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text"> Sales By Payment Type </span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav">
+        <script src="js/common-icons.js"></script>
+    </div>
+
+    <!--The page Content-->
+    <!--all day popup that is opened by clicking the all day button-->
+    <div id="all-day-container">
+        <button type="button" name="" id="filter-by-time" onclick="openAllDayPopup()">All Day <i
+                class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+        <div id="all-day-popup">
+            <button type="button" class="all-day-btn btn">All Day</button>
+            <button type="button" class="custom-time-btn btn">CUSTOM</button>
+        </div>
+    </div>
+    <!--all store popup that is opened by clicking the all day button-->
+    <div id="all-store-container">
+        <button type="button" name="" id="filter-by-store" onclick="openStorePopup()"><i class="fa fa-hotel icon-color"
+                aria-hidden="true"></i> All Stores <i class="fa fa-caret-down icon-color"
+                aria-hidden="true"></i></button>
+        <div id="all-store-popup">
+            <div class="btn-group" data-toggle="buttons">
+                <label class=" btn-primary active">
+                    <input type="checkbox" name="" id="store-checkbox" checked autocomplete="off">
+                    <span class="store-name">All Stores</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                    <span class="store-name">MUFATECH</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                    <span class="store-name">ENTERPRISES</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <!--the employee button that pops up the employees available and filters the sales per employee-->
+    <div id="all-employee-container">
+        <button type="button" name="" id="filter-by-employee" onclick="openEmployeePopup()"> All Employees <i
+                class="fa fa-caret-down icon-color" aria-hidden="true"></i></button>
+        <div id="all-employee-popup">
+            <div class="btn-group" data-toggle="buttons">
+                <label class=" btn-primary active">
+                    <input type="checkbox" name="" id="employee-checkbox" checked autocomplete="off">
+                    <span class="all-employees">All Employees</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="employee-checkbox" autocomplete="off">
+                    <span class="employee-name">Owner</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="employee-checkbox" autocomplete="off">
+                    <span class="employee-name">GERMANY</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <input type="datetime-local" id="shift-date">
+    <div class="sales-by-payment-type-table-card">
+        <!--the card showing the table containing all the gross sales fof each day from the start of the month-->
+        <button type="button" class="export-sales-by-payment-type-btn">EXPORT</button>
+        <i class="fa fa-columns sales-by-payment-type-columns" aria-hidden="true"></i>
+        <div id="container">
+            <table class="sales-by-payment-list-table" cellspacing="0">
+                <thead class="sales-by-payment-list-headings">
+                    <tr class="sales-by-payment-list-row">
+                        <th><span class="sales-by-payment-list-head">Payment Type</span></th>
+                        <th><span class="sales-by-payment-list-head">Payment Transactions </span></th>
+                        <th><span class="sales-by-payment-list-head">Payment Amount </span></th>
+                        <th><span class="sales-by-payment-list-head">Refund Transactions </span></th>
+                        <th><span class="sales-by-payment-list-head"> Refund Amount </span></th>
+                        <th><span class="sales-by-payment-list-head">Net Amount </span></th>
+
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <tr id="table-row">
+                        <td><span class=""></span></td>
+                        <td><span class=""> </span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="js/salesbypaymenttype.js"></script>

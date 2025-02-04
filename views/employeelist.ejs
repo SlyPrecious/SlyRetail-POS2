@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sly School TimeTable Scheduler">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="Sly Time Table Scheduler,School TimeTable, Sly Scheducate">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Employee List</title>
+    <link rel="stylesheet" href="css/employee-list.css">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text" >Employee List</span>
+    </div>
+    <!--The MENU ITEMS-->    
+    <div class="icon-nav">
+        <script src="js/common-icons.js"></script>
+    </div>
+
+    <!--The page Content-->    
+
+    <div class="payment-type-container">
+        <div class="payment-type"> 
+            <label class="filter-by-store-label">Store</label>
+        <div  id = ""> 
+            <button type="button" name="" id="filter-by-store"onclick="selectStore()">All Stores <i class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+            <div id="select-store">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class=" btn-primary active">
+                        <span class="store-name">All Stores</span>
+                    </label>
+                    <label class=" btn-primary">
+                        <span class="store-name">MUFATECH</span>
+                    </label>
+                    <label class=" btn-primary">
+                        <span class="store-name">ENTERPRISES</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+            <button name="add-payment-type" type="button" class="add-payment-type-btn" onclick="openForm()">+</button>
+            <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <div id="container">
+            <table  class="employee-list-table"  cellspacing="0">
+                <thead class="employee-list-headings" > 
+                    <tr class="employee-list-row" >
+                        <th>
+                            <div class="form-check">
+                                <input type="checkbox" class="check" name=""  id="myCheck" onclick="showDeleteAll()"  value="checkedValue" >
+                            </div>
+                        </th>
+                        <th><span class="employee-list-head">  Name</span></th>
+                        <th><span class="employee-list-head"> Email </span></th>
+                        <th><span class="employee-list-head">Phone Number</span></th>
+                        <th><span class="employee-list-head">  Role </span></th>
+
+                    </tr>
+                </thead>
+                <tbody class="table-body-create-discount">
+                    <tr class="table-row">
+                        <td ><input type="checkbox" class="form-check-input" onclick="showDeleteStore()" name="" id="myCheck" value="checkedValue" ></td>
+                        <td ><span class="" >Germany Mangezi</span></td>
+                        <td ><span class="" >gkmangezi@gmail.com </span></td>
+                        <td ><span class="">0773577552</span></td>
+                        <td><span class=""> Owner</span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="" id="add-store-Form">
+            <form action="#" class="form-container">
+                <!--the button  for saving or cancelling information of the teacher-->
+                <button type="submit" class="btn-save" onclick="closeForm()">SAVE</button>
+                <button type="button" class="btn-cancel" onclick="closeForm()">Cancel</button>
+                <i class="fa fa-user" aria-hidden="true"></i>
+
+                <label for="dep" class="store-name-label "> Employee Name</label>
+                <input type="text" id="name-id" placeholder="  Name" > 
+
+                <label for="dep" class="address-label ">  Email</label>
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <input type="text" id="address-id" placeholder="Email Address" > 
+
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <input type="number" id="phone-number-id" placeholder="Phone Number" > 
+
+                <label for="dep" class="paytype-name-label ">  Role</label>
+                <div  id = ""> 
+                    <button type="button" name="" id="select-role-btn"onclick="selectRole()">Select  Role <i class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+                    <div id="select-role">
+                        <button type="button" class=" btn">Select  Role</button>
+                        <button type="button" class=" btn">Administrator</button>
+                        <button type="button" class=" btn">Manager</button>
+                        <button type="button" class=" btn">Cashier</button>
+                    </div>
+                </div>
+                <div  id = "">
+                    <i class="fa fa-users" aria-hidden="true"></i> 
+                    <i class="fa fa-store" aria-hidden="true"></i> 
+                    <button type="button" name="" id="access-in-all-store-btn"onclick="selectAccessToStore()">Access To All Stores <i class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+                    <div id="access-to-store">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class=" btn-primary active">
+                                <input type="checkbox" name="" id="store-checkbox" checked autocomplete="off">
+                                <span class="store-name">Access To All Stores</span>
+                            </label>
+                            <label class=" btn-primary">
+                                <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                                <span class="store-name">MUFATECH</span>
+                            </label>
+                            <label class=" btn-primary">
+                                <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                                <span class="store-name">ENTERPRISES</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+<script src="js/employee-list.js"></script>

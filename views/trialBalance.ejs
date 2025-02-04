@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trial Balance</title>
+    <link rel="stylesheet" href="css/trialBalance.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/all.min.css">  <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="/images/newslylogo.jpg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+    <link rel="stylesheet" href="css/daterangepicker.css" />
+</head>
+
+<body>
+    <style>
+        .daterangepicker {
+            direction: ltr;
+            text-align: left;
+            width: 246px;
+        }
+
+        .daterangepicker .drp-selected {
+            display: none;
+        }
+
+        .daterangepicker .drp-buttons .btn {
+            float: left;
+            margin-left: 30px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 4px 8px;
+            color: #eee;
+            border-radius: 10px;
+            width: 32%;
+        }
+
+        .applyBtn .btn {
+            background-color: grey;
+        }
+      
+    </style>
+    <!-- PAGE LOADER -->
+    <div class="loader-container">
+        <div class="loader"></div>
+        <p class="loader-text">Loading...</p>
+    </div>
+    <!-- <div class="myloader"></div> -->
+    <div id="tool-bar" class="toolbar" style="display: none;">
+        <div class="menu-icon iconbtn">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <span id="toolbar-text" >Trial Balance </span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav close" style="display: none;">
+        <script src="js/common-iconsFE.js"></script>
+    </div>
+    <div class="BigContainer" style="display: none;">
+        <div class="trialBalanceContainer">
+            <div class="headingContainer">
+                <div class="row">
+                    <div class="accountName"
+                        style=" font-size: 26px; margin-left: 5%;font-weight: 700;margin-top: 3%;text-decoration: underline;">
+                        <%= accountName%>
+                    </div>
+                    <div class="trialBalanceHeading">
+                        <span class="trialBalanceSpan3">Trial Balance for the period ending: </span>
+                        <span class="dateRange" contenteditable="true"
+                            style="outline: none; font-weight: bold; border: none; cursor: pointer;"></span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="tbContainer">
+
+            <div class="btnExport">
+                <button class="export">Export</button>
+            </div>
+            <table id="trialBalanceTable" style="width: 80%; margin-left: 7%;margin-top: 31px;margin-bottom: 45px;">
+                <thead>
+                    <tr>
+                        <th hidden></th>
+                        <th style="width: 40%;"></th>
+                        <th style="text-align: center;width: 10%;"> <span class="tbHeader">
+                                <a href="/payOut" class="tbHeader"> PayOut (<%= isocode%>)</a>
+                            </span></th>
+                        <th style="text-align: center;width: 10%;"> <span>
+                                <a href="/payIn" class="tbHeader"> PayIn (<%= isocode%>)</a>
+                            </span> </th>
+                    </tr>
+                </thead>
+                <tbody class="trialBalanceTableBody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <script type="module" src="js/trialBalanceFE.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="js/daterangepicker.min.js"></script>
+</body>
+
+</html>

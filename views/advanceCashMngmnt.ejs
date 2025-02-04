@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="SLY RETAIL POINT OF SALE">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="SLY RETAIL POS, BACK OFFICE">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Advanced Cash Management</title>
+    <link rel="stylesheet" href="css/advanceCashMngmnt.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="/images/newslylogo.jpg">
+    <link rel="stylesheet" href="css/notification.css" />
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/daterangepicker.css" />
+    <script type="text/javascript" src="js/chart.js"></script>
+
+</head>
+
+<body style="margin: 0;">
+    <!-- PAGE LOADER -->
+    <div class="loader-container">
+        <div class="loader"></div>
+        <p class="loader-text">Loading...</p>
+    </div>
+    <div class="myloader" style="display: none;"></div>
+    <div id="tool-bar" class="toolbar" style="display: none;">
+        <div class="menu-icon iconbtn">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <span id="toolbar-text">Advanced Cash Management </span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav close" style="display: none;">
+        <script src="js/common-iconsFE.js"></script>
+    </div>
+
+    <!--The page Content-->
+    <div class="main-card-second">
+        <!-- <div class="calenderContainer"> -->
+        <div id="the-date">
+            <input type="text" name="dateRange" id="dateRange">
+            <div class="searchBar" style="display:none;">
+                <div class="input-group rounded">
+                    <input id="searchInput" type="search" class="form-control rounded" placeholder="Search"
+                        aria-label="Search" aria-describedby="search-addon" />
+                    <span class="input-group-text border-0" id="search-addon">
+                        <img src="images/advsearch.png" alt="" srcset="" style="width: 23px;">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+
+        <div class="totalContainer">
+            <div class="box firstBox">
+                <span class="paragraph">
+                </span>
+                <span class="openingBalance">
+                    0.00
+                </span>
+                <h4>Opening Balance</h4>
+
+            </div>
+            <div class="box secondBox" id="incomeBox">
+                <span class="incomeCategory" style="font-weight: bold;"></span>
+                <span class="paragraph">
+                    <%=isoCode %>
+                </span>
+
+                <span class="totalIncome">
+                    0.00
+                </span>
+                <h4>PayIns</h4>
+
+            </div>
+            <div class="box thirdBox" id="expenseBox">
+                <span class="expenseCategory" style="font-weight: bold;"></span>
+                <span class="paragraph">
+                    <%=isoCode %>
+                </span>
+                <span class="totalExpenses">
+                    0.00
+                </span>
+                <h4>PayOuts </h4>
+            </div>
+
+            <div class="box fourthBox">
+                <span class="paragraph">
+                </span>
+                <span class="CashBalance">
+                    0.00
+                </span>
+                <h4>Cash Balance</h4>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="expense">
+        <!-- test of the new edit form -->
+        <div class="form-adv-input" id="adv-details-Form" style=" z-index: 9999;position: absolute;margin-left: 84px;
+                        margin-top: 56px;">
+            <form class="editForm" id="addCashFlowform" method="POST" action="/AdvancedCashManagement">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="Description">Description:</label>
+                        <input type="text" name="" id="description-input" minlength="3" maxlength="25" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="category">Category</label>
+                        <input type="text" name="" id="" disabled="true">
+                        <div class="catemenu">
+                            <div class="cate-btn">
+                                <span class="cate-Btn-Span" style="width: 100%;">No Category</span>
+                                <div class="ccaret"></div>
+                            </div>
+                            <ul class="categories">
+                                <% expCategories.forEach(option=> { %>
+                                    <li class="cate-option">
+                                        <option>
+                                            <%= option.category %>
+                                        </option>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                            <ul class="incCategories">
+                                <% incCategories.forEach(option=> { %>
+                                    <li class="incCate-option">
+                                        <option>
+                                            <%= option.category %>
+                                        </option>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <label for="currency">Currency</label>
+                        <input type="text" name="" id="" disabled="true">
+                        <div class="selectmenu">
+                            <div class="select-btn">
+                                <span class="btn-text" style="width: 100%;">Payment Type</span>
+                                <div class="caretForm"></div>
+                            </div>
+                            <ul class="currencies">
+                                <% currencies.forEach(option=> { %>
+                                    <li class="option">
+                                        <option>
+                                            <%= option.Currency_Name %>
+                                        </option>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="amount">Amount</label>
+                        <input type="number" name="amount" pattern="[0-9]+([.][0-9]+)?" step="any"
+                            class="current-amount" id="current-amount-input">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="rate">Rate</label>
+                        <span for="sub" class="current-rate" id="label-rate">RATE</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="invoiceNo">Invoice No</label>
+                        <input type="text" name="" class="invoice" id="invoice-input">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="shiftNo">Shift No</label>
+                        <input type="text" name="" class="shift" id="shift-input">
+                    </div>
+                </div>
+                <button type="submit" class="saveCashFlow">ADD</button>
+                <label class="myCurrentId" for="dep" hidden>Id</label>
+                <label class="myCurrentDate" for="dep" hidden>Date</label>
+                <label class="myCurrentType" for="dep" hidden>Type</label>
+            </form>
+        </div>
+    </div>
+    <!-- <div class="container"> -->
+    <div class="second_card">
+        <div id="chartContainer">
+            <div id="overallContainer" style="float: right;">
+                <div class="dropdown" style="width: 95px;border-bottom: 0.5px solid grey;margin-right: 15px;">
+                    <a class="btn dropdown-toggle rangeBtn" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="background-color: transparent;">
+                        <span class="rangeInterval">Select Interval</span>
+                    </a>
+                    <!-- <div id="dateRangeHeaderRange"> -->
+                    <ul class="dropdown-menu rangeDropdwnMenu">
+                        <li><a class="dropdown-item" id="intervalOptionID0" href="#">Hourly</a></li>
+                        <li><a class="dropdown-item" id="intervalOptionID1" href="#">Daily</a></li>
+                        <li><a class="dropdown-item" id="intervalOptionID2" href="#">Weekly</a></li>
+                        <li><a class="dropdown-item" id="intervalOptionID3" href="#">Monthly</a></li>
+                        <li><a class="dropdown-item" id="intervalOptionID4" href="#">Quarterly</a></li>
+                        <li><a class="dropdown-item" id="intervalOptionID5" href="#">Half Yearly</a></li>
+                        <li><a class="dropdown-item" id="intervalOptionID6" href="#">Yearly</a></li>
+
+                    </ul>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <div class="area" style="float: inline-end;margin-right: 26px;">
+                <div class="dropdown" style="width: 95px;border-bottom: 0.5px solid grey;">
+                    <a class="btn dropdown-toggle areaBtn" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="background-color: transparent;">
+                        <span class="areaSpan">Line</span>
+                    </a>
+                    <ul class="dropdown-menu areaMenu">
+                        <li class="areaItemList"><a class="dropdown-item" id="areaOptionId0" href="#">Line</a></li>
+                        <li class="areaItemList"><a class="dropdown-item" id="areaOptionId1" href="#">Bar</a></li>
+                        <li class="areaItemList"><a class="dropdown-item" id="areaOptionId2" href="#">Pie</a></li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="chartContainer2" style="height: 400px;padding-bottom: 17px;">
+                <span id="noDataMessage"
+                    style="text-align: center;font-size: 30px;  position: absolute;top: 50%;left: 36%;color: grey;display: none;"></span>
+                <div class="lineGraphContainer" style="display: none;"> <canvas id="myLineGraph"></canvas></div>
+                <div class="barGraphContainer" style="display: none;"><canvas id="myBarGraph"></canvas></div>
+                <div class="pieChartContainer" style="display: none;"><canvas id="myPieChart"></canvas></div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- </div> -->
+    <div class="card1" style="display: none;">
+        <div class="buttonsContainer">
+            <button class="export">Export</button>
+            <button class="editBtn">Edit</button>
+            <div class="importContainer">
+                <div class="dropdown">
+                    <button type="button" class="import" data-bs-toggle="dropdown" aria-expanded="false"
+                        data-bs-auto-close="outside">
+                        Import
+                    </button>
+                    <form class="importForm dropdown-menu">
+                        <h2>File Import</h2>
+                        <div class="mb-3">
+                            <label for="csv-file">Select CSV file:</label>
+                            <input type="file" name="file" id="csv-file" accept=".csv" required>
+                            <p class="form-text">Drag and drop your file here</p>
+                        </div>
+                        <div class="mb-3">
+                            <p> You can download our <a id="download-template-link" href="Templates/ExpensesTemplate.csv"
+                                    download>CSV
+                                    Template</a>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" id="upload-btn">Upload</button>
+                            <button type="button" id="cancel-btn">Retry</button>
+                        </div>
+                    </form>
+                </div>        
+
+            </div>
+            <div class="columns">
+                <div class="dropdown" style="display:inline-block;">
+                    <button class="btn" type="button" id="columnId" data-bs-toggle="dropdown" aria-expanded="false"
+                        style="background-color: transparent;">
+                            <i class="fa fa-columns advColumn"  aria-hidden="true"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <label class="dropdown-item custom-control custom-checkbox">
+                                <input type="checkbox" id="checkbox-id-shift" value="ShiftNo"
+                                    class="custom-control-input">
+                                <span class="custom-control-label">ShiftNo</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-item custom-control custom-checkbox">
+                                <input type="checkbox" id="checkbox-id-vat" value="Tax" class="custom-control-input">
+                                <span class="custom-control-label">Tax</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-item custom-control custom-checkbox">
+                                <input type="checkbox" id="checkbox-id-invoice" value="InvoiceRef"
+                                    class="custom-control-input">
+                                <span class="custom-control-label">InvoiceRef</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-item custom-control custom-checkbox">
+                                <input type="checkbox" id="checkbox-id-cashEquiv" value="CashEquiv"
+                                    class="custom-control-input">
+                                <span class="custom-control-label">CashEquiv</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="dropdown-item custom-control custom-checkbox">
+                                <input type="checkbox" id="checkbox-id-balance" value="RunningBalance"
+                                    class="custom-control-input">
+                                <span class="custom-control-label">RunningBalance</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="deleteModal" style="margin-bottom: 10px;">
+            <button id="confirm-delete-btn" class="confirm_delete"><img src="images/advDelete.png" alt="" srcset=""
+                    style="width: 23px;margin-left: 23px;">
+            </button>
+        </div>
+        <div id="tableContainer">
+            <table id="shift-list-table" class=" shiftListTable" cellspacing="0">
+                <thead class="shift-list-headings">
+                    <tr class="shift-list-row">
+                        <th><input type="checkbox" class="form-check-input" name="" value="checkedValue">
+                        </th>
+                        <th><span class="">Date</span>
+                            <div class="sorting-arrows">
+                                <span id="sortDateAsc" class="sort-arrow">&#8593;</span>
+                                <span id="sortDateDesc" class="sort-arrow">&#8595;</span>
+                            </div>
+                        </th>
+
+                        <th><a href="myIncome"><span class="">Total PayIns
+                                    <p style="color: white; font-size: 9px; font-style: italic; margin-top: -1px; 
+                        margin-bottom: -8px;">(Relative to <%=isBaseCurrency %>)</p>
+                                </span></a></th>
+                        <th><a href="myExpenses"><span class="">Total PayOuts
+                                    <p style="color: white; font-size: 9px; font-style: italic; margin-top: -1px; 
+                        margin-bottom: -8px;">(Relative to <%=isBaseCurrency %>)</p>
+                                </span></a></th>
+                        <th><span class="">Daily Cash Balance
+                                <p style="color: white; font-size: 9px; font-style: italic; margin-top: -1px; 
+                        margin-bottom: -8px;">(Relative to <%=isBaseCurrency %>)</p>
+                            </span></th>
+                    </tr>
+                </thead>
+                <tbody class="tableBody">
+                    <div id="Table_messages" style="display: none; color: grey; position: absolute;text-align: center;top: 50%;left: 50%;
+                    transform: translate(-50%, -50%);">
+                        <div>
+                            <div class="addRow" style="cursor: pointer;">
+                                <i class="fa-solid fa-receipt" style="font-size: 74px;"></i>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                            <div class="noDataText" style="font-size: 30px;margin-top: 10px;"></div>
+                            <div class="noDataText2" style="font-size: 20px;"></div>
+
+                        </div>
+                </tbody>
+
+            </table>
+        </div>
+
+            <div class="footer" style="display: none;">
+                <div class="pagination">
+                    <span id="previous" style="font-size: 25px; margin-right: 15px;">&laquo;</span>
+                    <div id="pagination"></div>
+                    <p class="statusText" style="color: black; margin-top: 13px;"> <span class="spanText"></span> of
+                        <span class="spanText1"></span> |
+                    <div class="dropdown" style="margin-top: 7px;">
+                        <button class="btn dropdown-toggle paginationBtn" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false" style="outline: none;border: none;background-color: transparent;">
+                            <span class="statusSpan" style="width: 20px;">Rows Per Page</span>
+                            <span class="rowsPerPage"></span>
+                        </button>
+                        <!-- <div class="paginationContainer" style="margin-top:-6%;"> -->
+                        <ul class="dropdown-menu">
+                            <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId0"
+                                    href="#">5</a></li>
+                            <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId1"
+                                    href="#">10</a></li>
+                            <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId2"
+                                    href="#">50</a></li>
+                        </ul>
+                    </div>
+                    </p>
+                    <span id="next" style="font-size: 25px;margin-left: 15px;">&raquo;</span>
+                </div>
+            </div>
+
+
+      <!-- undo vat modal -->
+        <div class="deleteAcc" id="deleteRowsId">
+            <div class="deleteRowsContent">
+                <p class="deleteMsg" style="margin-top: 11%;"></p>
+                <div class="deleteButtonContainer" style="margin-top: 30px;">
+                    <button id="yesDelete" style="margin-right: -46px;">Yes</button>
+                    <button id="noDelete">No</button>
+                </div>
+
+            </div>
+            <img src="images/redCross.png" id="closeDelete2" alt="" srcset="">
+        </div>
+        
+        <!-- Modal -->
+        <div id="success_tic" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal_Content" style="margin-top: -30px;margin-left: 49px;">
+                    <div class="page-body">
+                        <h1 style="text-align:center;">
+                            <div class="checkmark-circle">
+                                <div class="background"></div>
+                                <div class="checkmark draw"></div>
+                            </div>
+                            <h1>
+                                <div class="head">
+                                    <h3 style="margin-top:20px;color:#1ab394 ;font-weight: 200;">Import
+                                        Completed
+                                    </h3>
+                                    <h4  class="uploadData" style="margin-top:20px;color:black;display: none;">Your list of <span class="itemsCount"></span> cashFlows has
+                                        been successfully uploaded</h4>
+                                        <h4 class="noUploadData" style="margin-top:20px;color:black;display: none;">No cashflows
+                                            uploaded,cashflows already exist</h4>
+                                    <button id="okay">Ok</button>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="notificationBlock"></div>
+    <div id="spinner"></div>
+    <!-- </div> -->
+</body>
+
+</html>
+<script type="module" src="js/advanceCashMngmntFE.js"></script>
+<script src="js/intlTelInput.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/moment.min.js"></script>
+<script type="text/javascript" src="js/daterangepicker.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>

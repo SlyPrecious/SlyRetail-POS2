@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sly School TimeTable Scheduler">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="Sly Time Table Scheduler,School TimeTable, Sly Scheducate">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Create Item</title>
+    <link rel="stylesheet" href="css/create-item.css">
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text">Create Item</span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav">
+        <script src="js/common-icons.js"></script>
+    </div>
+
+    <!--The page Content-->
+    <div class="create-item-container">
+        <form action="#" class="form-container">
+            <!--name of item  its input-->
+            <input type="text" id="name-id" placeholder="Enter Item Name">
+            <div id="filter-by-graph-container">
+                <button type="button" name="" id="filter-by-category" onclick="openCategory()">No Category<i
+                        class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+                <div id="category-dropdown">
+                    <button type="button" class="btn">No Category</button>
+                    <button type="button" class="btn">GROCERY</button>
+                </div>
+            </div>
+            <div class="item-sold-by-container"><!--the container of of by each and by weight selection-->
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input item-sold-by-each" name="" id=""
+                            value="checkedValue">
+                        Each
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input item-sold-by-weight" name="" id=""
+                            value="checkedValue">
+                        Weight
+                    </label>
+                </div>
+            </div>
+            <!--price lable and its input-->
+            <label for="price" id="price-label">The selling price of the item</label>
+            <input type="number" step="any" class="price-amount price" id="" placeholder="Enter Price">
+            <!--cost lable and its input-->
+            <label for="cost" id="cost-label">The cost of the item</label>
+            <input type="number" step="any" class="cost-amount cost" id="" placeholder="Enter Cost">
+            <!--sku lable and its input-->
+            <label for="SKU" id="sku-label">SKU</label>
+            <input type="text" step="any" class="sku-code sku" id="" placeholder="">
+            <div onmousedown="openStock()" class=" shift-toggle" onclick="animateToggleShift()" checked>
+                <span class="switch"></span>
+            </div>
+            <!--barcode input-->
+            <input type="number" step="any" class="barcode" id="barcode" placeholder="Barcode ">
+            <label for="stock" id="track-stock">Track Stock</label>
+
+            <div class="stock-input"><!--the container of the stock input and low stock notification setting-->
+                <label for="stock" id="in-stock">In Stock</label>
+                <input type="number" step="any" class="in-stock stock" id="" placeholder="">
+                <label for="low-stock" id="low-stock">Notifies you when the stock is below this value</label>
+                <input type="number" step="any" class="low-stock low-stock" id="" placeholder="Low Stock">
+            </div>
+
+            <!--the button  for saving or cancelling information of the item-->
+            <button type="submit" class="save-btn">SAVE</button>
+            <a href="items-list.html"><button type="button" class="cancel-btn">CANCEL</button></a>
+        </form>
+    </div>
+    </div>
+</body>
+
+</html>
+<script src="js/create-item.js"></script>

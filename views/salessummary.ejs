@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="SLY RETAIL POINT OF SALE">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="SLY RETAIL POS, BACK OFFICE">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Sales Summery</title>
+    <link rel="stylesheet" href="css/salessummary.css">
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text"> Sales Summary </span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav">
+        <script src="js/common-icons.js"></script>
+    </div>
+
+    <!--The page Content-->
+    <!--all day popup that is opened by clicking the all day button-->
+    <div id="all-day-container">
+        <button type="button" name="" id="filter-by-time" onclick="openAllDayPopup()">All Day <i
+                class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+        <div id="all-day-popup">
+            <button type="button" class="all-day-btn btn">All Day</button>
+            <button type="button" class="custom-time-btn btn">CUSTOM</button>
+        </div>
+    </div>
+    <!--all store popup that is opened by clicking the all day button-->
+    <div id="all-store-container">
+        <button type="button" name="" id="filter-by-store" onclick="openStorePopup()"><i class="fa fa-hotel icon-color"
+                aria-hidden="true"></i> All Stores <i class="fa fa-caret-down icon-color"
+                aria-hidden="true"></i></button>
+        <div id="all-store-popup">
+            <div class="btn-group" data-toggle="buttons">
+                <label class=" btn-primary active">
+                    <input type="checkbox" name="" id="store-checkbox" checked autocomplete="off">
+                    <span class="store-name">All Stores</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                    <span class="store-name">MUFATECH</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                    <span class="store-name">ENTERPRISES</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <!--the employee button that pops up the employees available and filters the sales per employee-->
+    <div id="all-employee-container">
+        <button type="button" name="" id="filter-by-employee" onclick="openEmployeePopup()"> All Employees <i
+                class="fa fa-caret-down icon-color" aria-hidden="true"></i></button>
+        <div id="all-employee-popup">
+            <div class="btn-group" data-toggle="buttons">
+                <label class=" btn-primary active">
+                    <input type="checkbox" name="" id="employee-checkbox" checked autocomplete="off">
+                    <span class="all-employees">All Employees</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="employee-checkbox" autocomplete="off">
+                    <span class="employee-name">Owner</span>
+                </label>
+                <label class=" btn-primary">
+                    <input type="checkbox" name="" id="employee-checkbox" autocomplete="off">
+                    <span class="employee-name">GERMANY</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <input type="datetime-local" id="shift-date">
+    <div class="sales-card"><!--the card showing the gross sales, refunds,netsales,grossprofit and discounts-->
+        <label for="gross-sales" id="gross-sales-label">Gross Sales</label>
+        <!--the container with gross sales figure, this figure will come from the POS when receipts on the POS sync-->
+        <div type="" id="gross-sales-id">
+            <span class="gross-sales-amount amount">ZWL$5,000.00</span>
+            <div class="comparison-container">
+                <span class="comparison-figure">-ZWL$1,090.50</span>
+                <span class="comparison-percentage">(-31.62%)</span>
+            </div>
+        </div>
+        <!--the container with net sales figure, this figure will come from the POS when receipts on the POS sync deducting refunds-->
+        <label for="netsales" id="netsales-label">Net Sales</label>
+        <div type="" id="netsales-id">
+            <span class="net-sales-amount amount">ZWL$4,950.00</span>
+            <div class="comparison-container">
+                <span class="comparison-figure-net">-ZWL$780.50</span>
+                <span class="comparison-percentage-net">(-25.62%)</span>
+            </div>
+        </div>
+        <!--the container with gross prifit figure, this figure will come from the POS 
+            when receipts on the POS sync and difference of net sales is deducting while
+             considering the costs of goods-->
+        <label for="gross-profit" id="gross-profit-label">Gross Profit </label>
+        <div type="" id="gross-profit-id">
+            <span class="net-sales-amount amount">ZWL$4,950.00</span>
+            <div class="comparison-container">
+                <span class="comparison-figure-net">-ZWL$780.50</span>
+                <span class="comparison-percentage-net">(-25.62%)</span>
+            </div>
+        </div>
+        <!--the container with refunds figure, this figure will 
+            come from the POS when receipts on the POS have been refunded-->
+        <label for="refund" id="refund-label">Refunds </label>
+        <div type="" id="refund-id">
+            <span class="refund-amount amount">ZWL$50.00</span>
+            <div class="comparison-container">
+                <span class="comparison-figure-net">ZWL$50</span>
+                <span class="comparison-percentage-net">(5.62%)</span>
+            </div>
+        </div>
+        <!--the container with discoubts figure, 
+            this figure will come from the POS when discounts are given during sales on the POS -->
+        <label for="discount" id="discount-label">Discounts </label>
+        <div type="" id="discount-id">
+            <span class="discount-amount amount">ZWL$0.00</span>
+            <div class="comparison-container">
+                <span class="comparison-figure-net">-ZWL$0</span>
+                <span class="comparison-percentage-net">(0.00%)</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="graph-card">
+        <!--the card showing the graphical representation of gross sales comparing with previous dates-->
+        <canvas id="myChart" style="width:100%;max-width:60rem; height:345px"></canvas>
+        <div id="filter-by-graph-container">
+            <button type="button" name="" id="filter-by-chart" onclick="selectChart()">Area <i
+                    class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+            <div id="select-chart-type">
+                <button type="button" class="area-btn btn">Area</button>
+                <button type="button" class="bars-btn btn">Bars</button>
+            </div>
+        </div>
+        <div id="filter-by-graph-container">
+            <button type="button" name="" id="filter-by-period" onclick="selectPeriod()">Hours <i
+                    class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+            <div id="select-chart-period">
+                <button type="button" class="hours-btn btn">Hours</button>
+                <button type="button" class="days-btn btn">Days</button>
+                <button type="button" class="weeks-btn btn">Weeks</button>
+                <button type="button" class="months-btn btn">Months</button>
+                <button type="button" class="quaters-btn btn">Quaters</button>
+                <button type="button" class="years-btn btn">Years</button>
+            </div>
+        </div>
+    </div>
+    <div class="salessummary-table-card">
+        <!--the card showing the table containing all the gross sales fof each day from the start of the month-->
+        <button type="button" class="export-salessummary-btn">EXPORT</button>
+        <i class="fa fa-columns salessummary-columns" aria-hidden="true"></i>
+        <div id="container">
+            <table class="salessummary-list-table" cellspacing="0">
+                <thead class="salessummary-list-headings">
+                    <tr class="salessummary-list-row">
+                        <th>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="" onclick="myFunction()"
+                                    id="myCheck" value="checkedValue">
+                            </div>
+                        </th>
+                        <th><span class="salessummary-list-head">Date</span></th>
+                        <th><span class="salessummary-list-head">Gross Sales</span></th>
+                        <th><span class="salessummary-list-head">Refunds</span></th>
+                        <th><span class="salessummary-list-head">Discounts</span></th>
+                        <th><span class="salessummary-list-head">Net Sales</span></th>
+                        <th><span class="salessummary-list-head">Cost Of Goods</span></th>
+                        <th><span class="salessummary-list-head">Gross Profit</span></th>
+
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <tr id="table-row">
+                        <td><input type="checkbox" class="form-check-input" name="" id="myCheck" value="checkedValue">
+                        </td>
+                        <td><span class=""></span></td>
+                        <td><span class=""> </span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+                        <td><span class=""></span></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="js/salessammary.js"></script>

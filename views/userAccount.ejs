@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Account</title>
+    <link rel="stylesheet" href="css/userAccount.css">
+    <link rel="icon" type="image/x-icon" href="/images/newslylogo.jpg">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/notification.css">
+    <link href="css/all.min.css" rel="stylesheet" />
+
+
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <div class="menu-icon iconbtn">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <span id="toolbar-text">User Account </span>
+    </div>
+    <!--The MENU ITEMS-->
+    <div class="icon-nav close">
+        <script src="js/common-iconsFE.js"></script>
+    </div>
+    <div class="content">
+        <!-- add the change password and signout part with javascript  -->
+        <div class="card">
+
+            <div class="card_background_img">
+                <!-- <i class="fa fa-times" id="trashCancel" aria-hidden="true"></i> -->
+            </div>
+            <div class="card_profile_img">
+
+            </div>
+            <div class="user_details">
+                <h3 class="myEmail">
+                    <%=database%>
+                </h3>
+            </div>
+            <div class="card_count">
+                <div class="field">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <span id="editIcon" class="edit-icon"><i class="fas fa-pen"></i></span>
+                </div>
+                <div class="field" style="margin-top: 30px;">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <i class="fa fa-eye-slash" aria-hidden="true" id="eyeSlash"
+                        style="position: absolute;top: 15px; left: 90%;cursor: pointer; color: #919191;display: none;"></i>
+                    <span id="eIcon" class="edit-icon"><i class="fas fa-pen"></i></span>
+                </div>
+            </div>
+
+            <div class="field" style="margin-left: 20px;">
+                <div id="overallContainer">
+                    <div class="baseCurrText">Base Currency:<span class="baseCurr">Select
+                            Currency</span></div>
+                    <div class="baseCurrCaret"></div>
+                </div>
+                <div id="baseCurrDropdownContainer">
+                    <ul class="baseCurrencyDrop">
+                        <% currencies.forEach((option,index)=> { %>
+                            <li class="curr-option" id="CurrOption<%= index %>">
+                                <%= option.Currency_Name %>
+                            </li>
+                            <% }) %>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="deleteAccount" style="text-align: left;margin-left: 21px;margin-top: 15px;cursor: pointer;">
+                <i class="fa fa-trash" aria-hidden="true">
+                </i>
+                <p style="color: grey; font-style: italic; margin-left: 17px;margin-top: -16px;">
+                    Delete Account Permanently
+                </p>
+            </div>
+            <div class="card_actions">
+                <button id="saveChanges" class="btnSave">Save</button>
+                <a href="/logout"> <button class="btnSignOut "> Sign Out</button></a>
+            </div>
+
+            <!-- modal for checking if user wants to delte account -->
+            <div class="deleteAcc" id="deleteAccountiD">
+                <div class="deleteAccountContent">
+                    <div>
+                        <p>Do You Want To Delete Your Account?</p>
+                    </div>
+                    <button id="yesDelete">Yes</button>
+                    <button id="noDelete">No</button>
+                </div>
+                <i class="fa fa-times" id="closeDelete" aria-hidden="true"></i>
+
+            </div>
+        </div>
+        <div class="modall" id="editFieldModal0">
+            <div class="modal-contentt">
+                <div>
+                    <label for="new-value">Enter Password:</label>
+                    <input type="password" id="currentPassword" required>
+                </div>
+                <button id="save-Current-btn">Done</button>
+            </div>
+            <i class="fa fa-times" id="modallCancell" aria-hidden="true"></i>
+        </div>
+        <div class="modall" id="editFieldModal">
+            <div class="modal-contentt">
+                <div>
+                    <label for="new-value">Enter New Email:</label>
+                    <input type="email" id="newEmail" required>
+
+                </div>
+
+                <button id="save-value-btn-email">Done</button>
+            </div>
+            <i class="fa fa-times" id="modallCancel" aria-hidden="true"></i>
+
+        </div>
+        <div class="modall" id="editFieldModal2">
+            <div class="modal-cont">
+                <div>
+                    <label for="new-value">Enter Old Password:</label>
+                    <input type="password" id="oldPassword" required>
+                </div>
+                <button id="save-old-btn-pass">Done</button>
+            </div>
+            <i class="fa fa-times" id="modalCanc" aria-hidden="true"></i>
+        </div>
+        <div class="modall" id="editFieldModal3">
+            <div class="modal-cont">
+                <div>
+                    <label for="new-value">Enter New Password:</label>
+                    <input type="password" id="newPassword" required>
+
+                </div>
+                <button id="save-new-btn-pass">Done</button>
+            </div>
+            <i class="fa fa-times" id="modallCanc" aria-hidden="true"></i>
+
+        </div>
+        <div id="notificationBlock"></div>
+        <div id="spinner"></div>
+        <footer>
+            <p>&copy; 2023 SLYRetail. All rights reserved.</p>
+            <p>Phone: <a href="tel:0778287836">0778 287 836</a></p>
+        </footer>
+    </div>
+    <script src="js/userAccount.js"></script>
+</body>
+
+</html>

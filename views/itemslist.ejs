@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sly School TimeTable Scheduler">
+    <meta name="author" , content="Germany Mangezi">
+    <meta name="keywords" content="Sly Time Table Scheduler,School TimeTable, Sly Scheducate">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Items List</title>
+    <link rel="icon" type="image/x-icon" href="/images/slylogo2.png">
+    <link rel="stylesheet" href="css/items-list.css">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body>
+    <div id="tool-bar" class="toolbar">
+        <span id="toolbar-text">Items List </span>
+    </div>
+    <div class="card">
+        <!--The MENU ITEMS-->
+        <div class="icon-nav">
+            <script src="js/common-icons.js"></script>
+        </div>
+
+        <!--The page Content-->
+        <div class="body-card">
+            <a href="create-item.html"><button class="add-item">+</button></a>
+            <button type="button" class="export-gross-sales-btn">EXPORT</button>
+            <button type="button" class="import-gross-sales-btn">IMPORT</button>
+            <button class="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <div class="search">
+                <i class="fa fa-search" aria-hidden="true" onclick="openSearch()"></i>
+                <input type="text" id="search-item" placeholder="Search Item...">
+            </div>
+            <label class="filter-by-store-label">Store</label>
+            <div id="">
+                <button type="button" name="" id="filter-by-store" onclick="selectStore()">All Stores <i
+                        class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+                <div id="select-store">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class=" btn-primary active">
+                            <input type="checkbox" name="" id="store-checkbox" checked autocomplete="off">
+                            <span class="store-name">All Stores</span>
+                        </label>
+                        <label class=" btn-primary">
+                            <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                            <span class="store-name">MUFATECH</span>
+                        </label>
+                        <label class=" btn-primary">
+                            <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                            <span class="store-name">ENTERPRISES</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <label class="filter-by-category-label">Category</label>
+            <div id="filter-by-graph-container">
+                <button type="button" name="" id="filter-by-category" onclick="selectCategory()">All Items <i
+                        class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+                <div id="select-category">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class=" btn-primary active">
+                            <input type="checkbox" name="" id="store-checkbox" checked autocomplete="off">
+                            <span class="category-name">All Items</span>
+                        </label>
+                        <label class=" btn-primary">
+                            <input type="checkbox" name="" id="store-checkbox" autocomplete="off">
+                            <span class="category-name">GROCERY</span>
+                        </label>
+
+                    </div>
+                </div>
+            </div>
+            <label class="filter-by-stock-alert-label">Stock Alert</label>
+            <div id="">
+                <button type="button" name="" id="filter-by-stock-alert" onclick="selectStockAlert()">All Items <i
+                        class="fa fa-caret-down icon-color" aria-hidden="true"></i> </button>
+                <div id="stock-alert">
+                    <button type="button" class="btn">All Items</button>
+                    <button type="button" class="btn">Low Stock</button>
+                    <button type="button" class="btn">Out Of Stock</button>
+                </div>
+            </div>
+
+            <div id="container">
+                <table class="items-list-table" cellspacing="0">
+                    <thead class="items-list-headings">
+                        <tr class="items-list-row">
+                            <th>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="" onclick="myFunction()"
+                                        id="myCheck" value="checkedValue">
+                                </div>
+                            </th>
+                            <th><span class="items-list-head">Item Name</span></th>
+                            <th><span class="items-list-head">Category</span></th>
+                            <th><span class="items-list-head">Price</span></th>
+                            <th><span class="items-list-head">Cost</span></th>
+                            <th><span class="items-list-head">Margin</span></th>
+                            <th><span class="items-list-head">In Stock</span></th>
+                            <th><span class="items-list-head">Low Stock</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body-create-item">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+<script src="js/items-list.js"></script>
