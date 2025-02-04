@@ -1,5 +1,5 @@
 {
-  "name": "sly-retail-pos-3production",
+  "name": "sly-retail-pos-development",
   "version": "1.0.0",
   "description": "",
   "main": "slyretail.js",
@@ -11,6 +11,7 @@
     "axios": "^0.21.0",
     "body-parser": "~1.0.1",
     "cors": "2.8.1",
+    "csv-parser": "^3.1.0",
     "csvtojson": "^2.0.10",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
