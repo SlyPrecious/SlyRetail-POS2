@@ -9,8 +9,8 @@ const connectDB = async (databaseName, signingCriteria) => {
         //const host = 'localhost';
         // const client = new MongoClient(`${host}:${port}`);
         const host = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority"
-        const port = 27017;
-        const client = new MongoClient(`${host}:${port}`);
+        // const port = 27017;
+        const client = new MongoClient(`${host}`);
         //CHECK IF THE DATABASE THAT THE USER IS CREATING IS ALREADY THERE.
         const adminDb = client.db().admin();
         const databasesList = await adminDb.listDatabases();
