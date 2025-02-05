@@ -46,9 +46,7 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                             loggedInStatus = "True";
                             dbName = databaseName
                             currencies = await CurrenciesModel.find()
-
                         } else {
-                            console.log("Credentials not found");
                             loggedInStatus = "False";
                         }
                     } catch (error) {
@@ -59,12 +57,10 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                     //first check if the versioncontrols collection exist,if not create it
                     try {
                         const collections = await db.db.listCollections().toArray();
-                        // console.log(collections)
                         const collectionName = 'versioncontrols'
                         const collectionExists = collections.some(col => col.name === collectionName);
 
                         if (!collectionExists) {
-                            console.log(`The collection "${collectionName}" does not exist in the database "${databaseName}".`);
                             //this is to keep the current structure of databases, the web interface does not have a version but the database will need to be controlled
                             const newVersionEntry = new versionControlModel({ version: currentVersion });
                             await newVersionEntry.save()
@@ -118,7 +114,6 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                         //next upgrade from 1 to 1.2
                         if (existingVersion.version === "1.2" && existingVersion.version !== currentVersion) {
                             try {
-                                console.log('in version 1.2')
                                 // Loop through each cash flow document
                                 const cashFlows = await CashflowModel.find();
                                 for (let a = 0; a < cashFlows.length; a++) {
@@ -225,7 +220,7 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                                         HeaderName: 'Tax'
                                     }
                                 }).then(result => {
-                                    // console.log(`${result.modifiedCount} document(s) updated.`);
+                                    console.log(`${result.modifiedCount} document(s) updated.`);
 
                                 })
                             } catch (err) {
@@ -237,7 +232,7 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                                         HeaderName: 'Tax'
                                     }
                                 }).then(result => {
-                                    // console.log(`${result.modifiedCount} document(s) updated.`);
+                                    console.log(`${result.modifiedCount} document(s) updated.`);
 
                                 })
                             } catch (err) {
@@ -249,7 +244,7 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                                         HeaderName: 'Tax'
                                     }
                                 }).then(result => {
-                                    // console.log(`${result.modifiedCount} document(s) updated.`);
+                                    console.log(`${result.modifiedCount} document(s) updated.`);
 
                                 })
                                 // Check if the document already exists with HeaderName: 'Type'
@@ -259,7 +254,6 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                                     // If the document doesn't exist, create a new one
                                     const newHeader = new advaHeadersModel({ HeaderName: 'Type', isDisplayed: true });
                                     const result = await newHeader.save();
-                                    console.log('Inserted document:', result);
                                 }
 
                             } catch (err) {
@@ -283,8 +277,8 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                 console.error("Error occurred while connecting to database:", error);
                 return
             }
-            console.log(loggedInStatus + 'loggin status')
         }
+        console.log(loggedInStatus + 'Controller loggin status')
         return loggedInStatus
         // return { loggedInStatus: loggedInStatus, currencies: currencies };
     } catch (error) {
@@ -293,6 +287,7 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
 }
 //======================================================================================================================
 // Function to create a database
+let loggedInStatus2 = ""
 async function createDatabase(email, databaseName, databasePassword, signingCriteria) {
     try {
         const db = await connectDB(databaseName, signingCriteria);
@@ -306,8 +301,6 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
             for (let i = 0; i < collectionNames.length; i++) {
                 try {
                     const result = await db.createCollection(collectionNames[i]);
-                    console.log(`Collection "${collectionNames[i]}" created successfully.`);
-                    console.log(`${result.insertedCount} documents`);
                 } catch (error) {
                     console.error("Error creating collections", error);
                 }
@@ -316,7 +309,6 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
             try {
                 const currencyEntry = new CurrenciesModel({ Currency_Name: 'USD', paymentType: 'CASH', RATE: Number(1).toFixed(2), BASE_CURRENCY: 'Y' });
                 const result = await currencyEntry.save();
-                console.log('Currency saved successfully:', result);
             } catch (error) {
                 console.error("Error inserting currencies", error);
                 return
@@ -326,7 +318,6 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
                 const currentYear = new Date().getFullYear();
                 const accountingEntry = new accountingPeriodModel({ startDate: (`${currentYear}-01-01`) });
                 const result = await accountingEntry.save();
-                // console.log('accounting period saved successfully:', result);
             } catch (error) {
                 console.error("Error inserting accounting period", error);
                 return
@@ -341,7 +332,6 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
                     await advaHeadersModel.insertMany(data);
                     const result = new advaHeadersModel({ HeaderName: 'Tax', isDisplayed: true });
                     await result.save();
-                    console.log('Inserted document:');
                 } catch (error) {
                     console.error('Error saving adv headers:', error);
                 }
@@ -349,23 +339,18 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
                 try {
                     // Using insertMany to insert multiple documents at once
                     await payInHeadersModel.insertMany(data);
-                    // console.log(`${result.length} document(s) inserted.`);
-                    console.log('payin headers saved successfully:');
                 } catch (error) {
                     console.error('Error saving payin headers:', error);
                 }
                 try {
                     // Using insertMany to insert multiple documents at once
                     await payOutHeadersModel.insertMany(data);
-                    // console.log(`${result.length} document(s) inserted.`);
-                    console.log('payout headers saved successfully:');
                 } catch (error) {
                     console.error('Error saving payout headers:', error);
                 }
             } catch (error) {
                 console.error('Error inserting headers:', error);
             }
-
 
             // Save credentials
             const createAndSaveCredentials = async (User_Account, DbPassword, Email) => {
@@ -380,11 +365,11 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
                 }
             };
 
-            loggedInStatus = await createAndSaveCredentials(databaseName, databasePassword, email);
+            loggedInStatus2 = await createAndSaveCredentials(databaseName, databasePassword, email);
         } else {
-            loggedInStatus = "False";
+            loggedInStatus2 = "False";
         }
-        return loggedInStatus
+        return loggedInStatus2
     } catch (error) {
         console.error('Error creating database:', error);
         return "False";
