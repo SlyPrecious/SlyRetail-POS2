@@ -373,7 +373,8 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
         }
         return { loggedInStatus: loggedInStatus, currencies: currencies };
     } catch (error) {
-        console.error("Error occurred signin sugnup:", error);
+     console.error("Error occurred in signUpSignIn:", error);
+        return { loggedInStatus: "False", currencies: [] }; // Ensure a fallback return value
     }
 }
 
