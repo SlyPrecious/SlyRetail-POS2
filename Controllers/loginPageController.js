@@ -395,4 +395,4 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
 
 }
 
-export { loggedInStatus, dbName, signUpSignIn, dbConnection }; 
+export { dbName, signUpSignIn, dbConnection }; 
