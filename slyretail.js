@@ -63,13 +63,14 @@ app.get('/', (req, res) => {
 // });
 // ================================================================================================
 // Handle login form submission
-// let loggedInStatus = ""
 app.post('/signinsignup', async (req, res) => {
   const { buttonContent, dbName, email, myPassword } = req.body;
+  let loggedInStatus = ""
   // Run the sign-up/sign-in logic
   try {
-    const { loggedInStatus } = await signUpSignIn(dbName, email, myPassword, buttonContent) //THIS STAGE SHOULD WAIT FOR THE RESPONSE FROM THE FUNCTIONS WITH THE loggedInStatus, NO NEXT LINE SHOULD RUN WITH A BLANK loggedInStatus
-       console.log(loggedInStatus)//THIS WHERE YOU WILL SHOW THE NEXT PAGE TO GO TO WHE SUCCESSFULLY LOGED IN
+    loggedInStatus = await signUpSignIn(dbName, email, myPassword, buttonContent) //THIS STAGE SHOULD WAIT FOR THE RESPONSE FROM THE FUNCTIONS WITH THE loggedInStatus, NO NEXT LINE SHOULD RUN WITH A BLANK loggedInStatus
+    console.log(loggedInStatus)
+    //THIS WHERE YOU WILL SHOW THE NEXT PAGE TO GO TO WHE SUCCESSFULLY LOGED IN
     if (loggedInStatus === "True") {
       // req.session.dbName = { username: dbName };  // Store user info in the session
       res.json({ loggedInStatus: "True" }); //then let the user know
