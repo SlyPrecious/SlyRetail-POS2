@@ -8,7 +8,7 @@ const connectDB = async (databaseName, signingCriteria) => {
     if (signingCriteria === "Sign Up") {//ALL CONNECTIONS WHEN SIGNING UP
         //const host = 'localhost';
         // const client = new MongoClient(`${host}:${port}`);
-        const host = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority"
+        const host = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
         // const port = 27017;
         const client = new MongoClient(`${host}`);
         //CHECK IF THE DATABASE THAT THE USER IS CREATING IS ALREADY THERE.
@@ -28,7 +28,7 @@ const connectDB = async (databaseName, signingCriteria) => {
         else {
             await client.db(databaseName);
             console.log(`Database '${databaseName}' created successfully.`);
-            await mongoose.connect("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
+            await mongoose.connect("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority&appName=Cluster0", {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 serverSelectionTimeoutMS: 5000,
