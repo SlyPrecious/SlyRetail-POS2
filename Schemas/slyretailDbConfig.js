@@ -1,15 +1,15 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import mongoose from 'mongoose';
-import { loggedInStatus } from '../Controllers/loginPageController.js';
 //THIS DATABSE CONFI SHOULD VERIFY TOO IF THE CLIENT IS ON SIGNUP OR SIGN IN, AND ACT ACCORDINGLY
 let isConnected = false; // Track the connection status
 let Databases = [];
+
 const connectDB = async (databaseName, signingCriteria) => {
     if (signingCriteria === "Sign Up") {//ALL CONNECTIONS WHEN SIGNING UP
         //const host = 'localhost';
         // const client = new MongoClient(`${host}:${port}`);
         const host = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority"
-        const port = 27017;
+        //        const port = 27017;
         // MongoDB Atlas connection URI (string)
 
         // Create a new MongoClient instance and pass in the connection URI and options
@@ -28,22 +28,29 @@ const connectDB = async (databaseName, signingCriteria) => {
         if (lowerCaseDatabases.includes(lowerCaseDatabaseName)) {
             // loggedInStatus = "False";
             //do nothing if it exist
-            loggedInStatus = 'Database already exist'
+            //  loggedInStatus = 'Database already exist'
         }
         //IF IT IS NOT THERE, CREATE IT AND RETURN THAT CONNECTION
         else {
-            await client.db(databaseName);
-            console.log(`Database '${databaseName}' created successfully.`);
-            await mongoose.connect("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                serverSelectionTimeoutMS: 5000,
-                socketTimeoutMS: 45000
-            });
-            isConnected = true; // Set connection status to true
-
+            try {
+                await client.db(databaseName);
+                console.log(`Database '${databaseName}' created successfully.`);
+                await mongoose.connect("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true,
+                    serverSelectionTimeoutMS: 10000,
+                    socketTimeoutMS: 45000
+                });
+                isConnected = true; // Set connection status to true
+            } catch (error) {
+                isConnected = false; // Set connection status to true
+                console.error('Error connecting to MongoDB:', error);
+                throw new Error('Failed to connect to MongoDB');
+            }
         }
+
     }
+
 
     if (signingCriteria === "Sign In") {// ALL CONNECTIONS WHEN SIGNING IN
         try {
@@ -52,7 +59,7 @@ const connectDB = async (databaseName, signingCriteria) => {
             await mongoose.connect("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
-                serverSelectionTimeoutMS: 5000,
+                serverSelectionTimeoutMS: 10000,
                 socketTimeoutMS: 45000
             });
 
@@ -60,16 +67,18 @@ const connectDB = async (databaseName, signingCriteria) => {
             // console.log('MongoDB connected successfully');
             // return mongoose.connection; // Return the active connection
         } catch (error) {
+            isConnected = false; // Set connection status to true
             console.error('Error connecting to MongoDB:', error);
             throw new Error('Failed to connect to MongoDB');
         }
 
     }
-    if (isConnected) {
+    if (isConnected === true) {
         //ALSO AN INDICATION THAT THE DATABASE IS THERE
         return mongoose.connection; // Return existing connection
+    } else {
+        return isConnected; // Return an information saying something about the connection
     }
-
 };
 
 
