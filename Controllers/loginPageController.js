@@ -278,7 +278,6 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                 }
                 else {
                     loggedInStatus = "False";
-                    // return loggedInStatus
                 }
             } catch (error) {
                 console.error("Error occurred while connecting to database:", error);
@@ -286,7 +285,8 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
             }
             console.log(loggedInStatus + 'loggin status')
         }
-        return { loggedInStatus: loggedInStatus, currencies: currencies };
+        return loggedInStatus
+        // return { loggedInStatus: loggedInStatus, currencies: currencies };
     } catch (error) {
         console.error("Error occurred signin sugnup:", error);
     }
@@ -383,11 +383,8 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
             loggedInStatus = await createAndSaveCredentials(databaseName, databasePassword, email);
         } else {
             loggedInStatus = "False";
-            // return loggedInStatus
-
         }
         return loggedInStatus
-
     } catch (error) {
         console.error('Error creating database:', error);
         return "False";
