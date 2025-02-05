@@ -9,8 +9,14 @@ const connectDB = async (databaseName, signingCriteria) => {
         //const host = 'localhost';
         // const client = new MongoClient(`${host}:${port}`);
         const host = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority"
-        // const port = 27017;
-        const client = new MongoClient(`${host}`);
+        const port = 27017;
+        // MongoDB Atlas connection URI (string)
+
+        // Create a new MongoClient instance and pass in the connection URI and options
+        const client = new MongoClient(host, {
+            useNewUrlParser: true,  // Use the modern URL parser
+            useUnifiedTopology: true  // Use the new unified topology engine
+        });
         //CHECK IF THE DATABASE THAT THE USER IS CREATING IS ALREADY THERE.
         const adminDb = client.db().admin();
         const databasesList = await adminDb.listDatabases();
@@ -22,7 +28,7 @@ const connectDB = async (databaseName, signingCriteria) => {
         if (lowerCaseDatabases.includes(lowerCaseDatabaseName)) {
             // loggedInStatus = "False";
             //do nothing if it exist
-            // loggedInStatus = 'Database already exist'
+            loggedInStatus = 'Database already exist'
         }
         //IF IT IS NOT THERE, CREATE IT AND RETURN THAT CONNECTION
         else {
