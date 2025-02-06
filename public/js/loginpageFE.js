@@ -161,7 +161,8 @@ submitButton.addEventListener('click', (e) => {
     }
     // ===========================================================================================
     document.querySelector('.myloader').style.display = 'block'
-    fetch('/signinsignup', {
+    // fetch('/signinsignup', {
+    fetch('http://13.53.168.85:2000/signinsignup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
