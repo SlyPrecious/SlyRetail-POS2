@@ -230,7 +230,6 @@ fetch('/currencies')
                                 startDate = new Date(sDate)
                                 endDate = new Date(eDate)
                                 let csv = [];
-                                let filename = "CashFlowData.csv";
                                 const headerRow = ['Id', 'Date', 'Type', 'ShiftNo', 'Tax', 'InvoiceRef', 'Description', 'Category', 'Currency', 'Amount', 'Rate', 'CashEquiv'];
                                 csv.push(headerRow.join(","));
                                 // Send data to the server, and get the updated data
