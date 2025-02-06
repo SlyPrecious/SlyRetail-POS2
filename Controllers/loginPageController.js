@@ -279,7 +279,7 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
             }
         }
         console.log(loggedInStatus + 'Controller loggin status')
-        return loggedInStatus
+        return {loggedInStatus}
         // return { loggedInStatus: loggedInStatus, currencies: currencies };
     } catch (error) {
         console.error("Error occurred signin sugnup:", error);
@@ -369,7 +369,7 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
         } else {
             loggedInStatus2 = "False";
         }
-        return loggedInStatus2
+        return {loggedInStatus2}
     } catch (error) {
         console.error('Error creating database:', error);
         return "False";
