@@ -12,10 +12,9 @@ import bodyParser from 'body-parser';
 import session from 'express-session';
 
 //THE CONTROLLERS
-import { signUpSignIn, dbName } from './Controllers/loginPageController.js';
+import { signUpSignIn, dbName,logout } from './Controllers/loginPageController.js';
 import { advCashMngmnt } from './Controllers/advanceCashMngmntController.js';
 import { payInData } from './Controllers/payInController.js';
-import { logout } from './Schemas/slyretailDbConfig.js';
 import { insertNewCurrency, updateCurrencies, updateCurrencyName, updateBaseCurrency, updateCurrencyRate, deleteCurrency } from './Controllers/currenciesController.js';
 import { payOutData } from './Controllers/payOutController.js';
 // import { getExpenseCategoryTotals } from './Controllers/payOutCategoriesController.js';
@@ -162,12 +161,14 @@ app.get('/payIn', async (req, res,) => {
 });
 //========================================================================================
 // endpoint for signing out
-
-app.post("/logout", async (req, res) => {
+app.post('/logout', async (req, res) => {
   try {
-    // Call this function when logging out to reset the connection status.
-    logout()
-    res.send("Logged out successfully!");
+    const { databaseName, signingCriteria } = req.body;
+    console.log(databaseName + signingCriteria + "received")
+    const { loggedOut } = await logout(databaseName, signingCriteria)
+    res.status(200).json({
+      loggedOut: loggedOut,
+    });
   } catch (error) {
     console.error('Error during logout:', error);
     res.status(500).send("An error occurred during logout.");
