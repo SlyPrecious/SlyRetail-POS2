@@ -370,7 +370,7 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
         } else {
             loggedInStatus2 = "False";
         }
-        return {loggedInStatus2}
+        return { loggedInStatus2:loggedInStatus2 }
     } catch (error) {
         console.error('Error creating database:', error);
         return "False";
