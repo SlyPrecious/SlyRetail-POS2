@@ -65,10 +65,10 @@ app.get('/', (req, res) => {
 // Handle login form submission
 app.post('/signinsignup', async (req, res) => {
   const { buttonContent, dbName, email, myPassword } = req.body;
-  let loggedInStatus = ""
+  // let loggedInStatus = ""
   // Run the sign-up/sign-in logic
   try {
-    loggedInStatus = await signUpSignIn(dbName, email, myPassword, buttonContent) //THIS STAGE SHOULD WAIT FOR THE RESPONSE FROM THE FUNCTIONS WITH THE loggedInStatus, NO NEXT LINE SHOULD RUN WITH A BLANK loggedInStatus
+   const {loggedInStatus} = await signUpSignIn(dbName, email, myPassword, buttonContent) //THIS STAGE SHOULD WAIT FOR THE RESPONSE FROM THE FUNCTIONS WITH THE loggedInStatus, NO NEXT LINE SHOULD RUN WITH A BLANK loggedInStatus
     console.log(loggedInStatus)
     //THIS WHERE YOU WILL SHOW THE NEXT PAGE TO GO TO WHE SUCCESSFULLY LOGED IN
     if (loggedInStatus === "True") {
