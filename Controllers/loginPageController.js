@@ -83,7 +83,7 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                         const cashflowData = db.collection('cashflows')
                         const CashflowData = await cashflowData.find().toArray()
                         //get the currencies
-                        currencies = await CurrenciesModel.find()
+                        // currencies = await CurrenciesModel.find()
 
                         // Filter documents where the 'Vat' field is null or missing
                         const existingVersion = await versionControlModel.find();
@@ -280,7 +280,8 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
         }
         // console.log(loggedInStatus + 'Controller loggin status')
         // return {loggedInStatus}
-        return { loggedInStatus: loggedInStatus, currencies: currencies };
+        return { loggedInStatus: loggedInStatus };
+        // return { loggedInStatus: loggedInStatus, currencies: currencies };
     } catch (error) {
         console.error("Error occurred signin sugnup:", error);
     }
