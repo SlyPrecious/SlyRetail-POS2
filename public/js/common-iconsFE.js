@@ -1,3 +1,5 @@
+// import { link } from "fs";
+
 let userCredentials = []
 fetch('/dbname')
     .then(response => response.json())
@@ -21,7 +23,7 @@ fetch('/dbname')
 
         </div>
         <ul class="sub-menu">
-             <li>   <a>Account</a></li>
+             <li>   <a href="userAccount">Account</a></li>
               <li>  <a id='logoutButton' href="logout">Sign Out</a></li>
            
         </ul>
@@ -173,21 +175,33 @@ fetch('/dbname')
                 closeAllDropdowns();  // Close all open dropdowns
             }
         });
-        function logout() {
-            fetch("/logout", {
-                method: "POST",
-                credentials: "same-origin" // Ensure cookies (session) are sent with the request
-            })
-                .then(response => response.text())
-                .then(message => {
-                    console.log(message);  // 'Logged out!'
-                    window.location.href = "/"; // Redirect to login page
-                })
-                .catch(error => console.error("Logout error:", error));
-        }
 
         // Call this function when the user clicks the logout button
-        document.getElementById("logoutButton").addEventListener("click", logout);
+        document.getElementById("logoutButton").addEventListener("click", (e) => {
+            e.preventDefault(); // Prevent the default form submission behavior
+            let databaseName = data.dbName
+            let signingCriteria = localStorage.getItem('buttonContent')
+            fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    databaseName,
+                    signingCriteria
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.loggedOut === true) {
+                        // notification('Logged out successfully!');
+                        window.location.href = "/"; // Redirect to the login page
+                    } else {
+                        console.log('Logout failed. Please try again.');
+                    }
+                })
+                .catch(error => console.error("Logout error:", error));
+        })
 
     })
 
