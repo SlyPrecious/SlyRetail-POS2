@@ -21,7 +21,7 @@ fetch('/dbname')
 
         </div>
         <ul class="sub-menu">
-             <li>   <a href="userAccount">Account</a></li>
+             <li>   <a>Account</a></li>
               <li>  <a id='logoutButton' href="logout">Sign Out</a></li>
            
         </ul>
