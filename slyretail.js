@@ -154,7 +154,7 @@ app.get('/payOut', async (req, res,) => {
 app.get('/payIn', async (req, res,) => {
   try {
     const { symbols, income, isBaseCurrency, categories, isoCode, currencies, totalIncome } = await payInData();
-    res.render('payIn', { symbols, income, isBaseCurrency, categories, isoCode, currencies, totalIncome });
+    res.render('payin', { symbols, income, isBaseCurrency, categories, isoCode, currencies, totalIncome });
   } catch (error) {
     console.error("Error in payIn", error);
     res.status(500).json({ error: "internal server error" });
