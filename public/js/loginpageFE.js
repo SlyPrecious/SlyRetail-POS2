@@ -106,7 +106,7 @@ newClient.addEventListener('click', (e) => {
     header.textContent = 'Create Your Slyretail Account'
     buttonContent = 'Sign Up';
     loginForm.reset();
-    // const showConfirmPassword = document.getElementById('eyeSlashConfirm');
+    const showConfirmPassword = document.getElementById('confirmPassword');
     showConfirmPassword.addEventListener('click', (e) => {
         //toggle the type attribute
         if (password.type === 'password') {
