@@ -278,9 +278,9 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                 return
             }
         }
-        console.log(loggedInStatus + 'Controller loggin status')
-        return {loggedInStatus}
-        // return { loggedInStatus: loggedInStatus, currencies: currencies };
+        // console.log(loggedInStatus + 'Controller loggin status')
+        // return {loggedInStatus}
+        return { loggedInStatus: loggedInStatus, currencies: currencies };
     } catch (error) {
         console.error("Error occurred signin sugnup:", error);
     }
