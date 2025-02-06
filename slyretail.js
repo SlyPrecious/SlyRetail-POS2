@@ -144,7 +144,7 @@ app.get('/incomeCategories', async (req, res) => {
 app.get('/payOut', async (req, res,) => {
   try {
     const { isoCode, currencies, expenseCategories, expenses, symbols, totalCostIncome, UpdatedExpenses, isBaseCurrency, totalCostExpenses } = await payOutData();
-    res.render('payOut', { isoCode, currencies, expenseCategories, expenses, symbols, totalCostIncome, UpdatedExpenses, isBaseCurrency, totalCostExpenses });
+    res.render('payout', { isoCode, currencies, expenseCategories, expenses, symbols, totalCostIncome, UpdatedExpenses, isBaseCurrency, totalCostExpenses });
   } catch (error) {
     console.error("Error in payOut", error);
     res.status(500).json({ error: "internal server error" });
