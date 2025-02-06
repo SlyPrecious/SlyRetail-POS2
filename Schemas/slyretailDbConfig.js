@@ -83,12 +83,6 @@ const connectDB = async (databaseName, signingCriteria) => {
 
 
 //=============================================================================================
-// Call this function when logging out to reset the connection status.
-const logout = () => {
-    isConnected = false; // Reset the connection flag to allow a fresh connection next time
-    mongoose.connection.close(); // Close the MongoDB connection
-    console.log('Logged out, connection closed');
-};
 
 // export default connectDB;
-export { connectDB, logout };
+export { connectDB };
