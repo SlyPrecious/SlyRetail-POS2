@@ -1226,7 +1226,8 @@ fetch('/currencies')
                                     const dateParts = date.split("/");
                                     const formattedDate = dateParts[1] + "/" + dateParts[0] + "/" + dateParts[2];
                                     const formattedDates2 = new Date(formattedDate);
-                                    const currName = Array.from(WorldCurrencies).find(curr => (curr.Currency_Name).toLowerCase() === (row.Currency_Name).toLowerCase());//find matching currency name with the one in the incomes table
+                                    console.log(row.Currency_Name)
+                                    const currName = Array.from(WorldCurrencies).find(curr => (curr.Currency_Name).toLowerCase() === row.Currency_Name);//find matching currency name with the one in the incomes table
 
                                     if (currName) {
                                         newCurrCode = currName.ISO_Code;
