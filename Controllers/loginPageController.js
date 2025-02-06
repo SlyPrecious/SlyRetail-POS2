@@ -34,6 +34,7 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                         console.log('Validation errors:', error.errors);
                     }
                 });
+            console.log(loggedInStatus +'my stat')
         }
 
         if (signingCriteria === "Sign In") {
