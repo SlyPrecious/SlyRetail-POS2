@@ -11,10 +11,11 @@ const erroMsg = loginForm.querySelector('.error-textEmail')
 const emailPattern = /^[^ ]+@[gmail.com]+\.[a-z]{2,3}$/;
 const header = document.getElementById('heading')
 let buttonContent = submitButton.textContent;
+localStorage.setItem('buttonContent', buttonContent)
 //==================================================================================================================================
 //SHOW AND HIDE PASSWORD we will need to under stand this
 const showPassword = document.getElementById('eyeSlash');
-const showPasswordConfirm=document.getElementById('confirmPassword')
+const showPasswordConfirm = document.getElementById('confirmPassword')
 
 showPassword.addEventListener('click', (e) => {
     //toggle the type attribute
@@ -106,7 +107,7 @@ newClient.addEventListener('click', (e) => {
     header.textContent = 'Create Your Slyretail Account'
     buttonContent = 'Sign Up';
     loginForm.reset();
-    const showConfirmPassword = document.getElementById('confirmPassword');
+    // const showConfirmPassword = document.getElementById('eyeSlashConfirm');
     showConfirmPassword.addEventListener('click', (e) => {
         //toggle the type attribute
         if (password.type === 'password') {
@@ -181,6 +182,9 @@ submitButton.addEventListener('click', (e) => {
                 window.location.href = '/advanceCashMngmnt';  // This runs in the browser
             } else {
                 document.querySelector('.myloader').style.display = 'none'
+                // notification(data.loggedInStatus);
+                // alert(data.loggedInStatus);
+                // console.log(data.loggedInStatus);
                 notification('Login failed. Please try again.');
             }
         })
