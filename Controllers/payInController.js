@@ -25,7 +25,7 @@ export async function payInData() {
         // categories = await IncomeCategoriesModel.find();
 
         // //find the base currency in the collection that is where there is a Y
-        // const baseCurrency = await CurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
+        const baseCurrency = await CurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
 
         // //CALCULATE THE TOTAL PAY IN AND OUT
         // for (let i = 0; i < cashFlowData.length; i++) {
