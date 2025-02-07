@@ -7,11 +7,11 @@ let Databases = [];
 let connections = {};
 let mongoConnection=null
 const connectDB = async (databaseName, signingCriteria) => {
-    database = databaseName.toLowerCase();
+    databaseName = databaseName.toLowerCase();
     // Check if we already have a connection for this database
-    if (connections[database]) {
-        console.log(`Reusing existing connection for database: ${database}`);
-        return connections[database]; // Return existing connection
+    if (connections[databaseName]) {
+        console.log(`Reusing existing connection for database: ${databaseName}`);
+        return connections[databaseName]; // Return existing connection
     }
     if (signingCriteria === "Sign Up") {//ALL CONNECTIONS WHEN SIGNING UP
         // MongoDB Atlas connection URI (string)
@@ -45,7 +45,7 @@ const connectDB = async (databaseName, signingCriteria) => {
                     socketTimeoutMS: 45000
                 });
                 isConnected = true; // Set connection status to true
-                connections[database] = mongoConnection; // Store the new connection
+                connections[databaseName] = mongoConnection; // Store the new connection
             } catch (error) {
                 isConnected = false; // Set connection status to true
                 console.error('Error connecting to MongoDB:', error);
@@ -59,14 +59,14 @@ const connectDB = async (databaseName, signingCriteria) => {
             // await mongoose.connect('mongodb://localhost/' + databaseName, {
 
             // If connection already exists, just return the existing connection
-            if (connections[database]) {
-                console.log(`Reusing existing connection for ${database}`);
+            if (connections[databaseName]) {
+                console.log(`Reusing existing connection for ${databaseName}`);
                 isConnected = true; // Set connection status to true
-                return connections[database]; // Return existing connection
+                return connections[databaseName]; // Return existing connection
             }
             else {
                 // If no existing connection, create a new connection
-                 // Create a new Mongoose connection for the database
+                 // Create a new Mongoose connection for the databaseName
          mongoConnection = mongoose.createConnection(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${databaseName}?retryWrites=true&w=majority`,
                     {
                         useNewUrlParser: true,
@@ -76,7 +76,7 @@ const connectDB = async (databaseName, signingCriteria) => {
                     }
                 );
                 isConnected = true; // Set connection status to true
-                connections[database] = mongoConnection; // Store the new connection
+                connections[databaseName] = mongoConnection; // Store the new connection
             }
 
             // console.log('MongoDB connected successfully');
