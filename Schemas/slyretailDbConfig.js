@@ -31,9 +31,6 @@ const connectDB = async (databaseName, signingCriteria) => {
         if (!lowerCaseDatabases.includes(lowerCaseDatabaseName)) {
        await client.db(lowerCaseDatabaseName); 
          console.log(`Database '${databaseName}' created successfully.`);     
-            // Close the MongoClient connection
-            await client.close();
-        }
         //IF IT IS NOT THERE, CREATE IT AND RETURN THAT CONNECTION
             try {
               // Create a new Mongoose connection for the database
@@ -50,6 +47,7 @@ const connectDB = async (databaseName, signingCriteria) => {
                 console.error('Error connecting to MongoDB:', error);
                 throw new Error('Failed to connect to MongoDB');
             }
+        }
 
     }
     if (signingCriteria === "Sign In") {// ALL CONNECTIONS WHEN SIGNING IN
