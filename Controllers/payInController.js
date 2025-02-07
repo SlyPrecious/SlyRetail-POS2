@@ -19,45 +19,45 @@ let UpdatedIncome = 0;
 export async function payInData() {
 
     try {
-        // //THIS CODE IS SENDING THE ARRAY OF CURRENCIES FROM THE DATABASE TO THE HTML/ CLIENT'S SIDE THE LIST OF CURRENCIES ON THE MY EXPENSES DROPDOWN MENU
-        cashFlowData = await CashflowModel.find()  //Put the expenses into an array 'note that this is the whole document, but we want to tap into the name object only'
-        currencies = await CurrenciesModel.find()
-        categories = await IncomeCategoriesModel.find();
+        // // //THIS CODE IS SENDING THE ARRAY OF CURRENCIES FROM THE DATABASE TO THE HTML/ CLIENT'S SIDE THE LIST OF CURRENCIES ON THE MY EXPENSES DROPDOWN MENU
+        // cashFlowData = await CashflowModel.find()  //Put the expenses into an array 'note that this is the whole document, but we want to tap into the name object only'
+        // currencies = await CurrenciesModel.find()
+        // categories = await IncomeCategoriesModel.find();
 
-        //find the base currency in the collection that is where there is a Y
-        const baseCurrency = await CurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
+        // //find the base currency in the collection that is where there is a Y
+        // const baseCurrency = await CurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
 
-        //CALCULATE THE TOTAL PAY IN AND OUT
-        for (let i = 0; i < cashFlowData.length; i++) {
-            const data = cashFlowData[i]
-            if (data.CashFlowType === 'Payout') {
-                const relativeRate = parseFloat(data.CashFlowRate / baseCurrency.RATE);
-                const calculatedCashEquiv = Number(parseFloat(data.CashFlowAmount / relativeRate)).toFixed(2);
-                // console.log(relativeRate)
-                await CashflowModel.updateOne({ _id: ObjectId(data._id) }, {
-                    $set: {
-                        CashFlowCashEquiv: calculatedCashEquiv
-                    }
-                })
+        // //CALCULATE THE TOTAL PAY IN AND OUT
+        // for (let i = 0; i < cashFlowData.length; i++) {
+        //     const data = cashFlowData[i]
+        //     if (data.CashFlowType === 'Payout') {
+        //         const relativeRate = parseFloat(data.CashFlowRate / baseCurrency.RATE);
+        //         const calculatedCashEquiv = Number(parseFloat(data.CashFlowAmount / relativeRate)).toFixed(2);
+        //         // console.log(relativeRate)
+        //         await CashflowModel.updateOne({ _id: ObjectId(data._id) }, {
+        //             $set: {
+        //                 CashFlowCashEquiv: calculatedCashEquiv
+        //             }
+        //         })
 
-                UpdatedExpenses += parseFloat(data.CashFlowCashEquiv);
-            }
-            else if (data.CashFlowType === 'Pay in') {
-                // STORE ALL PAYOUT SIN AN ARRAY
-                income.push(cashFlowData[i])
-                const relativeRate = parseFloat(data.CashFlowRate / baseCurrency.RATE);
-                const calculatedCashEquiv = Number(parseFloat(data.CashFlowAmount / relativeRate)).toFixed(2);
-                // console.log(relativeRate)
-                CashflowModel.updateOne({ _id: ObjectId(data._id) }, {
-                    $set: {
-                        CashFlowCashEquiv: calculatedCashEquiv
-                    }
-                })
-                UpdatedIncome += parseFloat(data.CashFlowCashEquiv);
-            }
-        }
-        totalExpenses = Number(parseFloat(UpdatedExpenses)).toFixed(2);
-        totalIncome = Number(parseFloat(UpdatedIncome)).toFixed(2);
+        //         UpdatedExpenses += parseFloat(data.CashFlowCashEquiv);
+        //     }
+        //     else if (data.CashFlowType === 'Pay in') {
+        //         // STORE ALL PAYOUT SIN AN ARRAY
+        //         income.push(cashFlowData[i])
+        //         const relativeRate = parseFloat(data.CashFlowRate / baseCurrency.RATE);
+        //         const calculatedCashEquiv = Number(parseFloat(data.CashFlowAmount / relativeRate)).toFixed(2);
+        //         // console.log(relativeRate)
+        //         CashflowModel.updateOne({ _id: ObjectId(data._id) }, {
+        //             $set: {
+        //                 CashFlowCashEquiv: calculatedCashEquiv
+        //             }
+        //         })
+        //         UpdatedIncome += parseFloat(data.CashFlowCashEquiv);
+        //     }
+        // }
+        // totalExpenses = Number(parseFloat(UpdatedExpenses)).toFixed(2);
+        // totalIncome = Number(parseFloat(UpdatedIncome)).toFixed(2);
 
         //LOOP WITHIN THE WORLD CURRENCIES ARRAY SO THAT WE CAN ACCESS THE ISO CODE FOR THE BASE CURRENCY SELECTED
         for (let i = 0; i < WorldCurrencies.length; i++) {
@@ -74,6 +74,6 @@ export async function payInData() {
     catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
-    return { symbols: symbols, income: income, isBaseCurrency: isBaseCurrency, categories: categories, isoCode: isoCode, currencies: currencies, totalIncome: totalIncome, };
+    return { symbols: symbols, income: income, isBaseCurrency: isBaseCurrency, categories: categories, isoCode: isoCode, currencies: currencies};
 }
 
