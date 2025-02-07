@@ -37,14 +37,14 @@ const connectDB = async (databaseName, signingCriteria) => {
         //IF IT IS NOT THERE, CREATE IT AND RETURN THAT CONNECTION
             try {
               // Create a new Mongoose connection for the database
-       const  mongoConnection = mongoose.createConnection("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
+      mongoose.connect("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
                     serverSelectionTimeoutMS: 10000,
                     socketTimeoutMS: 45000
                 });
                 isConnected = true; // Set connection status to true
-                connections[databaseName] = mongoConnection; // Store the new connection
+                connections[databaseName] = mongoose.connection; // Store the new connection
             } catch (error) {
                 isConnected = false; // Set connection status to true
                 console.error('Error connecting to MongoDB:', error);
@@ -66,7 +66,7 @@ const connectDB = async (databaseName, signingCriteria) => {
             else {
                 // If no existing connection, create a new connection
                  // Create a new Mongoose connection for the databaseName
-       const  mongoConnection = mongoose.createConnection(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${databaseName}?retryWrites=true&w=majority`,
+       mongoose.connect(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${databaseName}?retryWrites=true&w=majority`,
                     {
                         useNewUrlParser: true,
                         useUnifiedTopology: true,
@@ -75,7 +75,7 @@ const connectDB = async (databaseName, signingCriteria) => {
                     }
                 );
                 isConnected = true; // Set connection status to true
-                connections[databaseName] = mongoConnection; // Store the new connection
+                connections[databaseName] = mongoose.connection; // Store the new connection
             }
 
             // console.log('MongoDB connected successfully');
