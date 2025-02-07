@@ -69,6 +69,7 @@ export async function payInData() {
         // now take the  name of the base currency  and store it in a variable 
         isBaseCurrency = baseCurrency.Currency_Name;
         //CREATE THE INTERVAL ARRAY
+        console.log('itawo kani')
     }
     catch (err) {
         console.error('Error connecting to MongoDB:', err);
