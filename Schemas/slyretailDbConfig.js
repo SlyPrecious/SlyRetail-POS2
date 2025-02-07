@@ -61,7 +61,7 @@ const connectDB = async (databaseName, signingCriteria) => {
                 isConnected = true; // Set connection status to true
                 return connections[normalizedDatabaseName]; // Return existing connection
             }
-            else {
+      
                 // If no existing connection, create a new connection
                  // Create a new Mongoose connection for the databaseName
        mongoose.connect(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${databaseName}?retryWrites=true&w=majority`,
@@ -74,7 +74,7 @@ const connectDB = async (databaseName, signingCriteria) => {
                 );
                 isConnected = true; // Set connection status to true
                 connections[normalizedDatabaseName] = mongoose.connection; // Store the new connection
-            }
+            
 
             // console.log('MongoDB connected successfully');
             // return mongoose.connection; // Return the active connection
