@@ -89,7 +89,7 @@ const connectDB = async (databaseName, signingCriteria) => {
     }
     if (isConnected === true) {
         //ALSO AN INDICATION THAT THE DATABASE IS THERE
-       return connections[databaseName];
+       return mongoose.connection;
     } else {
         return isConnected; // Return an information saying something about the connection
     }
