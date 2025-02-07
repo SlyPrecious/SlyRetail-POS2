@@ -7,11 +7,11 @@ let Databases = [];
 let connections = {};
 const connectDB = async (databaseName, signingCriteria) => {
     const normalizedDatabaseName = databaseName.toLowerCase();
-    // Check if we already have a connection for this database
-    if (connections[normalizedDatabaseName]) {
-        console.log(`Reusing existing connection for database: ${databaseName}`);
-        return connections[normalizedDatabaseName]; // Return existing connection
-    }
+    // // Check if we already have a connection for this database
+    // if (connections[normalizedDatabaseName]) {
+    //     console.log(`Reusing existing connection for database: ${databaseName}`);
+    //     return connections[normalizedDatabaseName]; // Return existing connection
+    // }
     if (signingCriteria === "Sign Up") {//ALL CONNECTIONS WHEN SIGNING UP
         // MongoDB Atlas connection URI (string)
         const host = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority"
@@ -34,7 +34,7 @@ const connectDB = async (databaseName, signingCriteria) => {
         //IF IT IS NOT THERE, CREATE IT AND RETURN THAT CONNECTION
             try {
               // Create a new Mongoose connection for the database
-      mongoose.connect("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
+    await  mongoose.connect("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
                     serverSelectionTimeoutMS: 10000,
@@ -55,16 +55,16 @@ const connectDB = async (databaseName, signingCriteria) => {
             //THIS IS THE FREE CLUSTER ON MONGO DB CURRENTLY USED FOR DEVELOPMENT
             // await mongoose.connect('mongodb://localhost/' + databaseName, {
 
-            // If connection already exists, just return the existing connection
-            if (connections[normalizedDatabaseName]) {
-                console.log(`Reusing existing connection for ${databaseName}`);
-                isConnected = true; // Set connection status to true
-                return connections[normalizedDatabaseName]; // Return existing connection
-            }
+            // // If connection already exists, just return the existing connection
+            // if (connections[normalizedDatabaseName]) {
+            //     console.log(`Reusing existing connection for ${databaseName}`);
+            //     isConnected = true; // Set connection status to true
+            //     return connections[normalizedDatabaseName]; // Return existing connection
+            // }
       
                 // If no existing connection, create a new connection
                  // Create a new Mongoose connection for the databaseName
-       mongoose.connect(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${databaseName}?retryWrites=true&w=majority`,
+      await mongoose.connect(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${databaseName}?retryWrites=true&w=majority`,
                     {
                         useNewUrlParser: true,
                         useUnifiedTopology: true,
