@@ -81,7 +81,7 @@ fetch("/currencies")
                         const closeDelete = document.getElementById('closeDelete2');
                         const vatModal = document.getElementById('undoVatId');
                         //=====================================================================================
-                        const spinner = document.querySelector(".myloader");
+                        const spinner = document.querySelector("#spinner");
                         const tableContainer =
                             document.getElementById("table_container");
                         //when the user selects what rows to display
@@ -93,6 +93,7 @@ fetch("/currencies")
 
                         function displayContainerBlocks() {
                             document.querySelector(".loader-container").style.display = "none";
+                            document.querySelector(".theLoader").style.display = "none";
                             document.querySelector(".toolbar").style.display = "block";
                             document.querySelector(".icon-nav").style.display = "block";
                             document.querySelector(".main-card").style.display = "block";
@@ -5005,7 +5006,7 @@ fetch("/currencies")
                             else if (fileInput.value !== '' && extension === '.csv') {
                                 const file = document.getElementById('csv-file').files[0];
                                 if (file) {
-                                    spinner.style.display = "block";
+                                    displaySpinner()
                                     uploadCSV(file);  // Call the function to upload the file
                                 }
                             }
@@ -5055,12 +5056,10 @@ fetch("/currencies")
                                     }
 
                                     //after the upload process is successfully done,show the table and remove spinner
-                                    spinner.style.display = "none";
-                                    displayContainers()
-                                    // display the modal with the total inserted count
                                     successModal.style.display = 'block'
-                                    successModalText.innerText = payInArray.length
+                                    successModalText.innerText = payOutArray.length
                                     document.querySelector('.uploadData').style.display = 'block'
+                                    removeSpinner()
                                     const sDate = localStorage.getItem('firstDate');//DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
                                     const eDate = localStorage.getItem('lastDate');
                                     const startDate = new Date(sDate);//ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
@@ -5085,12 +5084,12 @@ fetch("/currencies")
                                     console.log("Data successfully processed and saved.");
                                 } else {
                                     //after the upload process is successfully done,show the table and remove spinner
-                                    spinner.style.display = "none";
-                                    displayContainers()
+
                                     // display the modal with the total inserted count
                                     successModal.style.display = 'block'
                                     successModalText.innerText = payOutArray.length
                                     document.querySelector('.uploadData').style.display = 'block'
+                                    removeSpinner()
                                     const sDate = localStorage.getItem('firstDate');//DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
                                     const eDate = localStorage.getItem('lastDate');
                                     const startDate = new Date(sDate);//ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
@@ -5107,6 +5106,19 @@ fetch("/currencies")
 
 
                         //=========================================================================================================
+                        //    /?FUNCTIONS THAT DISPLAYS THE SPINNERS AND REMOVE
+                        function displaySpinner() {
+                            spinner.style.display = "block";
+                            document.querySelector(".theLoader").style.display = "flex";
+                            document.querySelector(".main-card").style.display = "none";
+                            document.querySelector(".main-card-second").style.display = "none";
+                        }
+                        function removeSpinner() {
+                            spinner.style.display = "none";
+                            document.querySelector(".theLoader").style.display = "none";
+                            document.querySelector(".main-card").style.display = "block";
+                            document.querySelector(".main-card-second").style.display = "block";
+                        }
                     })
 
                     .catch(error => console.error('Error fetching headerstatus:', error));
