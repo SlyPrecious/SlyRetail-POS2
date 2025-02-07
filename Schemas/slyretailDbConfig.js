@@ -5,7 +5,6 @@ let isConnected = false; // Track the connection status
 let Databases = [];
 // Object to store connections for each user/database
 let connections = {};
-let mongoConnection=null
 const connectDB = async (databaseName, signingCriteria) => {
     databaseName = databaseName.toLowerCase();
     // Check if we already have a connection for this database
@@ -38,7 +37,7 @@ const connectDB = async (databaseName, signingCriteria) => {
         //IF IT IS NOT THERE, CREATE IT AND RETURN THAT CONNECTION
             try {
               // Create a new Mongoose connection for the database
-         mongoConnection = mongoose.createConnection("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
+       const  mongoConnection = mongoose.createConnection("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
                     serverSelectionTimeoutMS: 10000,
@@ -67,7 +66,7 @@ const connectDB = async (databaseName, signingCriteria) => {
             else {
                 // If no existing connection, create a new connection
                  // Create a new Mongoose connection for the databaseName
-         mongoConnection = mongoose.createConnection(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${databaseName}?retryWrites=true&w=majority`,
+       const  mongoConnection = mongoose.createConnection(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${databaseName}?retryWrites=true&w=majority`,
                     {
                         useNewUrlParser: true,
                         useUnifiedTopology: true,
@@ -90,7 +89,7 @@ const connectDB = async (databaseName, signingCriteria) => {
     }
     if (isConnected === true) {
         //ALSO AN INDICATION THAT THE DATABASE IS THERE
-        return mongoConnection; // Return existing connection
+       return connections[databaseName];
     } else {
         return isConnected; // Return an information saying something about the connection
     }
