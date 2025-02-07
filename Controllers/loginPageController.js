@@ -398,28 +398,7 @@ const createConnection = async (databaseName, signingCriteria) => {
 
 };
 //======================================================================================================
-let loggedOut = false
-// The logout function, which now takes a databaseName to close the specific connection
-const logout = async (databaseName, signingCriteria) => {
-    const connection = await createConnection(databaseName, signingCriteria);
-    if (connection && connection.readyState === 1) { // Check if the specific connection is open
-        try {
-            // Close the specific MongoDB connection
-            await connection.close();
-            console.log(`${databaseName} logged out, MongoDB connection closed`);
-            delete connections[databaseName]; // Optionally, remove from the connections map if not needed
-            loggedOut = true
-            return { loggedOut }
-        } catch (err) {
-            loggedOut = false
-            console.error(`Error closing MongoDB connection for ${databaseName}:`, err);
-            return { loggedOut }
-        }
-    } else {
-        loggedOut = true
-        console.log(`No active MongoDB connection to close for ${databaseName}`);
-    }
-};
 
 
-export { dbName, signUpSignIn, dbConnection, logout }; 
+
+export { dbName, signUpSignIn, dbConnection }; 
