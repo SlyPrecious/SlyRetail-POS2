@@ -5,12 +5,50 @@
     background: linear-gradient(#4c4b4b 0 0) 0/0% no-repeat #ddd;
     animation: l1 2s infinite linear;
     animation-delay: 1s;
-    /* Add a 1-second delay */
 }
 
 @keyframes l1 {
     100% {
         background-size: 100%
+    }
+}
+
+/* /* Center the spinner within the container */
+.theLoader {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Spinner styling */
+#spinner {
+    border: 8px solid #f3f3f3;
+    /* Sea Green with transparency */
+    border-top: 8px solid #2e8b57;
+    /* Solid Sea Green */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 20px;
+    /* Rotate animation */
+    display: none;
+    z-index: 99999;
+
+
+}
+
+/* Keyframes for the rotating animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }
 
