@@ -41,6 +41,7 @@ fetch('/currencies')
                         function displayContainerBlocks() {
 
                             document.querySelector(".loader-container").style.display = "none";
+                            document.querySelector(".theLoader").style.display = "none";
                             document.querySelector(".icon-nav").style.display = "block";
                             document.querySelector(".toolbar").style.display = "block";
                             document.getElementById("chartContainer").style.display = "block";
@@ -163,7 +164,7 @@ fetch('/currencies')
                         }
 
                         //======================================================================================
-                        const spinner = document.querySelector('.myloader')
+                        const spinner = document.querySelector('#spinner')
                         //user-defined function to download CSV file  
                         function downloadCSV(csv, filename) {
                             var csvFile;
@@ -1101,6 +1102,8 @@ fetch('/currencies')
                                 page = 1
                             }
                             const advancedSearchInput = localStorage.getItem('advSearchInput');
+                            //apply a loader 
+                            displaySpinner()
                             fetch('/defaultDisplayThePaginationWay', {
                                 method: 'POST',
                                 headers: {
@@ -1116,7 +1119,7 @@ fetch('/currencies')
                             })
                                 .then(response => response.json())
                                 .then(data => {
-
+                                    removeSpinner()
                                     // From the server, the computation of the total income and expenses (as well as by filter) per range has been done
                                     //TOP GRANT TOTALS COMPUTATION
                                     itemsToProcess = []
@@ -5974,7 +5977,7 @@ fetch('/currencies')
                             else if (fileInput.value !== '' && extension === '.csv') {
                                 const file = document.getElementById('csv-file').files[0];
                                 if (file) {
-                                    spinner.style.display = "block";
+                                    displaySpinner()
                                     importForm.style.display = 'none';
                                     uploadCSV(file);  // Call the function to upload the file
                                 }
@@ -6022,12 +6025,12 @@ fetch('/currencies')
                                     }
 
                                     //after the upload process is successfully done,show the table and remove spinner
-                                    spinner.style.display = "none";
-                                    displayContainerBlocks()
+
                                     // display the modal with the total inserted count
                                     successModal.style.display = 'block'
                                     successModalText.innerText = data.documents.length
                                     document.querySelector('.uploadData').style.display = 'block'
+                                    displaySpinner()
                                     const sDate = localStorage.getItem('firstDate');//DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
                                     const eDate = localStorage.getItem('lastDate');
                                     const startDate = new Date(sDate);//ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
@@ -6050,13 +6053,13 @@ fetch('/currencies')
                                     // updateFilterByCategory(startDate, endDate)
                                     console.log("Data successfully processed and saved.");
                                 } else {
-                                    //after the upload process is successfully done,show the table and remove spinner
-                                    spinner.style.display = "none";
-                                    displayContainerBlocks()
+
                                     // display the modal with the total inserted count
                                     successModal.style.display = 'block'
                                     successModalText.innerText = payOutArray.length
                                     document.querySelector('.uploadData').style.display = 'block'
+                                    //after the upload process is successfully done,show the table and remove spinner
+                                    removeSpinner()
                                     const sDate = localStorage.getItem('firstDate');//DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
                                     const eDate = localStorage.getItem('lastDate');
                                     const startDate = new Date(sDate);//ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
@@ -6070,6 +6073,19 @@ fetch('/currencies')
                         }
 
                         //==================================================================================
+                        //    /?FUNCTIONS THAT DISPLAYS THE SPINNERS AND REMOVE
+                        function displaySpinner() {
+                            spinner.style.display = "block";
+                            document.querySelector(".card1").style.display = "none";
+                            document.querySelector(".main-card-second").style.display = "none";
+                            document.querySelector(".theLoader").style.display = "flex";
+                        }
+                        function removeSpinner() {
+                            spinner.style.display = "none";
+                            document.querySelector(".card1").style.display = "block";
+                            document.querySelector(".theLoader").style.display = "none";
+                            document.querySelector(".main-card-second").style.display = "block";
+                        }
                     })
 
                     .catch(error => console.error('Error fetching headerstatus:', error));
