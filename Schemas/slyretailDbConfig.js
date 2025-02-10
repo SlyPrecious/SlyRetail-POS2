@@ -5,9 +5,10 @@ let isConnected = false; // Track the connection status
 let Databases = [];
 // Object to store connections for each user/database
 let connections = {};
-let databaseName = ''
-let signingCriteria = ''
+
 const connectDB = async (databaseName, signingCriteria) => {
+   let databaseName = ''
+let signingCriteria = ''
     const normalizedDatabaseName = databaseName.toLowerCase();
  
     // MongoDB Atlas connection URI
@@ -51,8 +52,8 @@ const connectDB = async (databaseName, signingCriteria) => {
                databaseName = databaseName
     signingCriteria = signingCriteria
         }
-        return connections[normalizedDatabaseName];
         console.log(signingCriteria+databaseName)
+        return connections[normalizedDatabaseName];
     } catch (error) {
         isConnected = false;
         console.error('Error connecting to MongoDB:', error);
