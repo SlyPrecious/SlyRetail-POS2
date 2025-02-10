@@ -4,6 +4,7 @@ import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
 import { ExpenseCategoriesModel } from '../Schemas/slyretailExpenseCategoriesSchemas.js';
 import { IncomeCategoriesModel } from '../Schemas/slyretailIncomeCategoriesSchemas.js';
 import { WorldCurrencies } from "../public/js/worldCurrency.js";
+import { connectDB, databaseName } from '../Schemas/slyretailDbConfig.js';
 
 let currencies = [];
 let intervalArray = [];
@@ -13,6 +14,8 @@ let symbols = {};//this variable object will contain all the currency symbolss i
 export async function advCashMngmnt() {
 
     try {
+          const db = await connectDB(databaseName);
+         if (db) {
         // //THIS CODE IS SENDING THE ARRAY OF CURRENCIES FROM THE DATABASE TO THE HTML/ CLIENT'S SIDE THE LIST OF CURRENCIES ON THE MY EXPENSES DROPDOWN MENU
   const myCurrenciesModel = CurrenciesModel(db);
         currencies = await myCurrenciesModel.find()
@@ -28,6 +31,7 @@ export async function advCashMngmnt() {
         // now take the  name of the base currency  and store it in a variable 
         isBaseCurrency = baseCurrency.Currency_Name;
         //CREATE THE INTERVAL ARRAY
+         }
     }
     catch (err) {
         console.error('Error connecting to MongoDB:', err);
