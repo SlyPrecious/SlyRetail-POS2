@@ -208,7 +208,7 @@ export async function getCategories() {
           const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
     const allCashFlowCategories = await myCashflowCategoriesModel.find()
           console.log(allCashFlowCategories)
-    return { isocode, allCashFlowCategories };
+    return {allCashFlowCategories };
         }      
   }
   catch (err) {
