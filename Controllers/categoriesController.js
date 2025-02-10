@@ -205,7 +205,7 @@ export async function getCategories() {
   try {
        const db = await connectDB(databaseName,signingCriteria);
     console.log(databaseName + signingCriteria)
-    console.log(db)
+    console.log(db +'undefined bla')
         if (db) {
           const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
     const allCashFlowCategories = await myCashflowCategoriesModel.find()
