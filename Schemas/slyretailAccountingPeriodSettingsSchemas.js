@@ -12,7 +12,11 @@ const AccountingPeriodSettingsSchema = new mongoose.Schema({
     // Add more fields as needed
 });
 
-// Create a model based on the schema
-const accountingPeriodModel = mongoose.model('Accountingperiod', AccountingPeriodSettingsSchema);
+// Function to get or create a model based on a specific database connection
+const accountingPeriodModel = (db) => {
+    // Create the model with the specific connection
+    return db.model('Accountingperiod', AccountingPeriodSettingsSchema);
+};
 export { accountingPeriodModel };
+
 
