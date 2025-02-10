@@ -13,6 +13,10 @@ const VersionControlSchema = new mongoose.Schema({
 });
 
 // Create a model based on the schema
-const versionControlModel = mongoose.model('VersionControl', VersionControlSchema);
+// Function to get or create a model based on a specific database connection
+const versionControlModel = (db) => {
+    // Create the model with the specific connection
+    return db.model('VersionControl', VersionControlSchema);
+};
 export { versionControlModel };
 
