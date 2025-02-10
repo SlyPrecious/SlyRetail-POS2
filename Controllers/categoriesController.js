@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { CashflowCategoriesModel } from '../Schemas/slyretailCategoriesSchemas.js';
 import { CashflowModel } from '../Schemas/slyretailCashflowSchemas.js';
-import { connectDB, databaseName } from '../Schemas/slyretailDbConfig.js';
+import { connectDB, databaseName,signingCriteria } from '../Schemas/slyretailDbConfig.js';
 
 let isSaving = false
 let insertedCategories = []
@@ -12,7 +12,7 @@ let isUpdated = ''
 let amDeleted = ''
 export async function getCategoryTotals(startDate, endDate, payOutSearchInput,searchInput,pageSize, page,theCategoryName) {
   try {
-      const db = await connectDB(databaseName);
+      const db = await connectDB(databaseName,signingCriteria);
   if (db) {
      const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
     const cashFlowCat = await myCashflowCategoriesModel.find();
@@ -203,7 +203,7 @@ export async function getCategoryTotals(startDate, endDate, payOutSearchInput,se
 //========================================================================================================
 export async function getCategories() {
   try {
-       const db = await connectDB(databaseName);
+       const db = await connectDB(databaseName,signingCriteria);
     console.log(db)
         if (db) {
           const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
@@ -220,7 +220,7 @@ export async function getCategories() {
 //=====================================================================================================
 export async function updateAssignedCategories(assignedItemsArray, theCategoryName) {
   try {
-       const db = await connectDB(databaseName);
+       const db = await connectDB(databaseName,signingCriteria);
   if (db) {
          const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
     const cashFlowCat = await myCashflowCategoriesModel.find();
@@ -258,7 +258,7 @@ export async function updateAssignedCategories(assignedItemsArray, theCategoryNa
 export async function insertCategory(categoryToDb) {
 
   try {
-       const db = await connectDB(databaseName);
+       const db = await connectDB(databaseName,signingCriteria);
   if (db) {
          const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
     const cashFlowCat = await myCashflowCategoriesModel.find();
@@ -295,7 +295,7 @@ export async function insertCategory(categoryToDb) {
 //=====================================================================================================
 export async function updateCategoryRow(categoryId, oldCatName, categoryName, categoryLimit, limitRange, balanceValue) {
   try {
-       const db = await connectDB(databaseName);
+       const db = await connectDB(databaseName,signingCriteria);
   if (db) {
          const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
     const cashFlowCat = await myCashflowCategoriesModel.find();
@@ -371,7 +371,7 @@ export async function deleteCategory(checkedRowsId) {
   let expDeleteId = []
   let cashFlowId = []
   try {
-   const db = await connectDB(databaseName);
+   const db = await connectDB(databaseName,signingCriteria);
   if (db) {
       const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
     const cashFlowCat = await myCashflowCategoriesModel.find();
