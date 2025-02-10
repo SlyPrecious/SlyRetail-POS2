@@ -4,11 +4,10 @@ import { connectDB } from '../Schemas/slyretailDbConfig.js';
 import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
 import { accountingPeriodModel } from '../Schemas/slyretailAccountingPeriodSettingsSchemas.js';
 import { advaHeadersModel } from '../Schemas/slyretailAdvCashMngmntHeadersSettingsSchemas.js';
-import { payInHeadersModel } from '../Schemas/slyretailPayInHeadersSettingsSchemas.js';
-import { payOutHeadersModel } from '../Schemas/slyretailPayOutHeadersSettingsSchemas.js';
+// import { payInHeadersModel } from '../Schemas/slyretailPayInHeadersSettingsSchemas.js';
+// import { payOutHeadersModel } from '../Schemas/slyretailPayOutHeadersSettingsSchemas.js';
 import { CashflowModel } from '../Schemas/slyretailCashflowSchemas.js';
 import { versionControlModel } from '../Schemas/slyretailVersionControlSchemas.js';
-import { exists } from 'fs';
 let cashFlows = []
 
 let loggedInStatus = "";
@@ -216,30 +215,6 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
 
                             //CHANGE HEADERNAME vAT TO tAX 
                             try {
-                                await payOutHeadersModel.updateOne({ HeaderName: 'Vat' }, {
-                                    $set: {
-                                        HeaderName: 'Tax'
-                                    }
-                                }).then(result => {
-                                    console.log(`${result.modifiedCount} document(s) updated.`);
-
-                                })
-                            } catch (err) {
-                                console.error('Error connecting to MongoDB:', err);
-                            }
-                            try {
-                                await payInHeadersModel.updateOne({ HeaderName: 'Vat' }, {
-                                    $set: {
-                                        HeaderName: 'Tax'
-                                    }
-                                }).then(result => {
-                                    console.log(`${result.modifiedCount} document(s) updated.`);
-
-                                })
-                            } catch (err) {
-                                console.error('Error connecting to MongoDB:', err);
-                            }
-                            try {
                                 await advaHeadersModel.updateOne({ HeaderName: 'Vat' }, {
                                     $set: {
                                         HeaderName: 'Tax'
@@ -338,18 +313,7 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
                     console.error('Error saving adv headers:', error);
                 }
 
-                try {
-                    // Using insertMany to insert multiple documents at once
-                    await payInHeadersModel.insertMany(data);
-                } catch (error) {
-                    console.error('Error saving payin headers:', error);
-                }
-                try {
-                    // Using insertMany to insert multiple documents at once
-                    await payOutHeadersModel.insertMany(data);
-                } catch (error) {
-                    console.error('Error saving payout headers:', error);
-                }
+              
             } catch (error) {
                 console.error('Error inserting headers:', error);
             }
