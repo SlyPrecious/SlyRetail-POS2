@@ -17,7 +17,10 @@ const CredentialsSchema = new mongoose.Schema({
 });
 
 // Create a model based on the schema
-const CredentialsModel = mongoose.model('User', CredentialsSchema);
-
+const CredentialsModel = (db) => {
+    // Create the model with the specific connection
+    return db.model('User', CredentialsSchema);
+};
 export { CredentialsModel };
+
 
