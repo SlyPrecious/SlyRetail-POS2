@@ -204,6 +204,7 @@ export async function getCategoryTotals(startDate, endDate, payOutSearchInput,se
 export async function getCategories() {
   try {
        const db = await connectDB(databaseName,signingCriteria);
+    console.log(databaseName + signingCriteria)
     console.log(db)
         if (db) {
           const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
