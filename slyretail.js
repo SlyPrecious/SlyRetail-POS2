@@ -869,10 +869,6 @@ app.delete('/deletePaymentTypeRows', async (req, res) => {
 // app.listen(2000, function () {
 //   console.log("Server started on port 2000");
 // });
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).send('OK'); // This returns a 200 OK response
-});
 
 app.listen(2000, function () {
   console.log("Server started on port 2000");
