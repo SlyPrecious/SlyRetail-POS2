@@ -5,95 +5,55 @@ let isConnected = false; // Track the connection status
 let Databases = [];
 // Object to store connections for each user/database
 let connections = {};
+let databaseName = ''
 const connectDB = async (databaseName, signingCriteria) => {
     const normalizedDatabaseName = databaseName.toLowerCase();
-    // // Check if we already have a connection for this database
-    // if (connections[normalizedDatabaseName]) {
-    //     console.log(`Reusing existing connection for database: ${databaseName}`);
-    //     return connections[normalizedDatabaseName]; // Return existing connection
-    // }
-    if (signingCriteria === "Sign Up") {//ALL CONNECTIONS WHEN SIGNING UP
-        // MongoDB Atlas connection URI (string)
-        const host = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority"
-        // Create a new MongoClient instance and pass in the connection URI and options
-        const client = new MongoClient(host, {
-            useNewUrlParser: true,  // Use the modern URL parser
-            useUnifiedTopology: true  // Use the new unified topology engine
-        });
-        //CHECK IF THE DATABASE THAT THE USER IS CREATING IS ALREADY THERE.
-        const adminDb = client.db().admin();
-        const databasesList = await adminDb.listDatabases();
-        Databases.push(...databasesList.databases.map(db => db.name));
+    databaseName = databaseName
+    // MongoDB Atlas connection URI
+    const uri = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority";
 
-        const lowerCaseDatabaseName = databaseName.toLowerCase();
-        const lowerCaseDatabases = Databases.map(db => db.toLowerCase());
+    try {
+        if (signingCriteria === "Sign Up") {
+            // Create a new Mongoose connection for the database
+            const newConnection = await mongoose.createConnection(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${normalizedDatabaseName}?retryWrites=true&w=majority`, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                serverSelectionTimeoutMS: 10000,
+                socketTimeoutMS: 45000,
+            }).asPromise();
 
-        if (!lowerCaseDatabases.includes(lowerCaseDatabaseName)) {
-       await client.db(lowerCaseDatabaseName); 
-         console.log(`Database '${databaseName}' created successfully.`);     
-        //IF IT IS NOT THERE, CREATE IT AND RETURN THAT CONNECTION
-            try {
-              // Create a new Mongoose connection for the database
-    await  mongoose.connect("mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/" + databaseName + "?retryWrites=true&w=majority", {
-                    useNewUrlParser: true,
-                    useUnifiedTopology: true,
-                    serverSelectionTimeoutMS: 10000,
-                    socketTimeoutMS: 45000
-                });
-                isConnected = true; // Set connection status to true
-                connections[normalizedDatabaseName] = mongoose.connection; // Store the new connection
-            } catch (error) {
-                isConnected = false; // Set connection status to true
-                console.error('Error connecting to MongoDB:', error);
-                throw new Error('Failed to connect to MongoDB');
+            isConnected = true;
+            connections[normalizedDatabaseName] = newConnection;
+            console.log(`Database '${databaseName}' created successfully.`);
+
+        }
+
+        if (signingCriteria === "Sign In") {
+            // Reuse existing connection if it exists
+            if (connections[normalizedDatabaseName]) {
+                console.log(`Reusing existing connection for ${databaseName}`);
+                return connections[normalizedDatabaseName];
             }
+
+            // Create a new Mongoose connection for the database
+            const newConnection = await mongoose.createConnection(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${normalizedDatabaseName}?retryWrites=true&w=majority`, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                serverSelectionTimeoutMS: 10000,
+                socketTimeoutMS: 45000,
+            }).asPromise();
+
+            isConnected = true;
+            connections[normalizedDatabaseName] = newConnection;
+            console.log(`Connected to database '${databaseName}' successfully.`);
         }
-
-    }
-    if (signingCriteria === "Sign In") {// ALL CONNECTIONS WHEN SIGNING IN
-        try {
-            //THIS IS THE FREE CLUSTER ON MONGO DB CURRENTLY USED FOR DEVELOPMENT
-            // await mongoose.connect('mongodb://localhost/' + databaseName, {
-
-            // // If connection already exists, just return the existing connection
-            // if (connections[normalizedDatabaseName]) {
-            //     console.log(`Reusing existing connection for ${databaseName}`);
-            //     isConnected = true; // Set connection status to true
-            //     return connections[normalizedDatabaseName]; // Return existing connection
-            // }
-      
-                // If no existing connection, create a new connection
-                 // Create a new Mongoose connection for the databaseName
-      await mongoose.connect(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${databaseName}?retryWrites=true&w=majority`,
-                    {
-                        useNewUrlParser: true,
-                        useUnifiedTopology: true,
-                        serverSelectionTimeoutMS: 10000,
-                        socketTimeoutMS: 45000,
-                    }
-                );
-                isConnected = true; // Set connection status to true
-                connections[normalizedDatabaseName] = mongoose.connection; // Store the new connection
-            
-
-            // console.log('MongoDB connected successfully');
-            // return mongoose.connection; // Return the active connection
-        } catch (error) {
-            isConnected = false; // Set connection status to true
-            console.error('Error connecting to MongoDB:', error);
-            throw new Error('Failed to connect to MongoDB');
-        }
-
-    }
-    if (isConnected === true) {
-        //ALSO AN INDICATION THAT THE DATABASE IS THERE
-       return mongoose.connection;
-    } else {
-        return isConnected; // Return an information saying something about the connection
+        return connections[normalizedDatabaseName];
+    } catch (error) {
+        isConnected = false;
+        console.error('Error connecting to MongoDB:', error);
+        throw new Error('Failed to connect to MongoDB');
     }
 };
-
-
 //=============================================================================================
 // // Call this function when logging out to reset the connection status.
 // Let's assume you have multiple connections stored in an object or Map
@@ -125,4 +85,4 @@ const logout = async (databaseName) => {
         console.error(`Error closing MongoDB connection for ${databaseName}:`, error);
     }
 };
-export { connectDB, logout };
+export { connectDB,databaseName, logout };
