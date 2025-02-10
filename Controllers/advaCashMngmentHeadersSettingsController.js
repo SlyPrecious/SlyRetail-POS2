@@ -9,6 +9,7 @@ export async function getadvancedHeaderStatusArray() {
         if (db) {
             const headersModel = advaHeadersModel(db);
       const advancedHeaderStatus = await headersModel.find();
+            console.log(advancedHeaderStatus)
         return { advancedHeaderStatus };
         }
     } catch (err) {
