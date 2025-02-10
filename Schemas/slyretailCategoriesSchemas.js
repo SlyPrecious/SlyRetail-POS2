@@ -22,6 +22,8 @@ const CashFlowCategoriesSchema = new mongoose.Schema({
 });
 
 // Create a model based on the schema
-const CashflowCategoriesModel = mongoose.model('cashflowcategories', CashFlowCategoriesSchema);
-
+const CashflowCategoriesModel = (db) => {
+    // Create the model with the specific connection
+    return db.model('cashflowcategories', CashFlowCategoriesSchema);
+};
 export { CashflowCategoriesModel };
