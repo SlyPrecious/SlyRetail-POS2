@@ -1,11 +1,16 @@
 import { advaHeadersModel } from '../Schemas/slyretailAdvCashMngmntHeadersSettingsSchemas.js';
+import { connectDB, databaseName } from '../Schemas/slyretailDbConfig.js';
 let advancedHeaderStatus = []
 let isSaving = false;
 let modifiedCount = ""
 export async function getadvancedHeaderStatusArray() {
     try {
-        advancedHeaderStatus = await advaHeadersModel.find()
+           const db = await connectDB(databaseName);
+        if (db) {
+            const headersModel = advaHeadersModel(db);
+      const advancedHeaderStatus = await headersModel.find();
         return { advancedHeaderStatus };
+        }
     } catch (err) {
         console.error('Error fetching status:', err);
     }
@@ -14,7 +19,10 @@ export async function saveHeaderStatusAdv(headerNamefcb, headerisDisplayed) {
     // process the database connection request
     try {
         //THERE ARE OTHER HEADERS LIKE VAT THAT SHOULD BE OPENED AFTER SUBSCRIPTIONS, ALL THOSE LOGIC WILL BE MANAGED HERE
-        await advaHeadersModel.updateOne({ HeaderName: headerNamefcb }, {
+          const db = await connectDB(databaseName);
+        if (db) {
+            const headersModel = advaHeadersModel(db);
+            await headersModel.updateOne({ HeaderName: headerNamefcb }, {
             $set: {
                 isDisplayed: headerisDisplayed
             }
@@ -29,6 +37,7 @@ export async function saveHeaderStatusAdv(headerNamefcb, headerisDisplayed) {
             }
         })
         return { isSaving };
+        }
     }
     catch (error) {
         console.error(error)
