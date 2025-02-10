@@ -7,6 +7,8 @@ import multer from 'multer';
 import csv from 'csv-parser';
 import fs from 'fs';
 import path from 'path';
+import { connectDB, databaseName } from '../Schemas/slyretailDbConfig.js';
+
 //=================================================================================================================================================
 //THIS CALCULATES ALL THE CASH INFLOWS AND OUTFLOWS FOR A PARTICULAR PERIOD AND PRESENTS IT TO THE USER ON AN ASCENDING ORDER
 let cashFlows = []
@@ -17,10 +19,16 @@ let isSaving = false;
 let insertedDocuments = [];
 let updatedDocuments = [];
 let insertedCategories = [];
-
+let myCashflowModel = null; let myCurrenciesModel = null; let myCashflowCategoriesModel = null;
 export async function getCashFlowArray(startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, advancedSearchInput, searchInput, payOutSearchInput) {
     try {
-        cashFlows = await CashflowModel.find()
+        const db = await connectDB(databaseName);
+  if (db) {
+       myCashflowModel = CashflowModel(db);
+       cashFlows = await myCashflowModel.find();
+       myCurrenciesModel= CurrenciesModel(db);
+       myCashflowCategoriesModel = CashflowCategoriesModel(db);
+
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -46,7 +54,7 @@ export async function getCashFlowArray(startDate, endDate, pageSize, page, payIn
         let advSearchedInputArray = []
         //CHECK THE BASE CURRENCY 
         let myRate = ''
-        let baseCurrency = await CurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
+        let baseCurrency =await myCurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
         if (baseCurrency) {
             myRate = baseCurrency.RATE
         }
@@ -212,6 +220,7 @@ export async function getCashFlowArray(startDate, endDate, pageSize, page, payIn
 
         };
         return { data };
+  }
     }
     catch (err) {
         console.error('Error connecting to MongoDB:', err);
@@ -222,7 +231,7 @@ export async function getCashFlowArray(startDate, endDate, pageSize, page, payIn
 
 export async function updateCashFlowDate(rowId, newDate) {
     try {
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -233,7 +242,7 @@ export async function updateCashFlowDate(rowId, newDate) {
 
 
         console.log('i am the  update date  procedure  ');
-        await CashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowDate: newDate
             }
@@ -255,7 +264,7 @@ export async function updateCashFlowDate(rowId, newDate) {
 //=================================================================================================
 export async function updateCashFlowType(rowId, typeSelected) {
     try {
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -264,7 +273,7 @@ export async function updateCashFlowType(rowId, typeSelected) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow type  procedure  ');
-        await CashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowType: typeSelected,
                 CashFlowCategory: 'suspense'
@@ -288,7 +297,7 @@ export async function updateCashFlowType(rowId, typeSelected) {
 // //=====================================================================================================
 export async function updateCashFlowShift(rowId, shift) {
     try {
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -297,7 +306,7 @@ export async function updateCashFlowShift(rowId, shift) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow shift  procedure  ');
-        await CashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowShift: shift
             }
@@ -319,7 +328,7 @@ export async function updateCashFlowShift(rowId, shift) {
 //====================================================================================================
 export async function updateCashFlowTax(rowId, taxDataToUpdate) {
     try {
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -335,7 +344,7 @@ export async function updateCashFlowTax(rowId, taxDataToUpdate) {
 
                 if (tax.VatStatus === 'N') {
                     console.log('i am the  update cashflow vat procedure  to false ' + tax.VatStatus + rowId);
-                    await CashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
+                    await myCashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
                         {
                             $set: {
                                 "Tax.vat.VatStatus": tax.VatStatus,  // Update only the VatStatus field inside the Vat object
@@ -357,7 +366,7 @@ export async function updateCashFlowTax(rowId, taxDataToUpdate) {
                 } else if (tax.VatStatus === 'Y') {
                     console.log('i am the  update cashflow vat procedure  to true ' + tax.VatStatus + rowId);
 
-                    await CashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
+                    await myCashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
                         {
                             $set: {
                                 "Tax.vat.QRCode": tax.QRCode,  // Update only the taxStatusus field inside the Vat object
@@ -387,7 +396,7 @@ export async function updateCashFlowTax(rowId, taxDataToUpdate) {
                 if (tax.ZtfStatus === 'N') {
                     console.log('i am the  update cashflow ztf procedure FALSE ' + tax.ZtfStatus + rowId);
 
-                    await CashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
+                    await myCashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
                         {
                             $set: {
                                 "Tax.ztf.ZtfStatus": tax.ZtfStatus,  // Update only the VatStatus field inside the Vat object
@@ -410,7 +419,7 @@ export async function updateCashFlowTax(rowId, taxDataToUpdate) {
                 }
                 else if (tax.ZtfStatus === 'Y') {
                     console.log('i am the  update cashflow ztf procedure YES ' + tax.ZtfStatus + tax.LevyAmount);
-                    await CashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
+                    await myCashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
                         {
                             $set: {
                                 "Tax.ztf.First": tax.First,  // Update only the taxStatusus field inside the Vat object
@@ -443,7 +452,7 @@ export async function updateCashFlowTax(rowId, taxDataToUpdate) {
 //=====================================================================================================
 export async function updateCashFlowInvoice(rowId, InvoiceRef) {
     try {
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -452,7 +461,7 @@ export async function updateCashFlowInvoice(rowId, InvoiceRef) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow InvoiceRef  procedure  ');
-        await CashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowInvoiceRef: InvoiceRef
             }
@@ -475,7 +484,7 @@ export async function updateCashFlowInvoice(rowId, InvoiceRef) {
 //=====================================================================================================
 export async function updateCashFlowDescription(rowId, description) {
     try {
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -484,7 +493,7 @@ export async function updateCashFlowDescription(rowId, description) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow description  procedure  ');
-        await CashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowDescription: description
             }
@@ -506,7 +515,7 @@ export async function updateCashFlowDescription(rowId, description) {
 //=====================================================================================================
 export async function updateCashFlowCategory(rowId, newCategory) {
     try {
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -515,7 +524,7 @@ export async function updateCashFlowCategory(rowId, newCategory) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow category  procedure  ');
-        await CashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: { CashFlowCategory: newCategory }
         }).then(result => {
             console.log(`${result.modifiedCount} document(s) updated.`);
@@ -536,7 +545,7 @@ export async function updateCashFlowCategory(rowId, newCategory) {
 export async function updateCashFlowCurrency(rowId, newCurrency, cashEquivValue, newCashFlowRate1) {
     try {
 
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -545,7 +554,7 @@ export async function updateCashFlowCurrency(rowId, newCurrency, cashEquivValue,
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow description  procedure  ');
-        await CashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowCurrency: newCurrency,
                 CashFlowRate: newCashFlowRate1, CashFlowCashEquiv: cashEquivValue
@@ -569,7 +578,7 @@ export async function updateCashFlowCurrency(rowId, newCurrency, cashEquivValue,
 //=====================================================================================================
 export async function updateCashFlowAmount(rowId, newAmount, cashEquivValue) {
     try {
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -578,7 +587,7 @@ export async function updateCashFlowAmount(rowId, newAmount, cashEquivValue) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow amount  procedure  ');
-        await CashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowAmount: newAmount,
                 CashFlowCashEquiv: cashEquivValue
@@ -601,7 +610,7 @@ export async function updateCashFlowAmount(rowId, newAmount, cashEquivValue) {
 //====================================================================================================================
 export async function updateCashFlowRate(rowId, newRate, newCashFlowCashEquiv) {
     try {
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -610,7 +619,7 @@ export async function updateCashFlowRate(rowId, newRate, newCashFlowCashEquiv) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow rate  procedure  ');
-        await CashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowRate: newRate,
                 CashFlowCashEquiv: newCashFlowCashEquiv
@@ -634,7 +643,7 @@ export async function updateCashFlowRate(rowId, newRate, newCashFlowCashEquiv) {
 //====================================================================================================================
 export async function deleteCashFLow(checkedRowsId) {
     try {
-        cashFlows = await CashflowModel.find()
+        cashFlows = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -649,7 +658,7 @@ export async function deleteCashFLow(checkedRowsId) {
             const cashFlowId = checkedRowsId[i];//get the array of ids to delete
             deleteIds.push(ObjectId(cashFlowId));//make each id an object of mongo db id
         }
-        await CashflowModel.deleteMany({ _id: { $in: deleteIds } })
+        await myCashflowModel.deleteMany({ _id: { $in: deleteIds } })
             .then(result => {
                 console.log(`${result.deletedCount} document(s) were deleted`);
                 if (result.deletedCount !== 0) {
@@ -677,7 +686,7 @@ export async function deleteCashFLow(checkedRowsId) {
 //             const shift = item.CashFlowShift;
 //             let existingShifts = ""
 //             //do the filtering if there are any existing shift numbers in the database also in the array
-//             existingShifts = await CashflowModel.findOne({ CashFlowShift: shift });
+//             existingShifts = await myCashflowModel.findOne({ CashFlowShift: shift });
 //             if (existingShifts === null) {
 //                 filteredItemsToProcess.push(item)
 //             }
@@ -701,7 +710,7 @@ export async function deleteCashFLow(checkedRowsId) {
 
 //         }
 //         //get what has been saved in db
-//         insertedDocuments = await CashflowModel.find()
+//         insertedDocuments = await myCashflowModel.find()
 //         return { isSaving, insertedDocuments };
 
 //     } catch (error) {
@@ -760,7 +769,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
     }
     try {
         //get the base currency
-        let baseCurrency = await CurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
+        let baseCurrency =await myCurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
         let payInRowDataArray = []
         let payOutRowDataArray = []
         let categoriesToDb = []
@@ -806,7 +815,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
                     }
                 }
                 // Check if the shift exists
-                const existingPayInShift = await CashflowModel.findOne({ CashFlowShift: shift, CashFlowType: "Pay in" });
+                const existingPayInShift = await myCashflowModel.findOne({ CashFlowShift: shift, CashFlowType: "Pay in" });
                 if (existingPayInShift === null) {
                     // If the shift doesn't exist, insert the new record
                     payInRowDataArray.push(payInRowData);
@@ -847,7 +856,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
                     }
                 }
                 // Check if the shift exists 
-                const existingPayOutShift = await CashflowModel.findOne({ CashFlowShift: shift, CashFlowType: "Payout" });
+                const existingPayOutShift = await myCashflowModel.findOne({ CashFlowShift: shift, CashFlowType: "Payout" });
                 if (existingPayOutShift === null) {
                     // If the shift doesn't exist, insert the new record
                     payOutRowDataArray.push(payOutRowData)
@@ -902,7 +911,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
                         const relativeRate = data.Rate / baseCurrency.RATE;
                         const cashEquivValue = Number(parseFloat(data.Amount) / parseFloat(relativeRate)).toFixed(2);
                         // Update the existing document
-                        const result = await CashflowModel.updateOne(
+                        const result = await myCashflowModel.updateOne(
                             { _id: ObjectId(data.Id) }, // Filter by _id
                             {
                                 $set: {
@@ -956,15 +965,15 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
 
         // Perform the bulk insert operation for both Pay In and Pay Out data
         if (operations.length > 0) {
-            const result = await CashflowModel.bulkWrite(operations);
+            const result = await myCashflowModel.bulkWrite(operations);
             isSaving = true
             // If you need the actual inserted documents, you can retrieve them from the result by using their IDs
-            // insertedDocuments = await CashflowModel.find();
+            // insertedDocuments = await myCashflowModel.find();
             // Extract the IDs of the inserted documents
             const insertedIds = Object.values(result.insertedIds);
 
             // Retrieve the inserted documents using their IDs
-            insertedDocuments = await CashflowModel.find({ _id: { $in: insertedIds } });
+            insertedDocuments = await myCashflowModel.find({ _id: { $in: insertedIds } });
 
         } else {
             // return { isSaving: false, insertedDocuments: [] };
@@ -972,7 +981,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
         //then save any new categories
         async function saveCategoryToDb(categoryData) {
             try {
-                const categoryEntry = new CashflowCategoriesModel(categoryData);
+                const categoryEntry = new myCashflowCategoriesModel(categoryData);
                 try {
                     const result = await categoryEntry.save();
                     if (result) {
@@ -1002,7 +1011,7 @@ export async function saveCashFlowData(itemsToProcess) {
     try {
         for (let a = 0; a < itemsToProcess.length; a++) {
             const item = itemsToProcess[a];
-            const cashflowentry = new CashflowModel(item);
+            const cashflowentry = new myCashflowModel(item);
             try {
                 const result = await cashflowentry.save();
                 if (result) {
@@ -1027,7 +1036,7 @@ export async function updateCashFlowData(itemsToProcess) {
         for (let a = 0; a < itemsToProcess.length; a++) {
             const item = itemsToProcess[a];
             // Update the document in the database
-            const result = await CashflowModel.updateOne({ _id: ObjectId(item._id) }, {
+            const result = await myCashflowModel.updateOne({ _id: ObjectId(item._id) }, {
                 $set: {
                     CashFlowDate: item.CashFlowDate, CashFlowShift: item.CashFlowShift, Vat: item.Vat,
                     CashFlowInvoiceRef: item.CashFlowInvoiceRef, CashFlowDescription: item.CashFlowDescription,
