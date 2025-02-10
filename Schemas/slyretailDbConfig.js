@@ -6,9 +6,11 @@ let Databases = [];
 // Object to store connections for each user/database
 let connections = {};
 let databaseName = ''
+let signingCriteria = ''
 const connectDB = async (databaseName, signingCriteria) => {
     const normalizedDatabaseName = databaseName.toLowerCase();
     databaseName = databaseName
+    signingCriteria = signingCriteria
     // MongoDB Atlas connection URI
     const uri = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority";
 
@@ -85,4 +87,4 @@ const logout = async (databaseName) => {
         console.error(`Error closing MongoDB connection for ${databaseName}:`, error);
     }
 };
-export { connectDB,databaseName, logout };
+export { connectDB,databaseName,signingCriteria, logout };
