@@ -16,8 +16,8 @@ let dbName = "";
 let currencies = [];
 let dbConnection = null; // Global database connection
 //get variables that will cantain all the variables
-let myaccountingPeriodModelModel = null; let myCredentialsModelModel = null; let mypayInHeadersModelModel = null; let myCashflowModelModel = null;
-let myversionControlModelModel = null; let mypayOutHeadersModelModel = null; let myCurrenciesModelModel = null;
+let myaccountingPeriodModelModel = null; let myCredentialsModelModel = null; let myadvHeadersModelModel = null; let myCashflowModelModel = null;
+let myversionControlModelModel = null; let myCurrenciesModelModel = null;
 // SignUp/SignIn function
 async function signUpSignIn(databaseName, email, databasePassword, signingCriteria) {
     let currentVersion = "1.3"
