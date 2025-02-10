@@ -204,11 +204,9 @@ export async function getCategoryTotals(startDate, endDate, payOutSearchInput,se
 export async function getCategories() {
   try {
        const db = await connectDB(databaseName);
-  if (db) {
          const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
     const allCashFlowCategories = await myCashflowCategoriesModel.find()
     return { isocode, allCashFlowCategories };
-  }
   }
   catch (err) {
     console.error('Error connecting to MongoDB:', err);
