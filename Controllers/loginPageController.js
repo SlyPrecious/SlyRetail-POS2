@@ -26,10 +26,9 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
         if (db) {
             // Create the model with the specific connection
             myaccountingPeriodModelModel = accountingPeriodModel(db);
-            mypayInHeadersModelModel = payInHeadersModel(db);
+            myadvHeadersModelModel = advaHeadersModel(db);
             myCashflowModelModel = CashflowModel(db);
             myversionControlModelModel = versionControlModel(db);
-            mypayOutHeadersModelModel = payOutHeadersModel(db);
             myCurrenciesModelModel = CurrenciesModel(db);
             myCredentialsModelModel = CredentialsModel(db);
         }
@@ -219,7 +218,7 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
 
                         //CHANGE HEADERNAME vAT TO tAX 
                         try {
-                            await mypayOutHeadersModelModel.updateOne({ HeaderName: 'Vat' }, {
+                            await myadvHeadersModelModel.updateOne({ HeaderName: 'Vat' }, {
                                 $set: {
                                     HeaderName: 'Tax'
                                 }
@@ -227,42 +226,18 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                                 console.log(`${result.modifiedCount} document(s) updated.`);
 
                             })
+                            // Check if the document already exists with HeaderName: 'Type'
+                            const existingHeader = await myadvHeadersModelModel.findOne({ HeaderName: 'Type' });
+
+                            if (!existingHeader) {
+                                // If the document doesn't exist, create a new one
+                                const newHeader = new myadvHeadersModelModel({ HeaderName: 'Type', isDisplayed: true });
+                                const result = await newHeader.save();
+                            }
+
                         } catch (err) {
                             console.error('Error connecting to MongoDB:', err);
                         }
-                        try {
-                            await mypayInHeadersModelModel.updateOne({ HeaderName: 'Vat' }, {
-                                $set: {
-                                    HeaderName: 'Tax'
-                                }
-                            }).then(result => {
-                                console.log(`${result.modifiedCount} document(s) updated.`);
-
-                            })
-                        } catch (err) {
-                            console.error('Error connecting to MongoDB:', err);
-                        }
-                        // try {
-                        //     await advaHeadersModel.updateOne({ HeaderName: 'Vat' }, {
-                        //         $set: {
-                        //             HeaderName: 'Tax'
-                        //         }
-                        //     }).then(result => {
-                        //         console.log(`${result.modifiedCount} document(s) updated.`);
-
-                        //     })
-                        //     // Check if the document already exists with HeaderName: 'Type'
-                        //     const existingHeader = await advaHeadersModel.findOne({ HeaderName: 'Type' });
-
-                        //     if (!existingHeader) {
-                        //         // If the document doesn't exist, create a new one
-                        //         const newHeader = new advaHeadersModel({ HeaderName: 'Type', isDisplayed: true });
-                        //         const result = await newHeader.save();
-                        //     }
-
-                        // } catch (err) {
-                        //     console.error('Error connecting to MongoDB:', err);
-                        // }
                         //set the latest version currentVersion
                         myversionControlModelModel.updateOne({ _id: ObjectId(existingVersion._id) },
                             { set: { version: currentVersion } });
@@ -346,27 +321,16 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
             { HeaderName: 'Category', isDisplayed: true }, { HeaderName: 'Currency', isDisplayed: true }, { HeaderName: 'Amount', isDisplayed: true },
             { HeaderName: 'Rate', isDisplayed: true }, { HeaderName: 'CashEquiv', isDisplayed: true }, { HeaderName: 'RunningBalance', isDisplayed: true }]
             try {
-                // try {
-                //     // Using insertMany to insert multiple documents at once
-                //     await advaHeadersModel.insertMany(data);
-                //     const result = new advaHeadersModel({ HeaderName: 'Tax', isDisplayed: true });
-                //     await result.save();
-                // } catch (error) {
-                //     console.error('Error saving adv headers:', error);
-                // }
+                try {
+                    // Using insertMany to insert multiple documents at once
+                    await myadvHeadersModelModel.insertMany(data);
+                    const result = new myadvHeadersModelModel({ HeaderName: 'Tax', isDisplayed: true });
+                    await result.save();
+                } catch (error) {
+                    console.error('Error saving adv headers:', error);
+                }
 
-                try {
-                    // Using insertMany to insert multiple documents at once
-                    await mypayInHeadersModelModel.insertMany(data);
-                } catch (error) {
-                    console.error('Error saving payin headers:', error);
-                }
-                try {
-                    // Using insertMany to insert multiple documents at once
-                    await mypayOutHeadersModelModel.insertMany(data);
-                } catch (error) {
-                    console.error('Error saving payout headers:', error);
-                }
+              
             } catch (error) {
                 console.error('Error inserting headers:', error);
             }
