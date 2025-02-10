@@ -5,8 +5,8 @@ let isConnected = false; // Track the connection status
 let Databases = [];
 // Object to store connections for each user/database
 let connections = {};
-   let databaseName = ''
-let signingCriteria = ''
+   let databaseName1 = ''
+let signingCriteria1 = ''
 const connectDB = async (databaseName, signingCriteria) => {
     const normalizedDatabaseName = databaseName.toLowerCase();
  
@@ -26,8 +26,8 @@ const connectDB = async (databaseName, signingCriteria) => {
             isConnected = true;
             connections[normalizedDatabaseName] = newConnection;
             console.log(`Database '${databaseName}' created successfully.`);
-   databaseName = databaseName
-    signingCriteria = signingCriteria
+   databaseName1 = databaseName
+    signingCriteria1 = signingCriteria
         }
 
         if (signingCriteria === "Sign In") {
@@ -48,10 +48,10 @@ const connectDB = async (databaseName, signingCriteria) => {
             isConnected = true;
             connections[normalizedDatabaseName] = newConnection;
             console.log(`Connected to database '${databaseName}' successfully.`);
-               databaseName = databaseName
-    signingCriteria = signingCriteria
+               databaseName1 = databaseName
+    signingCriteria1 = signingCriteria
         }
-        console.log(signingCriteria+databaseName)
+        console.log(signingCriteria1+databaseName1)
         return connections[normalizedDatabaseName];
     } catch (error) {
         isConnected = false;
@@ -90,4 +90,4 @@ const logout = async (databaseName) => {
         console.error(`Error closing MongoDB connection for ${databaseName}:`, error);
     }
 };
-export { connectDB,databaseName,signingCriteria, logout };
+export { connectDB,databaseName1,signingCriteria1, logout };
