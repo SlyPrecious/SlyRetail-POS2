@@ -56,16 +56,16 @@ fetch('/currencies')
                         const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
                         //=======================================================================================
                         //THEPAYIN AND PAYOUT BOXES CLICK EVENTLISTENER
-                        const incomeBox = document.getElementById('incomeBox');
-                        incomeBox.addEventListener('click', () => {
-                            // Redirect to the template file download link
-                            location.href = '/payIn';
-                        });
-                        const expenseBox = document.getElementById('expenseBox');
-                        expenseBox.addEventListener('click', () => {
-                            // Redirect to the template file download link
-                            location.href = '/payOut';
-                        });
+                        // const incomeBox = document.getElementById('incomeBox');
+                        // incomeBox.addEventListener('click', () => {
+                        //     // Redirect to the template file download link
+                        //     location.href = '/payIn';
+                        // });
+                        // const expenseBox = document.getElementById('expenseBox');
+                        // expenseBox.addEventListener('click', () => {
+                        //     // Redirect to the template file download link
+                        //     location.href = '/payOut';
+                        // });
                         //=======================================================================================
                         //FUNCTION TO TRUNCATE(KUGURA LONG TEXT TICHIZOISA MA DOTS)
                         function truncateText(text, maxLength) {
