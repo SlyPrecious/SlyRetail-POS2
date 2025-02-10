@@ -192,6 +192,7 @@ export async function getCategoryTotals(startDate, endDate, payOutSearchInput,se
       totalPayOutsPerCat: totalPayOutsPerCat,
     }
     return { data }
+  }
   } catch (err) {
     console.error('Error fetching  incomeCategories:', err);
     res.status(500).json({ error: 'Internal server error' });
