@@ -9,8 +9,7 @@ let databaseName = ''
 let signingCriteria = ''
 const connectDB = async (databaseName, signingCriteria) => {
     const normalizedDatabaseName = databaseName.toLowerCase();
-    databaseName = databaseName
-    signingCriteria = signingCriteria
+ 
     // MongoDB Atlas connection URI
     const uri = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority";
 
@@ -27,7 +26,8 @@ const connectDB = async (databaseName, signingCriteria) => {
             isConnected = true;
             connections[normalizedDatabaseName] = newConnection;
             console.log(`Database '${databaseName}' created successfully.`);
-
+   databaseName = databaseName
+    signingCriteria = signingCriteria
         }
 
         if (signingCriteria === "Sign In") {
@@ -48,8 +48,11 @@ const connectDB = async (databaseName, signingCriteria) => {
             isConnected = true;
             connections[normalizedDatabaseName] = newConnection;
             console.log(`Connected to database '${databaseName}' successfully.`);
+               databaseName = databaseName
+    signingCriteria = signingCriteria
         }
         return connections[normalizedDatabaseName];
+        console.log(signingCriteria+databaseName)
     } catch (error) {
         isConnected = false;
         console.error('Error connecting to MongoDB:', error);
