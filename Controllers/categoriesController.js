@@ -203,8 +203,12 @@ export async function getCategoryTotals(startDate, endDate, payOutSearchInput,se
 //========================================================================================================
 export async function getCategories() {
   try {
+       const db = await connectDB(databaseName);
+  if (db) {
+         const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
     const allCashFlowCategories = await myCashflowCategoriesModel.find()
     return { isocode, allCashFlowCategories };
+  }
   }
   catch (err) {
     console.error('Error connecting to MongoDB:', err);
@@ -214,6 +218,14 @@ export async function getCategories() {
 //=====================================================================================================
 export async function updateAssignedCategories(assignedItemsArray, theCategoryName) {
   try {
+       const db = await connectDB(databaseName);
+  if (db) {
+         const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
+    const cashFlowCat = await myCashflowCategoriesModel.find();
+    
+    const  myCashflowModelModel = CashflowModel(db);
+    const cashFlowArray = await myCashflowModelModel.find();
+    
     for (let i = 0; i < assignedItemsArray.length; i++) {
       const cashFlowDataId = assignedItemsArray[i];
       try {
@@ -234,6 +246,7 @@ export async function updateAssignedCategories(assignedItemsArray, theCategoryNa
     }
     return { isUpdated };
   }
+  }
   catch (err) {
     console.error('Error connecting to MongoDB:', err);
   }
@@ -243,6 +256,13 @@ export async function updateAssignedCategories(assignedItemsArray, theCategoryNa
 export async function insertCategory(categoryToDb) {
 
   try {
+       const db = await connectDB(databaseName);
+  if (db) {
+         const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
+    const cashFlowCat = await myCashflowCategoriesModel.find();
+    
+    const  myCashflowModelModel = CashflowModel(db);
+    const cashFlowArray = await myCashflowModelModel.find();
     for (let a = 0; a < categoryToDb.length; a++) {
       const item = categoryToDb[a];
 
@@ -261,6 +281,7 @@ export async function insertCategory(categoryToDb) {
     }
     // console.log(isSaving + 'co sly')
     return { isSaving, insertedCategories };
+  }
 
   } catch (error) {
     console.error('Error inserting documents:', error);
@@ -272,6 +293,12 @@ export async function insertCategory(categoryToDb) {
 //=====================================================================================================
 export async function updateCategoryRow(categoryId, oldCatName, categoryName, categoryLimit, limitRange, balanceValue) {
   try {
+       const db = await connectDB(databaseName);
+  if (db) {
+         const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
+    const cashFlowCat = await myCashflowCategoriesModel.find();
+    
+    const  myCashflowModelModel = CashflowModel(db);
     const cashFlowArray = await myCashflowModelModel.find();
     ///loop in the cashflow array updating the category with the new category edited
     for (let i = 0; i < cashFlowArray.length; i++) {
@@ -329,6 +356,7 @@ export async function updateCategoryRow(categoryId, oldCatName, categoryName, ca
       }
     }
     return { isUpdated };
+  }
 
   } catch (error) {
     console.error(error);
@@ -341,8 +369,14 @@ export async function deleteCategory(checkedRowsId) {
   let expDeleteId = []
   let cashFlowId = []
   try {
-
+   const db = await connectDB(databaseName);
+  if (db) {
+      const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
+    const cashFlowCat = await myCashflowCategoriesModel.find();
+    
+    const  myCashflowModelModel = CashflowModel(db);
     cashFlows = await myCashflowModelModel.find()
+    
     // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
     //and the settings are to be kept under local storage
     cashFlows.sort((a, b) => {
@@ -403,6 +437,7 @@ export async function deleteCategory(checkedRowsId) {
     }
 
     return { amDeleted };
+  } 
 
   } catch (error) {
     console.error(error);
