@@ -23,8 +23,11 @@ const CurrenciesSchema = new mongoose.Schema({
 
 });
 // Create a model based on the schema
-const CurrenciesModel = mongoose.model('Currencies', CurrenciesSchema);
 
+const CurrenciesModel = (db) => {
+    // Create the model with the specific connection
+    return db.model('Currencies', CurrenciesSchema);
+};
 export { CurrenciesModel };
 
 
