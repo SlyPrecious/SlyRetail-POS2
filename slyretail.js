@@ -141,25 +141,25 @@ app.get('/incomeCategories', async (req, res) => {
   }
 });
 //======================================================================================================
-app.get('/payOut', async (req, res,) => {
-  try {
-    const { isoCode, currencies, expenseCategories, expenses, symbols, totalCostIncome, UpdatedExpenses, isBaseCurrency, totalCostExpenses } = await payOutData();
-    res.render('payout', { isoCode, currencies, expenseCategories, expenses, symbols, totalCostIncome, UpdatedExpenses, isBaseCurrency, totalCostExpenses });
-  } catch (error) {
-    console.error("Error in payOut", error);
-    res.status(500).json({ error: "internal server error" });
-  }
-});
-//======================================================================================================
-app.get('/payIn', async (req, res,) => {
-  try {
-    const { symbols, income, isBaseCurrency, categories, isoCode, currencies } = await payInData();
-    res.render('payin', { symbols, income, isBaseCurrency, categories, isoCode, currencies });
-  } catch (error) {
-    console.error("Error in payIn", error);
-    res.status(500).json({ error: "internal server error" });
-  }
-});
+// app.get('/payOut', async (req, res,) => {
+//   try {
+//     const { isoCode, currencies, expenseCategories, expenses, symbols, totalCostIncome, UpdatedExpenses, isBaseCurrency, totalCostExpenses } = await payOutData();
+//     res.render('payout', { isoCode, currencies, expenseCategories, expenses, symbols, totalCostIncome, UpdatedExpenses, isBaseCurrency, totalCostExpenses });
+//   } catch (error) {
+//     console.error("Error in payOut", error);
+//     res.status(500).json({ error: "internal server error" });
+//   }
+// });
+// //======================================================================================================
+// app.get('/payIn', async (req, res,) => {
+//   try {
+//     const { symbols, income, isBaseCurrency, categories, isoCode, currencies } = await payInData();
+//     res.render('payin', { symbols, income, isBaseCurrency, categories, isoCode, currencies });
+//   } catch (error) {
+//     console.error("Error in payIn", error);
+//     res.status(500).json({ error: "internal server error" });
+//   }
+// });
 //========================================================================================
 app.post('/logout', async (req, res) => {
   try {
