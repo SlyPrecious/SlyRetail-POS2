@@ -15,7 +15,9 @@ const AdvCashMngmntHeadersSettingsSchema = new mongoose.Schema({
     // Add more fields as needed
 });
 
-// Create a model based on the schema
-const advaHeadersModel = mongoose.model('headers', AdvCashMngmntHeadersSettingsSchema);
+const advaHeadersModel = (db) => {
+    // Create the model with the specific connection
+    return db.model('headers', AdvCashMngmntHeadersSettingsSchema);
+};
 export { advaHeadersModel };
 
