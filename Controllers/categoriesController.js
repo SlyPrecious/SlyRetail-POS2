@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { CashflowCategoriesModel } from '../Schemas/slyretailCategoriesSchemas.js';
 import { CashflowModel } from '../Schemas/slyretailCashflowSchemas.js';
+import { connectDB, databaseName } from '../Schemas/slyretailDbConfig.js';
 
 let isSaving = false
 let insertedCategories = []
@@ -11,8 +12,14 @@ let isUpdated = ''
 let amDeleted = ''
 export async function getCategoryTotals(startDate, endDate, payOutSearchInput,searchInput,pageSize, page,theCategoryName) {
   try {
-    const cashFlowCat = await CashflowCategoriesModel.find();
-    const cashFlowArray = await CashflowModel.find();
+      const db = await connectDB(databaseName);
+  if (db) {
+     const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
+    const cashFlowCat = await myCashflowCategoriesModel.find();
+    
+    const  myCashflowModelModel = CashflowModel(db);
+    const cashFlowArray = await myCashflowModelModel.find();
+
     let payOutCatArray = []
     let payOutSearchedCatArray = []
     let allPayOutCatTotals = 0
@@ -195,7 +202,7 @@ export async function getCategoryTotals(startDate, endDate, payOutSearchInput,se
 //========================================================================================================
 export async function getCategories() {
   try {
-    const allCashFlowCategories = await CashflowCategoriesModel.find()
+    const allCashFlowCategories = await myCashflowCategoriesModel.find()
     return { isocode, allCashFlowCategories };
   }
   catch (err) {
@@ -209,7 +216,7 @@ export async function updateAssignedCategories(assignedItemsArray, theCategoryNa
     for (let i = 0; i < assignedItemsArray.length; i++) {
       const cashFlowDataId = assignedItemsArray[i];
       try {
-        await CashflowModel.updateOne({ _id: ObjectId(cashFlowDataId) }, {
+        await myCashflowModelModel.updateOne({ _id: ObjectId(cashFlowDataId) }, {
           $set: {
             CashFlowCategory: theCategoryName
           }
@@ -238,7 +245,7 @@ export async function insertCategory(categoryToDb) {
     for (let a = 0; a < categoryToDb.length; a++) {
       const item = categoryToDb[a];
 
-      const categoryEntry = new CashflowCategoriesModel(item);
+      const categoryEntry = new myCashflowCategoriesModel(item);
       try {
         const result = await categoryEntry.save();
         if (result) {
@@ -264,14 +271,14 @@ export async function insertCategory(categoryToDb) {
 //=====================================================================================================
 export async function updateCategoryRow(categoryId, oldCatName, categoryName, categoryLimit, limitRange, balanceValue) {
   try {
-    const cashFlowArray = await CashflowModel.find();
+    const cashFlowArray = await myCashflowModelModel.find();
     ///loop in the cashflow array updating the category with the new category edited
     for (let i = 0; i < cashFlowArray.length; i++) {
       const cashFlowData = cashFlowArray[i];
       if (cashFlowData.CashFlowCategory === oldCatName.replace(/ /g, "_").toLowerCase()) {
         try {
           // cashFlowData.CashFlowCategory = categoryName
-          await CashflowModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
+          await myCashflowModelModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
             $set: {
               CashFlowCategory: categoryName
             }
@@ -291,11 +298,11 @@ export async function updateCategoryRow(categoryId, oldCatName, categoryName, ca
     }
     // console.log(cashFlowArray)
     //CHECK IF THE IS TO BE DELETED IS EITHER IN EXPENSE CATEGORY OR THE INCOME CATEGORY
-    const cateId = await CashflowCategoriesModel.findOne({ _id: ObjectId(categoryId) });
+    const cateId = await myCashflowCategoriesModel.findOne({ _id: ObjectId(categoryId) });
     if (cateId) {
       // update the  category
       try {
-        await CashflowCategoriesModel.updateOne({ _id: ObjectId(categoryId) }, {
+        await myCashflowCategoriesModel.updateOne({ _id: ObjectId(categoryId) }, {
           $set: {
             category: categoryName,
             CategoryLimit: Number(categoryLimit),
@@ -334,7 +341,7 @@ export async function deleteCategory(checkedRowsId) {
   let cashFlowId = []
   try {
 
-    cashFlows = await CashflowModel.find()
+    cashFlows = await myCashflowModelModel.find()
     // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
     //and the settings are to be kept under local storage
     cashFlows.sort((a, b) => {
@@ -353,14 +360,14 @@ export async function deleteCategory(checkedRowsId) {
           cashFlowId.push(ObjectId(cashFlows[i]._id))
         }
       }
-      const checkId = await CashflowCategoriesModel.findOne({ _id: catDataId });
+      const checkId = await myCashflowCategoriesModel.findOne({ _id: catDataId });
       if (checkId) {
         expDeleteId.push(ObjectId(catDataId))
       }
 
     }
     if (cashFlowId.length > 0) {
-      await CashflowModel.updateMany({ _id: { $in: cashFlowId } }, {
+      await myCashflowModelModel.updateMany({ _id: { $in: cashFlowId } }, {
         $set: {
           CashFlowCategory: 'suspense'
         }
@@ -368,7 +375,7 @@ export async function deleteCategory(checkedRowsId) {
 
     }
     if (expDeleteId.length > 0) {
-      await CashflowCategoriesModel.deleteMany({ _id: { $in: expDeleteId } })
+      await myCashflowCategoriesModel.deleteMany({ _id: { $in: expDeleteId } })
         .then(result => {
           console.log(`${result.deletedCount} document(s) were deleted`);
           if (result.deletedCount !== 0) {
@@ -378,7 +385,7 @@ export async function deleteCategory(checkedRowsId) {
         })
       //also create one in the respective category collections  payouts
       //check if suspense already exist
-      const suspenseExist = await CashflowCategoriesModel.findOne({ category: 'suspense' });
+      const suspenseExist = await myCashflowCategoriesModel.findOne({ category: 'suspense' });
       if (!suspenseExist) {
         await CashflowCategoriesModel.insertOne({
           category: 'suspense',
