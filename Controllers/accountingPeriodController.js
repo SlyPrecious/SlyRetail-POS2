@@ -1,12 +1,12 @@
 import { accountingPeriodModel } from '../Schemas/slyretailAccountingPeriodSettingsSchemas.js';
 import { ObjectId } from 'mongodb';
-import { connectDB, databaseName } from '../Schemas/slyretailDbConfig.js';
+import { connectDB, databaseName,signingCriteria} from '../Schemas/slyretailDbConfig.js';
 
 let isModified = false
 
 export async function getAccountingPeriodDetails() {
   // Step 1: Create a connection
-  const db = await connectDB(databaseName);
+  const db = await connectDB(databaseName,signingCriteria);
   if (db) {
     try {
       // const accountingPeriodModel = db.model('Accountingperiod', AccountingPeriodSettingsSchema);
@@ -25,7 +25,7 @@ export async function updateAccountingPeriod(id, startDate) {
   // Parse the startDate to a Date object
   try {
     // Step 1: Create a connection
-    const db = await connectDB(databaseName);
+    const db = await connectDB(databaseName,signingCriteria);
     if (db) {
       const start = new Date(startDate);
       // Calculate end date as December 31 of the same year
