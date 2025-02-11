@@ -7,7 +7,7 @@ import multer from 'multer';
 import csv from 'csv-parser';
 import fs from 'fs';
 import path from 'path';
-import { connectDB, databaseName } from '../Schemas/slyretailDbConfig.js';
+import { connectDB, myDatabase,signCriteria } from '../Schemas/slyretailDbConfig.js';
 
 //=================================================================================================================================================
 //THIS CALCULATES ALL THE CASH INFLOWS AND OUTFLOWS FOR A PARTICULAR PERIOD AND PRESENTS IT TO THE USER ON AN ASCENDING ORDER
@@ -22,7 +22,7 @@ let insertedCategories = [];
 let myCashflowModel = null; let myCurrenciesModel = null; let myCashflowCategoriesModel = null;
 export async function getCashFlowArray(startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, advancedSearchInput, searchInput, payOutSearchInput) {
     try {
-        const db = await connectDB(databaseName);
+        const db = await connectDb(myDatabase,signCriteria);
   if (db) {
        myCashflowModel = CashflowModel(db);
        cashFlows = await myCashflowModel.find();
