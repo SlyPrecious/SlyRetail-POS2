@@ -3174,8 +3174,8 @@ return
 
                                     if (rowId === '') {
                                         // MOVE FOCUS TO DESCRIPTION CELL
-                                        descriptionCell.focus();
                                         descriptionCell.contenteditable=true
+                                        descriptionCell.focus();
                                     }
                                     else if (rowId !== '') {
                                         //  use the fetch for the route with POST method and update the expense rate in the database
