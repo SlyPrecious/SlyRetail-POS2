@@ -2328,16 +2328,16 @@ fetch('/currencies')
                                             // Show alert
                                             if (data.amUpdated) {
                                                 notification('Updated')
-                                                spinner.style.display = 'none'
-                                                //UPDATE THE INTERFACE IF THE ARRAY UPDATE HAS SOMETHING
-                                                const sDate =
-                                                    localStorage.getItem("firstDate"); //DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
-                                                const eDate =
-                                                    localStorage.getItem("lastDate");
-                                                const startDate = new Date(sDate); //ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
-                                                const endDate = new Date(eDate);
-                                                // initializeDateRangePicker()
-                                                defaultDisplayContent2(startDate, endDate);
+                                                // spinner.style.display = 'none'
+                                                // //UPDATE THE INTERFACE IF THE ARRAY UPDATE HAS SOMETHING
+                                                // const sDate =
+                                                //     localStorage.getItem("firstDate"); //DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
+                                                // const eDate =
+                                                //     localStorage.getItem("lastDate");
+                                                // const startDate = new Date(sDate); //ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
+                                                // const endDate = new Date(eDate);
+                                                // // initializeDateRangePicker()
+                                                // defaultDisplayContent2(startDate, endDate);
 
                                             }
                                             else if (data.amUpdated === false) {
@@ -2348,7 +2348,7 @@ fetch('/currencies')
                                         .catch(error => {
                                             console.error(`Error updating Date field for expense ID: ${rowId}`, error);
                                         });
-
+return
                                 }
 
                             }
