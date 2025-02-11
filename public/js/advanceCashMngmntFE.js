@@ -3799,7 +3799,7 @@ return
                                             const CashFlowRate = parseFloat(newEmptyRow.querySelector('.expRate').innerText);
                                              //check if the user has entered vat stuff 
                                           
-                                            if (Object.keys(vatEntry).length !== 0 ) {
+                                            if (Object.keys(vatEntry).length === 0 ) {
                                             vatEntry = {
                                             QRCode: '',
                                             DeviceId: 0,
@@ -3812,7 +3812,7 @@ return
                                              }
                                             }
 
-                                         if (Object.keys(ztfEntry).length !== 0) {
+                                         if (Object.keys(ztfEntry).length === 0) {
                                             ztfEntry = {
                                             First: '',
                                             Second: '',
@@ -3860,7 +3860,7 @@ return
                                             //USE OUR ONE AND ONLY FUNCTION TO SAVE TO DATABASE
                                             if (itemsToProcess.length > 0) {
                                                 expenseAmount.blur(); // Remove focus from amount cell
-                                                // saveCashFlowRecord(itemsToProcess)
+                                                saveCashFlowRecord(itemsToProcess)
                                             }
                                         }
                                         else if (rowId !== '') {
