@@ -290,7 +290,7 @@ export async function updateCashFlowType(rowId, typeSelected) {
             }
         })
  //update the categories based on the type selected
-                 let categoryExist =await myCashflowCategoriesModel.findOne({ category: 'suspense' });
+                 let categoryExist =await myCashflowCategoriesModel.findOne({ category: 'suspense', Balance: typeSelected  });
                 if(!categoryExist){
                 try {
                     const categoryEntry = new myCashflowCategoriesModel({ category: 'suspense', CategoryLimit: 0, CategoryLimitRange: '', Balance: typeSelected });
