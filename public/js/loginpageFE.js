@@ -182,10 +182,7 @@ submitButton.addEventListener('click', (e) => {
                 window.location.href = '/advanceCashMngmnt';  // This runs in the browser
             } else {
                 document.querySelector('.myloader').style.display = 'none'
-                // notification(data.loggedInStatus);
-                // alert(data.loggedInStatus);
-                // console.log(data.loggedInStatus);
-                notification('Login failed. Please try again.');
+                notification(data.loggedInStatus);
             }
         })
 });
