@@ -3372,7 +3372,7 @@ return
                             const cashFlowDescriptionCell = newEmptyRow.querySelector('.editable-cell');
                             cashFlowDescriptionCell.addEventListener("click", function (event) {
                                 //now display full text
-                                cashFlowDescriptionCell.innerText = newEmptyRow.querySelector('.editable-cell').innerText
+                                cashFlowDescriptionCell.innerText = newEmptyRow.querySelector('.descriptionId').innerText
                                 // Add an event listener to all editable cells
                                 const range = document.createRange();
                                 const selection = window.getSelection();
