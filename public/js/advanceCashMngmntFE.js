@@ -3860,7 +3860,7 @@ return
                                             //USE OUR ONE AND ONLY FUNCTION TO SAVE TO DATABASE
                                             if (itemsToProcess.length > 0) {
                                                 expenseAmount.blur(); // Remove focus from amount cell
-                                                saveCashFlowRecord(itemsToProcess)
+                                                // saveCashFlowRecord(itemsToProcess)
                                             }
                                         }
                                         else if (rowId !== '') {
