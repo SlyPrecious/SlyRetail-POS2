@@ -2311,7 +2311,7 @@ fetch('/currencies')
                                     // Store the start and end date values in localStorage
                                     localStorage.setItem('firstDate', startDate);
                                     localStorage.setItem('lastDate', endDate);
-                                    initializeDateRangePicker()
+                                    // initializeDateRangePicker()
 
                                     fetch('/updateCashFlowDate', {
                                         method: 'POST',
@@ -2393,10 +2393,10 @@ return
                             //     let date = cashFlowDate.innerText
                             //     fixDate(date)
                             // })
-                            // invoiceCell.addEventListener("click", function (event) {
-                            //     let date = cashFlowDate.innerText
-                            //     fixDate(date)
-                            // })
+                            invoiceCell.addEventListener("click", function (event) {
+                                let date = cashFlowDate.innerText
+                                fixDate(date)
+                            })
                             // descriptionCell.addEventListener("click", function (event) {
                             //     let date = cashFlowDate.innerText
                             //     fixDate(date)
