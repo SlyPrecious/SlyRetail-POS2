@@ -10,8 +10,8 @@ export async function getadvancedHeaderStatusArray() {
             const headersModel = advaHeadersModel(db);
       const advancedHeaderStatus = await headersModel.find();
             console.log(advancedHeaderStatus)
-        }
         return { advancedHeaderStatus };
+        }
     } catch (err) {
         console.error('Error fetching status:', err);
     }
@@ -37,8 +37,9 @@ export async function saveHeaderStatusAdv(headerNamefcb, headerisDisplayed) {
                 isSaving = false;
             }
         })
-        }
         return { isSaving };
+        }
+            
     }
     catch (error) {
         console.error(error)
