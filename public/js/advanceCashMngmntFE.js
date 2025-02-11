@@ -3311,17 +3311,32 @@ return
                                 const dropdownMenu2 = new bootstrap.Dropdown(newEmptyRow.querySelector('.categorySpan')); // Create a new dropdown instance
                                 dropdownMenu2.hide();//close category dropdwn menu
                             }
-                            const payOutSubmitButton = newEmptyRow.querySelector(`.submitCat`)
-                            //on click of the add button send data to database
-                            payOutSubmitButton.addEventListener("click", (event) => {
-                                event.preventDefault()
-                                createNewCategory()
-                                 const dropdownMenu = new bootstrap.Dropdown(newEmptyRow.querySelector('.categorySpan')); // Create a new dropdown instance
-                                        dropdownMenu.hide(); //close the ctegory dropdwon
-                                        const nextDropdownButton = newEmptyRow.querySelector('.currbtnSpan');
-                                        const nextDropdown = new bootstrap.Dropdown(nextDropdownButton);
-                                        nextDropdown.toggle(); // Open the currency droPDOWN
-                            })
+                            const payOutSubmitButton = newEmptyRow.querySelector('.submitCat');
+
+payOutSubmitButton.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    // Perform your action (e.g., sending data to the database)
+    createNewCategory();
+
+    // Close the category dropdown
+    const categoryDropdownElement = newEmptyRow.querySelector('.categorySpan');
+    if (categoryDropdownElement) {
+        const categoryDropdown = new bootstrap.Dropdown(categoryDropdownElement);
+        categoryDropdown.hide(); // Close the category dropdown
+    } else {
+        console.error("Category dropdown element not found!");
+    }
+
+    // Open the currency dropdown
+    const currencyDropdownButton = newEmptyRow.querySelector('.currbtnSpan');
+    if (currencyDropdownButton) {
+        const currencyDropdown = new bootstrap.Dropdown(currencyDropdownButton);
+        currencyDropdown.toggle(); // Open the currency dropdown
+    } else {
+        console.error("Currency dropdown button not found!");
+    }
+});
                             //if the key pressed is enter , add the event on the category cell
                             newEmptyRow.querySelector('.categories-cell').addEventListener("keydown", (event) => {
                                 if (event.key === 'Enter') {
