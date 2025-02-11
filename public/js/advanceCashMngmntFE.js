@@ -2286,7 +2286,32 @@ fetch('/currencies')
                                     notification('invalid date format')
                                     return
                                 }
-                                if (rowId === '') {
+                               
+
+                            }
+                            cashFlowDate.addEventListener('keydown', (event) => {
+                                // Add click and keydown event listeners in one line
+                                const keyCode = event.keyCode;
+                                if ((keyCode >= 48 && keyCode <= 57) || // numbers 0-9
+                                    (keyCode == 191 || keyCode == 111) || // forward slash (/) on regular or numeric keyboard
+                                    (keyCode == 8) || // backspace
+                                    (keyCode == 9) || // tab
+                                    (keyCode == 37 || keyCode == 39) || // left and right arrow keys
+                                    (keyCode >= 96 && keyCode <= 105) || // numeric keypad
+                                    (keyCode == 109 || keyCode == 189) || // hyphen (-)
+                                    (keyCode == 190 || keyCode == 110)) { // period (.) 
+                                    // Allow input
+                                } else {
+                                    // Prevent input
+                                    event.preventDefault();
+                                }
+
+                                // Add click and keydown event listeners in one line
+                                if (event.key === "Enter" || event.key === 'Tab') {//WHEN ENTER IS CLICKED or tab is clicked
+                                    event.preventDefault()
+                                    let date = cashFlowDate.innerText
+                                    fixDate(date)
+                                     if (rowId === '') {
                                     hasId = false
 
                                 }
@@ -2329,15 +2354,15 @@ fetch('/currencies')
                                             if (data.amUpdated) {
                                                 notification('Updated')
                                                 // spinner.style.display = 'none'
-                                                // //UPDATE THE INTERFACE IF THE ARRAY UPDATE HAS SOMETHING
-                                                // const sDate =
-                                                //     localStorage.getItem("firstDate"); //DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
-                                                // const eDate =
-                                                //     localStorage.getItem("lastDate");
-                                                // const startDate = new Date(sDate); //ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
-                                                // const endDate = new Date(eDate);
-                                                // // initializeDateRangePicker()
-                                                // defaultDisplayContent2(startDate, endDate);
+                                                //UPDATE THE INTERFACE IF THE ARRAY UPDATE HAS SOMETHING
+                                                const sDate =
+                                                    localStorage.getItem("firstDate"); //DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
+                                                const eDate =
+                                                    localStorage.getItem("lastDate");
+                                                const startDate = new Date(sDate); //ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
+                                                const endDate = new Date(eDate);
+                                                // initializeDateRangePicker()
+                                                defaultDisplayContent2(startDate, endDate);
 
                                             }
                                             else if (data.amUpdated === false) {
@@ -2350,30 +2375,6 @@ fetch('/currencies')
                                         });
 return
                                 }
-
-                            }
-                            cashFlowDate.addEventListener('keydown', (event) => {
-                                // Add click and keydown event listeners in one line
-                                const keyCode = event.keyCode;
-                                if ((keyCode >= 48 && keyCode <= 57) || // numbers 0-9
-                                    (keyCode == 191 || keyCode == 111) || // forward slash (/) on regular or numeric keyboard
-                                    (keyCode == 8) || // backspace
-                                    (keyCode == 9) || // tab
-                                    (keyCode == 37 || keyCode == 39) || // left and right arrow keys
-                                    (keyCode >= 96 && keyCode <= 105) || // numeric keypad
-                                    (keyCode == 109 || keyCode == 189) || // hyphen (-)
-                                    (keyCode == 190 || keyCode == 110)) { // period (.) 
-                                    // Allow input
-                                } else {
-                                    // Prevent input
-                                    event.preventDefault();
-                                }
-
-                                // Add click and keydown event listeners in one line
-                                if (event.key === "Enter" || event.key === 'Tab') {//WHEN ENTER IS CLICKED or tab is clicked
-                                    event.preventDefault()
-                                    let date = cashFlowDate.innerText
-                                    fixDate(date)
                                     //check if the text is present
                                     if (cashFlowDate.innerText !== '') {
                                         //now focus on the next cell
