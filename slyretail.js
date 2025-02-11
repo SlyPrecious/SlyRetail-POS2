@@ -739,11 +739,11 @@ app.get('/cashFlowArray', async (req, res) => {
   }
 });
 //=======================================================================================
-// app.get('/TrialBalance', async (req, res) => {
-//   const { isocode, totalCostIncome, totalCostExpenses } = await getTrialBalanceData()
-//   const accountName = dbName
-//   res.render("trialBalance", { isocode, accountName, totalCostIncome, totalCostExpenses });
-// });
+app.get('/TrialBalance', async (req, res) => {
+  const { isocode, totalCostIncome, totalCostExpenses } = await getTrialBalanceData()
+  const accountName = dbName
+  res.render("trialBalance", { isocode, accountName, totalCostIncome, totalCostExpenses });
+});
 
 //===========================================================================================
 //CATEGORIES PAGE
