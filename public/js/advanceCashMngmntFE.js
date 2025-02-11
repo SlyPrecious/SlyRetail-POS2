@@ -4084,7 +4084,7 @@ fetch('/currencies')
                         async function saveCashFlowRecord(itemsToProcess) {
                             //THEN LET THE SERVER STORE IT IN THE DATABASE
                             spinner.style.display = 'block'
-                            fetch('/cashFlowData', { //THIS IS AN API END POINT TO CARRY THE VARIABLE NAMES TO ANOTHER JS MODULE WHICH WILL BE THE SEVER
+                            fetch('/saveCashflow', { //THIS IS AN API END POINT TO CARRY THE VARIABLE NAMES TO ANOTHER JS MODULE WHICH WILL BE THE SEVER
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
