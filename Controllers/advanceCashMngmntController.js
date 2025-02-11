@@ -4,7 +4,7 @@ import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
 import { ExpenseCategoriesModel } from '../Schemas/slyretailExpenseCategoriesSchemas.js';
 import { IncomeCategoriesModel } from '../Schemas/slyretailIncomeCategoriesSchemas.js';
 import { WorldCurrencies } from "../public/js/worldCurrency.js";
-import { connectDB, databaseName } from '../Schemas/slyretailDbConfig.js';
+import { connectDB, myDatabase,signCriteria } from '../Schemas/slyretailDbConfig.js';
 
 let currencies = [];
 let intervalArray = [];
@@ -14,7 +14,7 @@ let symbols = {};//this variable object will contain all the currency symbolss i
 export async function advCashMngmnt() {
 
     try {
-          const db = await connectDB(databaseName);
+          const db = await connectDB(myDatabase,signCriteria);
          if (db) {
         // //THIS CODE IS SENDING THE ARRAY OF CURRENCIES FROM THE DATABASE TO THE HTML/ CLIENT'S SIDE THE LIST OF CURRENCIES ON THE MY EXPENSES DROPDOWN MENU
   const myCurrenciesModel = CurrenciesModel(db);
