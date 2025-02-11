@@ -1,11 +1,15 @@
 import { CashflowModel } from '../Schemas/slyretailCashflowSchemas.js';
+import { connectDB, myDatabase,signCriteria } from '../Schemas/slyretailDbConfig.js';
 let cashFlows = [] //SO THAT IT WILL BE ENABLED TO BE SORTED
 let cashFlowArray = []
 let allCashFlows = []
 
 export async function exportingArray(startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, exportingCriteria, advExportingCriteria) {
     try {
-        cashFlows = await CashflowModel.find();
+           const db = await connectDB(myDatabase,signCriteria);
+         if (db) {
+        const myCashflowModel = CashflowModel(db);
+          cashFlows  = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her and the settings to be kept under local storage
         cashFlows.sort((a, b) => {
             const [dayA, monthA, yearA] = a.CashFlowDate.split('/');
@@ -15,7 +19,6 @@ export async function exportingArray(startDate, endDate, pageSize, page, payInFi
 
         for (let a = 0; a < cashFlows.length; a++) { //first loop for the purpose of PAYINs AND OUTs totals
             //DURING THIS LOOP, ONE CAN TAKE ADVANTAGE AND CALCULATE THE OPENING BAL FOR BOTH THE PAYINs AND OUTs
-
             const row = cashFlows[a];
             const date = row.CashFlowDate;
             const parts = date.split("/");
@@ -70,6 +73,7 @@ export async function exportingArray(startDate, endDate, pageSize, page, payInFi
             itemsToProcess: itemsToProcess //THIS MUST ONLY CONTAINS THE INFORMATION OF WHATEVER THAT IS THE CURRENT PAGE BY THE USER
         };
         return { data, cashFlows };
+         }
     }
     catch (err) {
         console.error('Error connecting to MongoDB:', err);
@@ -78,7 +82,10 @@ export async function exportingArray(startDate, endDate, pageSize, page, payInFi
 //==============================================================================================================================
 export async function arrayForImport() {
     try {
-        cashFlows = await CashflowModel.find();
+         const db = await connectDB(myDatabase,signCriteria);
+         if (db) {
+        const myCashflowModel = CashflowModel(db);
+          cashFlows  = await myCashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her and the settings to be kept under local storage
         cashFlows.sort((a, b) => {
             const [dayA, monthA, yearA] = a.CashFlowDate.split('/');
@@ -86,6 +93,7 @@ export async function arrayForImport() {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         return {cashFlows };
+         }
     }
     catch (err) {
         console.error('Error connecting to MongoDB:', err);
