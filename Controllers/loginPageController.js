@@ -254,7 +254,6 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                 return
             }
         }
-        console.log(loggedInStatus + ' Controller loggin status')
         return { loggedInStatus }
         // return { loggedInStatus: loggedInStatus, currencies: currencies };
     } catch (error) {
@@ -272,9 +271,7 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
 
         const db = await connectDB(databaseName);
         if (db) {
-            console.log('on creation')
             // Create the model with the specific connection
-            // const currModel = myCurrenciesModelModel(db);
             currencies = await myCurrenciesModelModel.find()
             //this is to keep the current structure of databases, the web interface does not have a version but the database will need to be controlled
             const newVersionEntry = new myversionControlModelModel({ version: currentVersion });
@@ -316,7 +313,7 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
                 console.error("Error inserting accounting period", error);
                 return
             }
-            const data = [{ HeaderName: 'Date', isDisplayed: true }, { HeaderName: 'ShiftNo', isDisplayed: true },
+            const data = [{ HeaderName: 'Date', isDisplayed: true }, { HeaderName: 'ShiftNo', isDisplayed: true },{ HeaderName: 'Tax', isDisplayed: true },
             { HeaderName: 'InvoiceRef', isDisplayed: true }, { HeaderName: 'Tax', isDisplayed: true }, { HeaderName: 'Description', isDisplayed: true },
             { HeaderName: 'Category', isDisplayed: true }, { HeaderName: 'Currency', isDisplayed: true }, { HeaderName: 'Amount', isDisplayed: true },
             { HeaderName: 'Rate', isDisplayed: true }, { HeaderName: 'CashEquiv', isDisplayed: true }, { HeaderName: 'RunningBalance', isDisplayed: true }]
@@ -324,13 +321,9 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
                 try {
                     // Using insertMany to insert multiple documents at once
                     await myadvHeadersModelModel.insertMany(data);
-                    const result = new myadvHeadersModelModel({ HeaderName: 'Tax', isDisplayed: true });
-                    await result.save();
                 } catch (error) {
                     console.error('Error saving adv headers:', error);
                 }
-
-              
             } catch (error) {
                 console.error('Error inserting headers:', error);
             }
@@ -338,7 +331,6 @@ async function createDatabase(email, databaseName, databasePassword, signingCrit
             // Save credentials
             const createAndSaveCredentials = async (User_Account, DbPassword, Email) => {
                 try {
-                    // await connectDB(databaseName);
                     const newCredentials = new myCredentialsModelModel({ User_Account, DbPassword, Email });
                     await newCredentials.save();
                     return "True";
