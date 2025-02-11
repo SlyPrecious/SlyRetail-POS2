@@ -2398,10 +2398,10 @@ return
                                 let date = cashFlowDate.innerText
                                 fixDate(date)
                             })
-                            // descriptionCell.addEventListener("click", function (event) {
-                            //     let date = cashFlowDate.innerText
-                            //     fixDate(date)
-                            // })
+                            descriptionCell.addEventListener("click", function (event) {
+                                let date = cashFlowDate.innerText
+                                fixDate(date)
+                            })
                             // newEmptyRow.querySelector('.categories-cell').addEventListener("click", function (event) {
                             //     let date = cashFlowDate.innerText
                             //     fixDate(date)
