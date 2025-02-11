@@ -381,96 +381,96 @@ fetch('/currencies')
                             }
                         })
                         //===========================================================================
-                        //const categorySpan = document.querySelector('.cate-Btn-Span');
-                        const categoriesDrpn = document.querySelector('.categories');
-                        const categoriesDrpn1 = document.querySelector('.incCategories');
-                        const catCaret = document.querySelector('.ccaret');
+                        // //const categorySpan = document.querySelector('.cate-Btn-Span');
+                        // const categoriesDrpn = document.querySelector('.categories');
+                        // const categoriesDrpn1 = document.querySelector('.incCategories');
+                        // const catCaret = document.querySelector('.ccaret');
 
-                        //THIS IS FOR THE SELECT PAYMENT TYPE DROPDOWN MENU
-                        const selectBtn = document.querySelector(".select-btn");
-                        const selectMenu = document.querySelector('.currencies');
-                        const caret = document.querySelector('.caretForm');
-                        let myType = ''
+                        // //THIS IS FOR THE SELECT PAYMENT TYPE DROPDOWN MENU
+                        // const selectBtn = document.querySelector(".select-btn");
+                        // const selectMenu = document.querySelector('.currencies');
+                        // const caret = document.querySelector('.caretForm');
+                        // let myType = ''
 
-                        document.querySelector(".cate-btn").addEventListener("click", function () {
-                            if (document.querySelector('.myCurrentType').innerText === 'Pay in') {
-                                categoriesDrpn1.classList.toggle('categories-open2');
-                                catCaret.classList.toggle('caret-rotate');
-                            }
-                            if (document.querySelector('.myCurrentType').innerText === 'Payout') {
-                                categoriesDrpn.classList.toggle('categories-open3');
-                                catCaret.classList.toggle('caret-rotate1');
-                            }
+                        // document.querySelector(".cate-btn").addEventListener("click", function () {
+                        //     if (document.querySelector('.myCurrentType').innerText === 'Pay in') {
+                        //         categoriesDrpn1.classList.toggle('categories-open2');
+                        //         catCaret.classList.toggle('caret-rotate');
+                        //     }
+                        //     if (document.querySelector('.myCurrentType').innerText === 'Payout') {
+                        //         categoriesDrpn.classList.toggle('categories-open3');
+                        //         catCaret.classList.toggle('caret-rotate1');
+                        //     }
 
-                        });
+                        // });
 
-                        selectBtn.addEventListener("click", function () {
-                            if (categoriesDrpn.classList.contains('categories-open3')) {
-                                catCaret.classList.remove('caret-rotate1');
-                                categoriesDrpn.classList.remove('categories-open3');
-                            }
-                            if (categoriesDrpn1.classList.contains('categories-open2')) {
-                                catCaret.classList.remove('caret-rotate');
+                        // selectBtn.addEventListener("click", function () {
+                        //     if (categoriesDrpn.classList.contains('categories-open3')) {
+                        //         catCaret.classList.remove('caret-rotate1');
+                        //         categoriesDrpn.classList.remove('categories-open3');
+                        //     }
+                        //     if (categoriesDrpn1.classList.contains('categories-open2')) {
+                        //         catCaret.classList.remove('caret-rotate');
 
-                                categoriesDrpn1.classList.remove('categories-open2');
-                            }
-                            // add the rotate style to the caret element
-                            caret.classList.toggle('caret-rotate');
-                            // then make the Drpn open
-                            selectMenu.classList.toggle('currencies-open2');
-                        });
+                        //         categoriesDrpn1.classList.remove('categories-open2');
+                        //     }
+                        //     // add the rotate style to the caret element
+                        //     caret.classList.toggle('caret-rotate');
+                        //     // then make the Drpn open
+                        //     selectMenu.classList.toggle('currencies-open2');
+                        // });
 
                         //when the currencies Drpn is open, loop thru all the list of currencies puting the event listeners
-                        const options = document.querySelectorAll(".option");
-                        options.forEach(option => {
-                            option.addEventListener("click", function () {
-                                //when the currency has been selected, let it be shown on the screen by renaming 'Select Payment Type into the selected currency'
-                                document.querySelector(".btn-text").innerText = option.innerText;
-                                const formRate = document.getElementById('label-rate');
-                                //update the text content of the rate span with the corresponding rate
-                                //loop thru the currencies array checking if the selected currency matches the currency name in the array if it does collect
-                                //the  rate of the matched currency name
-                                for (let i = 0; i < newCurrencies.length; i++) {
-                                    const currency_rate = newCurrencies[i]
-                                    if (option.innerText === currency_rate.Currency_Name) {
-                                        const rateSpan = currency_rate.RATE;
-                                        formRate.innerText = rateSpan;
-                                    }
-                                    //  console.log(formRate.innerText)
+                        // const options = document.querySelectorAll(".option");
+                        // options.forEach(option => {
+                        //     option.addEventListener("click", function () {
+                        //         //when the currency has been selected, let it be shown on the screen by renaming 'Select Payment Type into the selected currency'
+                        //         document.querySelector(".btn-text").innerText = option.innerText;
+                        //         const formRate = document.getElementById('label-rate');
+                        //         //update the text content of the rate span with the corresponding rate
+                        //         //loop thru the currencies array checking if the selected currency matches the currency name in the array if it does collect
+                        //         //the  rate of the matched currency name
+                        //         for (let i = 0; i < newCurrencies.length; i++) {
+                        //             const currency_rate = newCurrencies[i]
+                        //             if (option.innerText === currency_rate.Currency_Name) {
+                        //                 const rateSpan = currency_rate.RATE;
+                        //                 formRate.innerText = rateSpan;
+                        //             }
+                        //             //  console.log(formRate.innerText)
 
-                                }
-                                //then rotate the caret to its normal position
-                                caret.classList.remove('ccaret-rotate');
-                                //and close the dropdown menu
-                                selectMenu.classList.remove('currencies-open');
-                                //Soon after adding the name, add all other things like the rate and so forth...
-                            });
-                        });
+                        //         }
+                        //         //then rotate the caret to its normal position
+                        //         caret.classList.remove('ccaret-rotate');
+                        //         //and close the dropdown menu
+                        //         selectMenu.classList.remove('currencies-open');
+                        //         //Soon after adding the name, add all other things like the rate and so forth...
+                        //     });
+                        // });
 
-                        //WHEN THE USER CLICKES THE CATEGORY DROPDOWN ON THE EDIT FORM
-                        //when the categories categoriesDropdown is open, loop thru all the list of Categories putting the event listeners
-                        const coptions = document.querySelectorAll(".cate-option");
-                        const incOptions = document.querySelectorAll(".incCate-option");
-                        const categoryCaret = document.querySelector('.ccaret'); //remove ama payout cat 
-                        coptions.forEach(categoryOptions => {
-                            categoryOptions.addEventListener("click", function () {
-                                //when the category has been selected, let it be shown on the screen by renaming 'Category... into the selected category'
-                                document.querySelector(".cate-Btn-Span").innerText = categoryOptions.innerText;
-                                catCaret.classList.remove('caret-rotate1');
-                                categoriesDrpn.classList.remove('categories-open3');
-                            })
-                        })
+                        // //WHEN THE USER CLICKES THE CATEGORY DROPDOWN ON THE EDIT FORM
+                        // //when the categories categoriesDropdown is open, loop thru all the list of Categories putting the event listeners
+                        // const coptions = document.querySelectorAll(".cate-option");
+                        // const incOptions = document.querySelectorAll(".incCate-option");
+                        // const categoryCaret = document.querySelector('.ccaret'); //remove ama payout cat 
+                        // coptions.forEach(categoryOptions => {
+                        //     categoryOptions.addEventListener("click", function () {
+                        //         //when the category has been selected, let it be shown on the screen by renaming 'Category... into the selected category'
+                        //         document.querySelector(".cate-Btn-Span").innerText = categoryOptions.innerText;
+                        //         catCaret.classList.remove('caret-rotate1');
+                        //         categoriesDrpn.classList.remove('categories-open3');
+                        //     })
+                        // })
 
-                        //remove ama payin cat 
-                        incOptions.forEach(categoryOptions => {
-                            categoryOptions.addEventListener("click", function () {
-                                //when the category has been selected, let it be shown on the screen by renaming 'Category... into the selected category'
-                                document.querySelector(".cate-Btn-Span").innerText = categoryOptions.innerText;
-                                catCaret.classList.remove('caret-rotate');
-                                categoriesDrpn.classList.remove('categories-open2');
+                        // //remove ama payin cat 
+                        // incOptions.forEach(categoryOptions => {
+                        //     categoryOptions.addEventListener("click", function () {
+                        //         //when the category has been selected, let it be shown on the screen by renaming 'Category... into the selected category'
+                        //         document.querySelector(".cate-Btn-Span").innerText = categoryOptions.innerText;
+                        //         catCaret.classList.remove('caret-rotate');
+                        //         categoriesDrpn.classList.remove('categories-open2');
 
-                            })
-                        })
+                        //     })
+                        // })
 
 
 
