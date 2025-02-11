@@ -65,7 +65,7 @@ export async function getCashFlowArray(startDate, endDate, pageSize, page, payIn
             //    console.log(row)
             const parts = date.split("/");
             const formattedDate = parts[1] + "/" + parts[0] + "/" + parts[2];
-            const formattedDates2 = new Date(formattedDate);
+            const theBeforeExpenses = new Date(formattedDate);
             //RE CALCULATE THE CASH EQUIVE BASE ON THE CURRENCY SELECTED
 
             const relativeRate = row.CashFlowRate / baseCurrency.RATE;
@@ -173,6 +173,8 @@ console.log("formattedDates2:", formattedDates2);
 
             }
         }
+console.log("theBeforeExpenses:", theBeforeExpenses);
+console.log("theBeforeIncome:", theBeforeIncome);
 
         // console.log(index2 +'index2')
         //THE OPENING BALANCE FOR THE SELECTED RANGE
