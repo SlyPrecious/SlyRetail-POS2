@@ -62,7 +62,6 @@ const connectDB = async (databaseName, signingCriteria) => {
             console.log(`Connected to database '${databaseName}' successfully.`);
       
         }
-        console.log(signCriteria+myDatabase)
        const myConnection =connections[normalizedDatabaseName]
         return myConnection;
     } catch (error) {
