@@ -2599,22 +2599,22 @@ return
                                                 newEmptyRow.classList.add('rowPayIn')
                                             }
                                             //get the inserted value
-                                            let payInCat = {};
-                                            if (newCategory.includes(" ")) {
-                                                payInCat["category"] = newCategory.replace(/ /g, "_").toLowerCase();
-                                                newCategory = newCategory.replace(/ /g, "_").toLowerCase();
-                                            }
-                                            else {
-                                                payInCat["category"] = newCategory.toLowerCase();
-                                                newCategory = newCategory.toLowerCase();
-                                            }
-                                            payInCat["CategoryLimit"] = 0;
-                                            payInCat["CategoryLimitRange"] = "";
-                                            payInCat["Balance"] = "PayIn";
-                                            const categoryName = Array.from(newIncomeCategories).find(cat => (cat.category).toLowerCase() === newCategory)
-                                            if (!categoryName) {
-                                                categoryToDb.push(payInCat)
-                                            }
+                                            // let payInCat = {};
+                                            // if (newCategory.includes(" ")) {
+                                            //     payInCat["category"] = newCategory.replace(/ /g, "_").toLowerCase();
+                                            //     newCategory = newCategory.replace(/ /g, "_").toLowerCase();
+                                            // }
+                                            // else {
+                                            //     payInCat["category"] = newCategory.toLowerCase();
+                                            //     newCategory = newCategory.toLowerCase();
+                                            // }
+                                            // payInCat["CategoryLimit"] = 0;
+                                            // payInCat["CategoryLimitRange"] = "";
+                                            // payInCat["Balance"] = "PayIn";
+                                            // const categoryName = Array.from(newIncomeCategories).find(cat => (cat.category).toLowerCase() === newCategory)
+                                            // if (!categoryName) {
+                                            //     categoryToDb.push(payInCat)
+                                            // }
                                         }
                                         if (type.innerText === 'Payout') {
                                             if (newEmptyRow.classList.contains('rowPayIn')) {
@@ -2634,22 +2634,22 @@ return
 
                                             //then save in the category array mu database
                                             //get the inserted value
-                                            let payOutCat = {};
-                                            if (newCategory.includes(" ")) {
-                                                payOutCat["category"] = newCategory.replace(/ /g, "_").toLowerCase();
-                                                newCategory = newCategory.replace(/ /g, "_").toLowerCase();
-                                            }
-                                            else {
-                                                payOutCat["category"] = newCategory.toLowerCase();
-                                                newCategory = newCategory.toLowerCase();
-                                            }
-                                            payOutCat["CategoryLimit"] = 0;
-                                            payOutCat["CategoryLimitRange"] = "";
-                                            payOutCat["Balance"] = "PayOut";
-                                            const categoryName = Array.from(newExpenseCategories).find(cat => (cat.category).toLowerCase() === newCategory)
-                                            if (!categoryName) {
-                                                categoryToDb.push(payOutCat)
-                                            }
+                                            // let payOutCat = {};
+                                            // if (newCategory.includes(" ")) {
+                                            //     payOutCat["category"] = newCategory.replace(/ /g, "_").toLowerCase();
+                                            //     newCategory = newCategory.replace(/ /g, "_").toLowerCase();
+                                            // }
+                                            // else {
+                                            //     payOutCat["category"] = newCategory.toLowerCase();
+                                            //     newCategory = newCategory.toLowerCase();
+                                            // }
+                                            // payOutCat["CategoryLimit"] = 0;
+                                            // payOutCat["CategoryLimitRange"] = "";
+                                            // payOutCat["Balance"] = "PayOut";
+                                            // const categoryName = Array.from(newExpenseCategories).find(cat => (cat.category).toLowerCase() === newCategory)
+                                            // if (!categoryName) {
+                                            //     categoryToDb.push(payOutCat)
+                                            // }
                                         }
 
                                         newEmptyRow.querySelector('.categorySpan').innerText = newCategory
@@ -2676,9 +2676,9 @@ return
                                         }
                                         spinner.style.display = 'block';
                                         const typeSelected = type.innerText
-                                        if (categoryToDb.length > 0) {
-                                            insertCategoryRecord(categoryToDb)
-                                        }
+                                        // if (categoryToDb.length > 0) {
+                                        //     insertCategoryRecord(categoryToDb)
+                                        // }
                                         //endesa ku database the result
                                         fetch('/updateCashFlowType', {
                                             method: 'POST',
