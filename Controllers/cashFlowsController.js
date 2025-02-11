@@ -74,10 +74,11 @@ export async function getCashFlowArray(startDate, endDate, pageSize, page, payIn
             //GET THE VALUE OF THE PREVIOUS MONTH BASED ON THE RANGE SELECTED
             const momntStartDate = moment(startDate)
             let theBeforeStartDate = momntStartDate.subtract(1, "days")
-
             theBeforeStartDate = new Date(theBeforeStartDate)
+console.log("theBeforeStartDate:", theBeforeStartDate);
+console.log("formattedDates2:", formattedDates2);
             if (row.CashFlowType === "Payout") {
-                if (theBeforeStartDate.getTime() >= formattedDates2.getTime()) {
+                if (formattedDates2.getTime() >= formattedDates2.getTime()) {
                     theBeforeExpenses += parseFloat(row.CashFlowCashEquiv);
                 }
             }
