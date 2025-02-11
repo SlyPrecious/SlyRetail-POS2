@@ -51,7 +51,8 @@ async function signUpSignIn(databaseName, email, databasePassword, signingCriter
                         currencies = await myCurrenciesModelModel.find()
                     } else {
                         loggedInStatus = "Password dont match or account dont exist";
-                        return loggedInStatus
+                        console.log('password dont match')
+                        // return loggedInStatus
                     }
                 } catch (error) {
                     console.error("Error occurred while querying CredentialsModel:", error);
