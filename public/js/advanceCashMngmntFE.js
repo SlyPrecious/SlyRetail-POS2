@@ -4104,7 +4104,7 @@ return
                                                     if (document.querySelector(".myCheck").checked === true) {
                                                         document.querySelector(".myCheck").checked = false
                                                     }
-                                                    location.href = "/advanceCashMngmnt"
+                                                    defaultDisplayContent2(startDate, endDate)
                                                 }
                                             })
 
