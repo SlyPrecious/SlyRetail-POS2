@@ -293,12 +293,12 @@ export async function updateCashFlowType(rowId, typeSelected) {
         if(typeSelected==='Pay in'){
             typeSelected='PayIn'
         }
-        else if(typeSelected==='Payout'){{
+        else if(typeSelected==='Payout'){
             typeSelected='PayOut'
         }
                  let categoryExist =await myCashflowCategoriesModel.findOne({ category: 'suspense', Balance: typeSelected  });
                console.log(typeSelected)
-                                         if(!categoryExist){
+               if(!categoryExist){
                 try {
                     const categoryEntry = new myCashflowCategoriesModel({ category: 'suspense', CategoryLimit: 0, CategoryLimitRange: '', Balance: typeSelected });
                   await categoryEntry.save()
