@@ -5,11 +5,12 @@ let isConnected = false; // Track the connection status
 let Databases = [];
 // Object to store connections for each user/database
 let connections = {};
-   let databaseName = ''
-let signingCriteria = ''
+   let myDatabase = ''
+let signCriteria = ''
 const connectDB = async (databaseName, signingCriteria) => {
     const normalizedDatabaseName = databaseName.toLowerCase();
- 
+ myDatabase=databaseName
+ signCriteria=signingCriteria
     // MongoDB Atlas connection URI
     const uri = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority";
 
@@ -26,8 +27,7 @@ const connectDB = async (databaseName, signingCriteria) => {
             isConnected = true;
             connections[normalizedDatabaseName] = newConnection;
             console.log(`Database '${databaseName}' created successfully.`);
-   databaseName = databaseName
-    signingCriteria = signingCriteria
+ 
         }
 
         if (signingCriteria === "Sign In") {
@@ -48,11 +48,11 @@ const connectDB = async (databaseName, signingCriteria) => {
             isConnected = true;
             connections[normalizedDatabaseName] = newConnection;
             console.log(`Connected to database '${databaseName}' successfully.`);
-               databaseName = databaseName
-    signingCriteria = signingCriteria
+      
         }
-        console.log(signingCriteria1+databaseName1)
-        return connections[normalizedDatabaseName];
+        console.log(signCriteria+myDatabase)
+       const myConnection =connections[normalizedDatabaseName]
+        return myConnection;
     } catch (error) {
         isConnected = false;
         console.error('Error connecting to MongoDB:', error);
@@ -90,4 +90,4 @@ const logout = async (databaseName) => {
         console.error(`Error closing MongoDB connection for ${databaseName}:`, error);
     }
 };
-export { connectDB,databaseName,signingCriteria, logout };
+export { connectDB,myDatabase,signCriteria, logout };
