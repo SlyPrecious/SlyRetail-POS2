@@ -3787,7 +3787,29 @@ return
                                             const Currency_Name = newEmptyRow.querySelector('.currbtnSpan').innerText;
                                             const CashFlowAmount = parseFloat(newEmptyRow.querySelector('.expAmount').innerText);
                                             const CashFlowRate = parseFloat(newEmptyRow.querySelector('.expRate').innerText);
+                                             //check if the user has entered vat stuff 
+                                            if (Object.keys(vatEntry).length !== 0 ) {
+                                            vatEntry = {
+                                            QRCode: '',
+                                            DeviceId: 0,
+                                            ZimraFsNo: '',
+                                            VatNumber:0,
+                                            TinNumber: 0,
+                                            VatAmount: 0,
+                                            VatStatus: 'N', // Add additional status or logic if needed
+                                            taxName: 'vat', // Add additional status or logic if needed
+                                             }
+                                            }
 
+                                        else if (Object.keys(ztfEntry).length !== 0) {
+                                            ztfEntry = {
+                                            First: '',
+                                            Second: '',
+                                            LevyAmount: 0,
+                                            ZtfStatus: 'N', // Add additional status or logic if needed
+                                            taxName: 'ztf', // Add additional status or logic if needed
+                                             }
+                                            }
                                             // scroll to the beginning of the table
                                             // tableContainer.scrollLeft = 0;
                                             //FIRST UPDATE THE ARRAY WITH THE INSERTED DATA
