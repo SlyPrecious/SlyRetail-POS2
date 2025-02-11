@@ -22,7 +22,7 @@ let insertedCategories = [];
 let myCashflowModel = null; let myCurrenciesModel = null; let myCashflowCategoriesModel = null;
 export async function getCashFlowArray(startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, advancedSearchInput, searchInput, payOutSearchInput) {
     try {
-        const db = await connectDb(myDatabase,signCriteria);
+        const db = await connectDB(myDatabase,signCriteria);
   if (db) {
        myCashflowModel = CashflowModel(db);
        cashFlows = await myCashflowModel.find();
