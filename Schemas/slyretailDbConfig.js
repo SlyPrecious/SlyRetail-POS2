@@ -16,7 +16,19 @@ const connectDB = async (databaseName, signingCriteria) => {
 
     try {
         if (signingCriteria === "Sign Up") {
-            // Create a new Mongoose connection for the database
+             const host = "mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/?retryWrites=true&w=majority"
+        // Create a new MongoClient instance and pass in the connection URI and options
+        const client = new MongoClient(host, {
+            useNewUrlParser: true,  // Use the modern URL parser
+            useUnifiedTopology: true  // Use the new unified topology engine
+        });
+        //CHECK IF THE DATABASE THAT THE USER IS CREATING IS ALREADY THERE.
+        const adminDb = client.db().admin();
+        const databasesList = await adminDb.listDatabases();
+        Databases.push(...databasesList.databases.map(db => db.name));
+        const lowerCaseDatabases = Databases.map(db => db.toLowerCase());
+        if (!lowerCaseDatabases.includes(normalizedDatabaseName)) {
+                 // Create a new Mongoose connection for the database
             const newConnection = await mongoose.createConnection(`mongodb+srv://slyretailpos:1234marsr@cluster0.kv9k65a.mongodb.net/${normalizedDatabaseName}?retryWrites=true&w=majority`, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
@@ -27,7 +39,7 @@ const connectDB = async (databaseName, signingCriteria) => {
             isConnected = true;
             connections[normalizedDatabaseName] = newConnection;
             console.log(`Database '${databaseName}' created successfully.`);
- 
+        }
         }
 
         if (signingCriteria === "Sign In") {
