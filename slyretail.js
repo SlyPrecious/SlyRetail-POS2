@@ -70,6 +70,7 @@ app.post('/signinsignup', async (req, res) => {
   try {
    const {loggedInStatus} = await signUpSignIn(dbName, email, myPassword, buttonContent) //THIS STAGE SHOULD WAIT FOR THE RESPONSE FROM THE FUNCTIONS WITH THE loggedInStatus, NO NEXT LINE SHOULD RUN WITH A BLANK loggedInStatus
     //THIS WHERE YOU WILL SHOW THE NEXT PAGE TO GO TO WHE SUCCESSFULLY LOGED IN
+  console.log(loggedInStatus)
     if (loggedInStatus === "True") {
       // req.session.dbName = { username: dbName };  // Store user info in the session
       res.json({ loggedInStatus: "True" }); //then let the user know
