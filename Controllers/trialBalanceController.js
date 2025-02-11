@@ -32,7 +32,7 @@ export async function getTrialBalanceData() {
                 const relativeRate = parseFloat(cashFlowData.CashFlowRate / baseCurrency.RATE);
                 const calculatedCashEquiv = Number(parseFloat(cashFlowData.CashFlowAmount / relativeRate)).toFixed(2);
                 // console.log(relativeRate)
-                await CashflowModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
+                await myCashflowModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
                     $set: {
                         CashFlowCashEquiv: calculatedCashEquiv
                     }
@@ -47,7 +47,7 @@ export async function getTrialBalanceData() {
                 const relativeRate = parseFloat(cashFlowData.CashFlowRate / baseCurrency.RATE);
                 const calculatedCashEquiv = Number(parseFloat(cashFlowData.CashFlowAmount / relativeRate)).toFixed(2);
                 // console.log(relativeRate)
-                await CashflowModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
+                await myCashflowModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
                     $set: {
                         CashFlowCashEquiv: calculatedCashEquiv
                     }
