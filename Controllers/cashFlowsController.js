@@ -282,22 +282,24 @@ export async function updateCashFlowType(rowId, typeSelected) {
             console.log(`${result.modifiedCount} document(s) updated.`);
             modifiedCount = result.modifiedCount
             if (modifiedCount !== 0) {
-                //update the categories based on the type selected
-                 let categoryExist =await myCashflowCategoriesModel.findOne({ category: 'suspense' });
-                if(!categoryExist){
-                try {
-                    const categoryEntry = new myCashflowCategoriesModel({ category: 'suspense', CategoryLimit: 0, CategoryLimitRange: '', Balance: typeSelected });
-                   } catch (error) {
-                    console.error("Error saving category", error);
-                }
-                }
+               
                 amUpdated = true;
             }
             else if (modifiedCount === 0) {
                 amUpdated = false;
             }
         })
-
+ //update the categories based on the type selected
+                 let categoryExist =await myCashflowCategoriesModel.findOne({ category: 'suspense' });
+                if(!categoryExist){
+                try {
+                    const categoryEntry = new myCashflowCategoriesModel({ category: 'suspense', CategoryLimit: 0, CategoryLimitRange: '', Balance: typeSelected });
+                  await categoryEntry.save()
+                } 
+                catch (error) {
+                    console.error("Error saving category", error);
+                }
+                }
         return { amUpdated };
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
