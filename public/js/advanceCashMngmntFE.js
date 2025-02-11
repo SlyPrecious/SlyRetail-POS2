@@ -3798,6 +3798,7 @@ return
                                             const CashFlowAmount = parseFloat(newEmptyRow.querySelector('.expAmount').innerText);
                                             const CashFlowRate = parseFloat(newEmptyRow.querySelector('.expRate').innerText);
                                              //check if the user has entered vat stuff 
+                                          
                                             if (Object.keys(vatEntry).length !== 0 ) {
                                             vatEntry = {
                                             QRCode: '',
@@ -3811,7 +3812,7 @@ return
                                              }
                                             }
 
-                                        else if (Object.keys(ztfEntry).length !== 0) {
+                                         if (Object.keys(ztfEntry).length !== 0) {
                                             ztfEntry = {
                                             First: '',
                                             Second: '',
@@ -3820,6 +3821,8 @@ return
                                             taxName: 'ztf', // Add additional status or logic if needed
                                              }
                                             }
+                                            console.log(vatEntry)
+                                            console.log(ztfEntry)
                                             // scroll to the beginning of the table
                                             // tableContainer.scrollLeft = 0;
                                             //FIRST UPDATE THE ARRAY WITH THE INSERTED DATA
