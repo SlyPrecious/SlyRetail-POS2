@@ -2397,6 +2397,12 @@ return
                             invoiceCell.addEventListener("click", function (event) {
                                 let date = cashFlowDate.innerText
                                 fixDate(date)
+                                 if (invoiceStatus.isDisplayed === true) {
+                                            //MOVE FOCUS TO INVOICE CELL
+                                            invoiceCell.contentEditable = true
+                                            invoiceCell.focus()
+                                        }
+                                       
                             })
                             descriptionCell.addEventListener("click", function (event) {
                                 let date = cashFlowDate.innerText
@@ -3174,8 +3180,11 @@ return
 
                                     if (rowId === '') {
                                         // MOVE FOCUS TO DESCRIPTION CELL
-                                        descriptionCell.contenteditable=true
-                                        descriptionCell.focus();
+                                      if (descriptionStatus.isDisplayed === true) {
+                                            //MOVE FOCUS TO DESCRIPTION CELL
+                                            cashFlowDescriptionCell.contentEditable = true
+                                            cashFlowDescriptionCell.focus()
+                                        }
                                     }
                                     else if (rowId !== '') {
                                         //  use the fetch for the route with POST method and update the expense rate in the database
