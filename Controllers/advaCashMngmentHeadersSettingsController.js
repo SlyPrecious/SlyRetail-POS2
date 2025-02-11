@@ -1,11 +1,11 @@
 import { advaHeadersModel } from '../Schemas/slyretailAdvCashMngmntHeadersSettingsSchemas.js';
-import { connectDB, databaseName,signingCriteria } from '../Schemas/slyretailDbConfig.js';
+import { connectDB, myDatabase,signCriteria } from '../Schemas/slyretailDbConfig.js';
 let advancedHeaderStatus = []
 let isSaving = false;
 let modifiedCount = ""
 export async function getadvancedHeaderStatusArray() {
     try {
-           const db = await connectDB(databaseName,signingCriteria);
+           const db = await connectDB(myDatabase,signCriteria);
         if (db) {
             const headersModel = advaHeadersModel(db);
       const advancedHeaderStatus = await headersModel.find();
@@ -20,7 +20,7 @@ export async function saveHeaderStatusAdv(headerNamefcb, headerisDisplayed) {
     // process the database connection request
     try {
         //THERE ARE OTHER HEADERS LIKE VAT THAT SHOULD BE OPENED AFTER SUBSCRIPTIONS, ALL THOSE LOGIC WILL BE MANAGED HERE
-          const db = await connectDB(databaseName,signingCriteria);
+          const db = await connectDB(myDatabase,signCriteria);
         if (db) {
             const headersModel = advaHeadersModel(db);
             await headersModel.updateOne({ HeaderName: headerNamefcb }, {
