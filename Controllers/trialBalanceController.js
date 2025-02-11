@@ -3,14 +3,21 @@ import { ObjectId } from 'mongodb';
 import { CashflowModel } from '../Schemas/slyretailCashflowSchemas.js';
 import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
 import { WorldCurrencies } from "../public/js/worldCurrency.js";
+import { connectDB, myDatabase,signCriteria } from '../Schemas/slyretailDbConfig.js';
 
+   
 let isocode = ''
 
 export async function getTrialBalanceData() {
     try {
-        const cashFlows = await CashflowModel.find(); //
+          const db = await connectDB(myDatabase,signCriteria);
+         if (db) {
+        // //THIS CODE IS SENDING THE ARRAY OF CURRENCIES FROM THE DATABASE TO THE HTML/ CLIENT'S SIDE THE LIST OF CURRENCIES ON THE MY EXPENSES DROPDOWN MENU
+  const myCashflowModel = CashflowModel(db);
+         const cashFlows  = await myCashflowModel.find()
+               const myCurrenciesModel = CurrenciesModel(db);
         //get the isocode of the base currency
-        const baseCurrency = await CurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
+        const baseCurrency = await myCurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
         const currName = WorldCurrencies.find(curr => curr.Currency_Name === baseCurrency.Currency_Name);//find matching currency name with the one in the cashFlow table
         if (currName) {
             isocode = currName.ISO_Code
@@ -56,6 +63,7 @@ export async function getTrialBalanceData() {
         const totalCostIncome = Number(parseFloat(totalIncome)).toFixed(2);
 
         return { totalCostExpenses: totalCostExpenses, totalCostIncome: totalCostIncome, isocode: isocode };
+         }
     } catch (err) {
         console.error('Error fetching status:', err);
     }
