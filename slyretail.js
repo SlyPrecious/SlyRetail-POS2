@@ -76,8 +76,8 @@ app.post('/signinsignup', async (req, res) => {
       res.json({ loggedInStatus: "True" }); //then let the user know
     }
     //THIS WHERE YOU WILL SHOW THE SAME HOME PAGE WHEN UNSUCCESSFUL IN LOGING IN
-    if (loggedInStatus === "False") {
-      res.json({ loggedInStatus: "False" }); //then let the user know
+    if (loggedInStatus !== "True") {
+      res.json({ loggedInStatus: loggedInStatus }); //then let the user know
     }
   } catch (error) {
     console.error("Error in sign-in/sign-up", error);
