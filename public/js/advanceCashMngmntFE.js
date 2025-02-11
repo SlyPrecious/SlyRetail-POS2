@@ -3316,6 +3316,11 @@ return
                             payOutSubmitButton.addEventListener("click", (event) => {
                                 event.preventDefault()
                                 createNewCategory()
+                                 const dropdownMenu = new bootstrap.Dropdown(newEmptyRow.querySelector('.categorySpan')); // Create a new dropdown instance
+                                        dropdownMenu.hide(); //close the ctegory dropdwon
+                                        const nextDropdownButton = newEmptyRow.querySelector('.currbtnSpan');
+                                        const nextDropdown = new bootstrap.Dropdown(nextDropdownButton);
+                                        nextDropdown.toggle(); // Open the currency droPDOWN
                             })
                             //if the key pressed is enter , add the event on the category cell
                             newEmptyRow.querySelector('.categories-cell').addEventListener("keydown", (event) => {
