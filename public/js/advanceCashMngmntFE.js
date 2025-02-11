@@ -3323,7 +3323,11 @@ return
                                     event.preventDefault()
                                     if (newEmptyRow.querySelector('#dropdownForm').style.display === 'block') {
                                         createNewCategory()
-
+ const dropdownMenu = new bootstrap.Dropdown(newEmptyRow.querySelector('.categorySpan')); // Create a new dropdown instance
+                                        dropdownMenu.hide(); //close the ctegory dropdwon
+                                        const nextDropdownButton = newEmptyRow.querySelector('.currbtnSpan');
+                                        const nextDropdown = new bootstrap.Dropdown(nextDropdownButton);
+                                        nextDropdown.toggle(); // Open the currency droPDOWN
                                     }
                                 }
                             })
