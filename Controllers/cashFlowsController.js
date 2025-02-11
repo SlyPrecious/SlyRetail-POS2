@@ -843,7 +843,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
 
                 }
                 // Check if the shift exists 
-                const existingCategory = await CashflowCategoriesModel.findOne({ category: category, Balance: "PayIn" });
+                const existingCategory = await myCashflowCategoriesModel.findOne({ category: category, Balance: "PayIn" });
                 if (!existingCategory) {
                     let payInCat = {}; //THE NEW DOCUMEN
                     payInCat["category"] = category;
@@ -883,7 +883,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
                     payOutRowDataArray.push(payOutRowData)
                 }
                 // Check if the shift exists 
-                const existingCategory = await CashflowCategoriesModel.findOne({ category: category, Balance: "PayOut" });
+                const existingCategory = await myCashflowCategoriesModel.findOne({ category: category, Balance: "PayOut" });
                 if (!existingCategory) {
                     let payOutCat = {}; //THE NEW DOCUMEN
                     payOutCat["category"] = category;
@@ -919,7 +919,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
                 else if (data.Id !== '') {
                     try {
                         // Check if the shift exists 
-                        const existingCategory = await CashflowCategoriesModel.findOne({ category: data.Category });
+                        const existingCategory = await myCashflowCategoriesModel.findOne({ category: data.Category });
                         if (!existingCategory) {
                             let payOutCat = {}; //THE NEW DOCUMEN
                             payOutCat["category"] = data.Category;
