@@ -9,7 +9,9 @@ let isocode = ''
 export async function getTrialBalanceData(req) {
     try {
            const { models } = req.session; //get the models in the session storage
-if (models) {
+if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {currenciesModel,cashflowModel} = models;
          const cashFlows  = await cashflowModel.find()
@@ -60,7 +62,7 @@ const {currenciesModel,cashflowModel} = models;
         const totalCostIncome = Number(parseFloat(totalIncome)).toFixed(2);
 
         return { totalCostExpenses: totalCostExpenses, totalCostIncome: totalCostIncome, isocode: isocode };
-         }
+         
     } catch (err) {
         console.error('Error fetching status:', err);
     }
