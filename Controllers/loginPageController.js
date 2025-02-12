@@ -172,7 +172,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                             console.error("Error during the operation:", error);
                         }
                         //set the latest version currentVersion
-                        await myversionControlModelModel.updateOne(
+                        await versionControlModel.updateOne(
                             { _id: ObjectId(existingVersion._id) },
                             { $set: { version: currentVersion } } // Correct
                         )
@@ -260,7 +260,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                         }
                         //set the latest version currentVersion
                         versionControlModel.updateOne({ _id: ObjectId(existingVersion._id) },
-                            { set: { version: currentVersion } });
+                            { $set: { version: currentVersion } });
                     }
                     
                 } catch (error) {
@@ -338,16 +338,12 @@ async function createDatabase(req,email, databaseName, databasePassword, signing
             { HeaderName: 'InvoiceRef', isDisplayed: true }, { HeaderName: 'Tax', isDisplayed: true }, { HeaderName: 'Description', isDisplayed: true },
             { HeaderName: 'Category', isDisplayed: true }, { HeaderName: 'Currency', isDisplayed: true }, { HeaderName: 'Amount', isDisplayed: true },
             { HeaderName: 'Rate', isDisplayed: true }, { HeaderName: 'CashEquiv', isDisplayed: true }, { HeaderName: 'RunningBalance', isDisplayed: true }]
-            try {
                 try {
                     // Using insertMany to insert multiple documents at once
                     await advHeadersModel.insertMany(data);
                 } catch (error) {
                     console.error('Error saving adv headers:', error);
                 }
-            } catch (error) {
-                console.error('Error inserting headers:', error);
-            }
 
             // Save credentials
             const createAndSaveCredentials = async (User_Account, DbPassword, Email) => {
