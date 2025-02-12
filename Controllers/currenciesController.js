@@ -32,8 +32,7 @@ const {currenciesModel} = models;
                 }
             })
             .catch(error => console.error(error));
-  }
-    catch (err) {
+  }catch (err) {
         console.error('Error UPDATING CURRENCIES:', err);
     }
     return { isUpdated };
@@ -170,8 +169,7 @@ const {currenciesModel} = models;
             })
             .catch(error => console.error(error));
     return { isUpdated };
-    }
-    catch (err) {
+    }catch (err) {
         console.error('Error UPDATING CURRENCIES rate:', err);
     }
 }
@@ -202,8 +200,7 @@ const {currenciesModel,cashflowModal} = models;
         
         }
     return { amDeleted };        
-    }
-    catch (err) {
+    }catch (err) {
         console.error('Error deleting CURRENCIES:', err);
     }
 }
