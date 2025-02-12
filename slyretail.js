@@ -105,13 +105,13 @@ app.get('/advanceCashMngmnt', async (req, res) => {
   }
 });
 //====================================================================================================================================
-app.get("/userAccount", async (req, res,) => {
+// app.get("/userAccount", async (req, res,) => {
 
-  const { currencies } = await signUpSignIn(req)
-  const database = dbName
-  res.render('userAccount', { currencies, database });
-});
-// //======================================================================================================
+//   const { currencies } = await signUpSignIn(req)
+//   const database = dbName
+//   res.render('userAccount', { currencies, database });
+// });
+// // //======================================================================================================
 app.get('/currencies', async (req, res) => {
   try {
     const { currencies } = await advCashMngmnt(req);
