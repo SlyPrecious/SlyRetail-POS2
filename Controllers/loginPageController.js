@@ -29,7 +29,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
         if (connection) {
             console.log('connection')
            // Store the connection and other session data (this should be done in connectDB itself)
-            // req.session.connection = connection.connectionString;  // Session is already populated with the connection and other details
+            req.session.connection = connection;  // Session is already populated with the connection and other details
                // Save models in session if you need to use them later
             req.session.models = {
                   accountingPeriodModel: accountingPeriodModel(connection),
