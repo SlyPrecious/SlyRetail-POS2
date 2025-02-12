@@ -8,8 +8,8 @@ export async function exportingArray(req,startDate, endDate, pageSize, page, pay
            const { models } = req.session; //get the models in the session storage
 if (models) {
     // Access the models from the session
-const {cashflowModal} = models;
-          cashFlows  = await cashflowModal.find()
+const {cashflowModel} = models;
+          cashFlows  = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her and the settings to be kept under local storage
         cashFlows.sort((a, b) => {
             const [dayA, monthA, yearA] = a.CashFlowDate.split('/');
@@ -86,8 +86,8 @@ export async function arrayForImport(req) {
            const { models } = req.session; //get the models in the session storage
 if (models) {
     // Access the models from the session
-const {cashflowModal} = models;
-          cashFlows  = await cashflowModal.find()
+const {cashflowModel} = models;
+          cashFlows  = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her and the settings to be kept under local storage
         cashFlows.sort((a, b) => {
             const [dayA, monthA, yearA] = a.CashFlowDate.split('/');
