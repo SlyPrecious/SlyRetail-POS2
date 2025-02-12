@@ -74,7 +74,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                 //==============================================================
                 //first check if the versioncontrols collection exist,if not create it
                 try {
-                    const collections = await collection.collection.listCollections().toArray();
+                    const collections = await collection.db.listCollections().toArray();
                     const collectionName = 'versioncontrols'
                     const collectionExists = collections.some(col => col.name === collectionName);
 
