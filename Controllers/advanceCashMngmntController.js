@@ -31,11 +31,11 @@ const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, cur
         // now take the  name of the base currency  and store it in a variable 
         isBaseCurrency = baseCurrency.Currency_Name;
         //CREATE THE INTERVAL ARRAY
+    return { isBaseCurrency: isBaseCurrency,  currencies: currencies, isoCode: isoCode };
          }
     }
     catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
-    return { isBaseCurrency: isBaseCurrency,  currencies: currencies, isoCode: isoCode };
 }
 
