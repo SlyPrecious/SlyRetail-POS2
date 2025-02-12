@@ -24,6 +24,8 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
           // Step 1: Connect to the database and save connection in session
         const { db, myDatabase, signCriteria } = await connectDB(req, databaseName, signingCriteria);
         console.log(db)
+        console.log('myDatabase'+myDatabase)
+        console.log('signCriteria'+signCriteria)
         if (db) {
            // Store the connection and other session data (this should be done in connectDB itself)
             req.session.connection = db;  // Session is already populated with the connection and other details
