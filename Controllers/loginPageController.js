@@ -288,7 +288,9 @@ let currentVersion = "1.3"
 async function createDatabase(req,email, databaseName, databasePassword, signingCriteria) {
     try {
   const { models } = req.session; //get the models in the session storage
-        if (models) {         // Access the models from the session
+      if (!models) {
+      throw new Error('Session models not found');
+    }    // Access the models from the session
         const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, currenciesModel,accountingPeriodModel} = models;
             // Create the model with the specific connection
             currencies = await currenciesModel.find()
@@ -360,9 +362,7 @@ async function createDatabase(req,email, databaseName, databasePassword, signing
             };
 
             loggedInStatus2 = await createAndSaveCredentials(databaseName, databasePassword, email);
-        } else {
-            loggedInStatus2 = "False";
-        }
+       
         return loggedInStatus2
     } catch (error) {
         console.error('Error creating database:', error);
