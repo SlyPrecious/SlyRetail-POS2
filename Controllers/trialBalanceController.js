@@ -12,8 +12,8 @@ export async function getTrialBalanceData(req) {
            const { models } = req.session; //get the models in the session storage
 if (models) {
     // Access the models from the session
-const {currenciesModel,cashflowModal} = models;
-         const cashFlows  = await cashflowModal.find()
+const {currenciesModel,cashflowModel} = models;
+         const cashFlows  = await cashflowModel.find()
         //get the isocode of the base currency
         const baseCurrency = await currenciesModel.findOne({ BASE_CURRENCY: 'Y' });
         const currName = WorldCurrencies.find(curr => curr.Currency_Name === baseCurrency.Currency_Name);//find matching currency name with the one in the cashFlow table
@@ -30,7 +30,7 @@ const {currenciesModel,cashflowModal} = models;
                 const relativeRate = parseFloat(cashFlowData.CashFlowRate / baseCurrency.RATE);
                 const calculatedCashEquiv = Number(parseFloat(cashFlowData.CashFlowAmount / relativeRate)).toFixed(2);
                 // console.log(relativeRate)
-                await cashflowModal.updateOne({ _id: ObjectId(cashFlowData._id) }, {
+                await cashflowModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
                     $set: {
                         CashFlowCashEquiv: calculatedCashEquiv
                     }
@@ -45,7 +45,7 @@ const {currenciesModel,cashflowModal} = models;
                 const relativeRate = parseFloat(cashFlowData.CashFlowRate / baseCurrency.RATE);
                 const calculatedCashEquiv = Number(parseFloat(cashFlowData.CashFlowAmount / relativeRate)).toFixed(2);
                 // console.log(relativeRate)
-                await cashflowModal.updateOne({ _id: ObjectId(cashFlowData._id) }, {
+                await cashflowModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
                     $set: {
                         CashFlowCashEquiv: calculatedCashEquiv
                     }
