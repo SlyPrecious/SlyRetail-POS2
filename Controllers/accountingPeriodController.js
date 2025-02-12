@@ -8,16 +8,16 @@ export async function getAccountingPeriodDetails(req) {
   const { models } = req.session; //get the models in the session storage
  
     try {
-       if (models) {
+    if (!models) {
+      throw new Error('Session models not found');
+    }
         // Access the models from the session
         const { caccountingPeriodModel} = models;
       // const accountingPeriodModel = db.model('Accountingperiod', AccountingPeriodSettingsSchema);
       // Create the model with the specific connection
       const details = await accountingPeriodModel.find();
 
-      return { details };
-    }
-         
+      return { details };     
     } catch (err) {
       console.error('Error fetching accounting details:', err);
       res.status(500).json({ error: 'Internal server error' });
@@ -28,7 +28,9 @@ export async function updateAccountingPeriod(req,id, startDate) {
   try {
     // Step 1: Create a connection
   const { models } = req.session; //get the models in the session storage
-  if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
         // Access the models from the session
         const {accountingPeriodModel} = models;
       const start = new Date(startDate);
@@ -49,9 +51,8 @@ export async function updateAccountingPeriod(req,id, startDate) {
         isModified = false;
       }
       return isModified;
-    }
-  }
-  catch (err) {
+    
+  }catch (err) {
     console.error('Error updating accounting details:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
