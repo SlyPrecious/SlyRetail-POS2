@@ -5,10 +5,11 @@ let isSaving = false;
 let modifiedCount = ""
 export async function getadvancedHeaderStatusArray() {
     try {
-           const db = await connectDB(myDatabase,signCriteria);
-        if (db) {
-            const headersModel = advaHeadersModel(db);
-      const advancedHeaderStatus = await headersModel.find();
+      const { models } = req.session; //get the models in the session storage
+                 // Access the models from the session
+        if (models) {
+        const {advHeadersModel} = models;
+      const advancedHeaderStatus = await advHeadersModel.find();
         return { advancedHeaderStatus };
         }
     } catch (err) {
@@ -19,10 +20,12 @@ export async function saveHeaderStatusAdv(headerNamefcb, headerisDisplayed) {
     // process the database connection request
     try {
         //THERE ARE OTHER HEADERS LIKE VAT THAT SHOULD BE OPENED AFTER SUBSCRIPTIONS, ALL THOSE LOGIC WILL BE MANAGED HERE
-          const db = await connectDB(myDatabase,signCriteria);
-        if (db) {
-            const headersModel = advaHeadersModel(db);
-            await headersModel.updateOne({ HeaderName: headerNamefcb }, {
+         try {
+      const { models } = req.session; //get the models in the session storage
+                 // Access the models from the session
+        if (models) {
+        const {advHeadersModel} = models;
+            await advHeadersModel.updateOne({ HeaderName: headerNamefcb }, {
             $set: {
                 isDisplayed: headerisDisplayed
             }
