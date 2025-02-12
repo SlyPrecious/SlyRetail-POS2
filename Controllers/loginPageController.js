@@ -2,6 +2,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 import { CredentialsModel } from '../Schemas/slyretailLoginSchemas.js';
 import { connectDB } from '../Schemas/slyretailDbConfig.js';
 import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
+import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
 import { accountingPeriodModel } from '../Schemas/slyretailAccountingPeriodSettingsSchemas.js';
 import { advaHeadersModel } from '../Schemas/slyretailAdvCashMngmntHeadersSettingsSchemas.js';
 import { payInHeadersModel } from '../Schemas/slyretailPayInHeadersSettingsSchemas.js';
@@ -33,6 +34,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
             const   myversionControlModelModel = versionControlModel(db);
             const     myCurrenciesModelModel = CurrenciesModel(db);
             const     myCredentialsModelModel = CredentialsModel(db);
+            const     myCategoriesModelModel = CategoriesModel(db);
                // Save models in session if you need to use them later
             req.session.models = {
                 accountingPeriodModel: myaccountingPeriodModelModel,
@@ -40,7 +42,8 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                 cashflowModel: myCashflowModelModel,
                 versionControlModel: myversionControlModelModel,
                 currenciesModel: myCurrenciesModelModel,
-                credentialsModel: myCredentialsModelModel
+                credentialsModel: myCredentialsModelModel,
+                categoriesModel: myCategoriesModelModel
             };
         }
         else {
