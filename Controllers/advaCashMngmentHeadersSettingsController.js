@@ -17,8 +17,6 @@ export async function getadvancedHeaderStatusArray(req) {
     }
 }
 export async function saveHeaderStatusAdv(req,headerNamefcb, headerisDisplayed) {
-    // process the database connection request
-    try {
         //THERE ARE OTHER HEADERS LIKE VAT THAT SHOULD BE OPENED AFTER SUBSCRIPTIONS, ALL THOSE LOGIC WILL BE MANAGED HERE
          try {
       const { models } = req.session; //get the models in the session storage
