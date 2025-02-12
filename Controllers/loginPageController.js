@@ -37,13 +37,13 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
             // const     myCategoriesModelModel = CategoriesModel(db);
                // Save models in session if you need to use them later
             req.session.models = {
-                  accountingPeriodModel: accountingPeriodModel(connection),
-                advHeadersModel: advaHeadersModel(connection),
-                cashflowModel: CashflowModel(connection),
-                versionControlModel: versionControlModel(connection),
-                currenciesModel: CurrenciesModel(connection),
-                credentialsModel: CredentialsModel(connection),
-                categoriesModel: CategoriesModel(connection)
+                  accountingPeriodModel: accountingPeriodModel(db),
+                advHeadersModel: advaHeadersModel(db),
+                cashflowModel: CashflowModel(db),
+                versionControlModel: versionControlModel(db),
+                currenciesModel: CurrenciesModel(db),
+                credentialsModel: CredentialsModel(db),
+                categoriesModel: CategoriesModel(db)
                 
             };
         }
