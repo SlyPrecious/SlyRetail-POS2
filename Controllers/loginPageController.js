@@ -28,22 +28,23 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
             req.session.connection = db;  // Session is already populated with the connection and other details
 
             // Create the model with the specific connection
-            const  myaccountingPeriodModelModel = accountingPeriodModel(db);
-            const    myadvHeadersModelModel = advaHeadersModel(db);
-            const    myCashflowModelModel = CashflowModel(db);
-            const   myversionControlModelModel = versionControlModel(db);
-            const     myCurrenciesModelModel = CurrenciesModel(db);
-            const     myCredentialsModelModel = CredentialsModel(db);
-            const     myCategoriesModelModel = CategoriesModel(db);
+            // const  myaccountingPeriodModelModel = accountingPeriodModel(db);
+            // const    myadvHeadersModelModel = advaHeadersModel(db);
+            // const    myCashflowModelModel = CashflowModel(db);
+            // const   myversionControlModelModel = versionControlModel(db);
+            // const     myCurrenciesModelModel = CurrenciesModel(db);
+            // const     myCredentialsModelModel = CredentialsModel(db);
+            // const     myCategoriesModelModel = CategoriesModel(db);
                // Save models in session if you need to use them later
             req.session.models = {
-                accountingPeriodModel: myaccountingPeriodModelModel,
-                advHeadersModel: myadvHeadersModelModel,
-                cashflowModel: myCashflowModelModel,
-                versionControlModel: myversionControlModelModel,
-                currenciesModel: myCurrenciesModelModel,
-                credentialsModel: myCredentialsModelModel,
-                categoriesModel: myCategoriesModelModel
+                  accountingPeriodModel: accountingPeriodModel(connection),
+                advHeadersModel: advaHeadersModel(connection),
+                cashflowModel: CashflowModel(connection),
+                versionControlModel: versionControlModel(connection),
+                currenciesModel: CurrenciesModel(connection),
+                credentialsModel: CredentialsModel(connection),
+                categoriesModel: CategoriesModel(connection)
+                
             };
         }
         else {
