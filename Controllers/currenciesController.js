@@ -9,7 +9,9 @@ let insertedId = ''
 export async function updateCurrencies(req,currencyId, paymentType, paymentName, paymentRate) {
     try {
 const { models } = req.session; //get the models in the session storage
-if (models) {
+if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {currenciesModel} = models;
     const cashFlowCat = await currenciesModel.find();
@@ -31,7 +33,6 @@ const {currenciesModel} = models;
             })
             .catch(error => console.error(error));
   }
-    }
     catch (err) {
         console.error('Error UPDATING CURRENCIES:', err);
     }
@@ -41,7 +42,9 @@ const {currenciesModel} = models;
 export async function updateCurrencyName(req,currencyId, paymentType) {
     try {
          const { models } = req.session; //get the models in the session storage
-if (models) {
+if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {currenciesModel} = models;
     // const cashFlowCat = await currenciesModel.find();
@@ -61,9 +64,7 @@ const {currenciesModel} = models;
             })
             .catch(error => console.error(error));
      return { isUpdated }; 
-}
-    }
-    catch (err) {
+    }catch (err) {
         console.error('Error UPDATING CURRENCIES:', err);
     }
 
@@ -73,7 +74,9 @@ export async function insertNewCurrency(req,paymentType, paymentName, paymentRat
     try {
         console.log('procedure for inserting new currency' + paymentType, paymentName, paymentRate)
       const { models } = req.session; //get the models in the session storage
-if (models) {
+if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {currenciesModel} = models;
         let data = {
@@ -92,12 +95,10 @@ const {currenciesModel} = models;
             console.error('Error saving cash flow entry:', saveError);
             isSaved = false;
         }
-  }
     } catch (err) {
         console.error('Error UPDATING CURRENCIES:', err);
     }
     return { isSaved };
-
 }
 
 //==========================================================================================================================
@@ -105,7 +106,9 @@ export async function updateBaseCurrency(req,paymentId) {
     try {
         console.log('i am the update base currency procedure');
        const { models } = req.session; //get the models in the session storage
-if (models) {
+if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {currenciesModel} = models;
         const currencies = await currenciesModel.find(); //Put the multiple currencies into an array 'note that this is the whole document, but we want to tap into the name object only'
@@ -143,9 +146,7 @@ const {currenciesModel} = models;
             }
         }
     return { isUpdated };
-     }
-    }
-    catch (err) {
+    }catch (err) {
         console.error('Error UPDATING CURRENCIES:', err);
     }
 }
@@ -154,7 +155,9 @@ export async function updateCurrencyRate(req,currencyId, CurrencyRate) {
     try {
         console.log('i am the  procedure of updating  currencies rate in payment type ');
       const { models } = req.session; //get the models in the session storage
-if (models) {
+if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {currenciesModel} = models;
         await currenciesModel.updateOne({ _id: ObjectId(currencyId) }, { $set: { RATE: Number(CurrencyRate) } })
@@ -168,7 +171,6 @@ const {currenciesModel} = models;
             .catch(error => console.error(error));
     return { isUpdated };
     }
-    }
     catch (err) {
         console.error('Error UPDATING CURRENCIES rate:', err);
     }
@@ -178,7 +180,9 @@ export async function deleteCurrency(req,idToDelete) {
     try {
         console.log('i am the  procedure of deleting currency  ');
     const { models } = req.session; //get the models in the session storage
-if (models) {
+if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {currenciesModel,cashflowModal} = models;
         for (let a = 0; a < idToDelete.length; a++) {
@@ -197,10 +201,7 @@ const {currenciesModel,cashflowModal} = models;
                 .catch(error => console.error(error));
         
         }
-    return { amDeleted };
-    
-     }
-        
+    return { amDeleted };        
     }
     catch (err) {
         console.error('Error deleting CURRENCIES:', err);
