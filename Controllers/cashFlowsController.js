@@ -21,7 +21,9 @@ let insertedCategories = [];
 export async function getCashFlowArray(req,startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, advancedSearchInput, searchInput, payOutSearchInput) {
     try {
   const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, currenciesModel,accountingPeriodModel} = models;
      
@@ -219,7 +221,7 @@ console.log("theBeforeIncome:", theBeforeIncome);
 
         };
         return { data };
-  }
+  
     }
     catch (err) {
         console.error('Error connecting to MongoDB:', err);
@@ -231,7 +233,9 @@ console.log("theBeforeIncome:", theBeforeIncome);
 export async function updateCashFlowDate(req,rowId, newDate) {
     try {
         const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
         cashFlows = await cashflowModel.find()
@@ -260,7 +264,7 @@ const { cashflowModel} = models;
             }
         })
         return { amUpdated };
-}
+
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
@@ -269,7 +273,9 @@ const { cashflowModel} = models;
 export async function updateCashFlowType(req,rowId, typeSelected) {
     try {
           const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
         cashFlows = await cashflowModel.find()
@@ -316,7 +322,7 @@ const { cashflowModel} = models;
                 }
                 }
         return { amUpdated };
-}
+
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
@@ -325,7 +331,9 @@ const { cashflowModel} = models;
 export async function updateCashFlowShift(req,rowId, shift) {
     try {
          const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
     cashFlows = await cashflowModel.find()
@@ -352,7 +360,7 @@ const { cashflowModel} = models;
             }
         })
         return { amUpdated };
-}
+
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
@@ -361,7 +369,9 @@ const { cashflowModel} = models;
 export async function updateCashFlowTax(req,rowId, taxDataToUpdate) {
     try {
        const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
     cashFlows = await cashflowModel.find()
@@ -480,8 +490,6 @@ const { cashflowModel} = models;
 
         }
         return { amUpdated }
-}
-
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
@@ -490,7 +498,9 @@ const { cashflowModel} = models;
 export async function updateCashFlowInvoice(req,rowId, InvoiceRef) {
     try {
         const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
     cashFlows = await cashflowModel.find()
@@ -518,7 +528,6 @@ const { cashflowModel} = models;
         })
    
         return { amUpdated };
-}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
@@ -527,7 +536,9 @@ const { cashflowModel} = models;
 export async function updateCashFlowDescription(req,rowId, description) {
     try {
        const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
     cashFlows = await cashflowModel.find()
@@ -554,7 +565,6 @@ const { cashflowModel} = models;
             }
         })
         return { amUpdated };
-}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
@@ -563,7 +573,9 @@ const { cashflowModel} = models;
 export async function updateCashFlowCategory(req,rowId, newCategory) {
     try {
         const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
     cashFlows = await cashflowModel.find()
@@ -588,7 +600,6 @@ const { cashflowModel} = models;
             }
         })
         return { amUpdated };
-}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
@@ -597,7 +608,9 @@ const { cashflowModel} = models;
 export async function updateCashFlowCurrency(req,rowId, newCurrency, cashEquivValue, newCashFlowRate1) {
     try {
   const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
         cashFlows = await cashflowModel.find()
@@ -626,7 +639,6 @@ const { cashflowModel} = models;
         })
      
         return { amUpdated };
-}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
@@ -635,7 +647,9 @@ const { cashflowModel} = models;
 export async function updateCashFlowAmount(req,rowId, newAmount, cashEquivValue) {
     try {
          const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
     cashFlows = await cashflowModel.find()
@@ -663,7 +677,6 @@ const { cashflowModel} = models;
             }
         })
         return { amUpdated };
-}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
@@ -672,7 +685,9 @@ const { cashflowModel} = models;
 export async function updateCashFlowRate(req,rowId, newRate, newCashFlowCashEquiv) {
     try {
          const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
     cashFlows = await cashflowModel.find()
@@ -701,7 +716,6 @@ const { cashflowModel} = models;
         })
 
         return { amUpdated };
-}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
@@ -710,7 +724,9 @@ const { cashflowModel} = models;
 export async function deleteCashFLow(req,checkedRowsId) {
     try {
         const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models;
     cashFlows = await cashflowModel.find()
@@ -740,8 +756,6 @@ const { cashflowModel} = models;
             })
 
         return { amDeleted };
-}
-
     } catch (error) {
         console.error(error);
         return { status: 401, amDeleted: false };
@@ -841,7 +855,9 @@ export async function insertCashFlowData(req,itemsToProcess, checkTemplateStatus
     try {
         //get the base currency
        const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel,currenciesModel,categoriesModel} = models;
     let baseCurrency =await currenciesModel.findOne({ BASE_CURRENCY: 'Y' });
@@ -1075,7 +1091,6 @@ const { cashflowModel,currenciesModel,categoriesModel} = models;
         }
 
         return { isSaving, insertedDocuments, insertedCategories }
-}
     } catch (error) {
         console.error('Error inserting documents:', error);
         return { isSaving: false, insertedDocuments: [] };
@@ -1086,7 +1101,9 @@ const { cashflowModel,currenciesModel,categoriesModel} = models;
 export async function saveCashFlowData(req,itemsToProcess) {
     try {
       const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const { cashflowModel} = models; 
     for (let a = 0; a < itemsToProcess.length; a++) {
@@ -1105,7 +1122,6 @@ const { cashflowModel} = models;
         }
 
         return { isSaving, insertedDocuments };
-}
     } catch (error) {
         console.error('Error inserting documents:', error);
         return { amUpdated: false, updatedDocuments: [] };
