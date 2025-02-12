@@ -6,7 +6,9 @@ let allCashFlows = []
 export async function exportingArray(req,startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, exportingCriteria, advExportingCriteria) {
     try {
            const { models } = req.session; //get the models in the session storage
-if (models) {
+if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {cashflowModel} = models;
           cashFlows  = await cashflowModel.find()
@@ -73,9 +75,7 @@ const {cashflowModel} = models;
             itemsToProcess: itemsToProcess //THIS MUST ONLY CONTAINS THE INFORMATION OF WHATEVER THAT IS THE CURRENT PAGE BY THE USER
         };
         return { data, cashFlows };
-         }
-    }
-    catch (err) {
+    }catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
@@ -84,7 +84,9 @@ export async function arrayForImport(req) {
     try {
         
            const { models } = req.session; //get the models in the session storage
-if (models) {
+if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {cashflowModel} = models;
           cashFlows  = await cashflowModel.find()
@@ -95,9 +97,7 @@ const {cashflowModel} = models;
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         return {cashFlows };
-         }
-    }
-    catch (err) {
+         }catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
