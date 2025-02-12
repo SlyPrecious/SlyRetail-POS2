@@ -196,8 +196,7 @@ const {categoriesModel} = models;
     const allCashFlowCategories = await categoriesModel.find()
     return {allCashFlowCategories };
             
-  }
-  catch (err) {
+  }catch (err) {
     console.error('Error connecting to MongoDB:', err);
   }
 }
@@ -231,9 +230,8 @@ const {categoriesModel,cashflowModel} = models;
         console.error('Error saving cash flow entry:', saveError);
         isUpdated = false;
       }
-    
+    }
     return { isUpdated };
-  }
   }catch (err) {
     console.error('Error connecting to MongoDB:', err);
   }
@@ -345,8 +343,6 @@ const {categoriesModel,cashflowModel} = models;
       }
     }
     return { isUpdated };
-
-
   } catch (error) {
     console.error(error);
     return { status: 401, amDeleted: false };
@@ -425,10 +421,7 @@ const {categoriesModel,cashflowModel} = models;
       }
 
     }
-
     return { amDeleted };
-  
-
   } catch (error) {
     console.error(error);
     return { status: 401, amDeleted: false };
