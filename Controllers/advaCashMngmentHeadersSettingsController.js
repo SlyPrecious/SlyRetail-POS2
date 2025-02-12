@@ -1,5 +1,4 @@
 import { advaHeadersModel } from '../Schemas/slyretailAdvCashMngmntHeadersSettingsSchemas.js';
-import { connectDB, myDatabase,signCriteria } from '../Schemas/slyretailDbConfig.js';
 let advancedHeaderStatus = []
 let isSaving = false;
 let modifiedCount = ""
