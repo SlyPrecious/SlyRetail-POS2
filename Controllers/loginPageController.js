@@ -2,7 +2,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 import { CredentialsModel } from '../Schemas/slyretailLoginSchemas.js';
 import { connectDB } from '../Schemas/slyretailDbConfig.js';
 import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
-import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
+import { CashflowCategoriesModel } from '../Schemas/slyretailCategoriesSchemas.js';
 import { accountingPeriodModel } from '../Schemas/slyretailAccountingPeriodSettingsSchemas.js';
 import { advaHeadersModel } from '../Schemas/slyretailAdvCashMngmntHeadersSettingsSchemas.js';
 import { payInHeadersModel } from '../Schemas/slyretailPayInHeadersSettingsSchemas.js';
