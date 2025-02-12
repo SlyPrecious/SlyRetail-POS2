@@ -4,14 +4,13 @@ import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
 import { ExpenseCategoriesModel } from '../Schemas/slyretailExpenseCategoriesSchemas.js';
 import { IncomeCategoriesModel } from '../Schemas/slyretailIncomeCategoriesSchemas.js';
 import { WorldCurrencies } from "../public/js/worldCurrency.js";
-import { connectDB, myDatabase,signCriteria } from '../Schemas/slyretailDbConfig.js';
 
 let currencies = [];
 let intervalArray = [];
 let isBaseCurrency = "";
 let isoCode = '';
 let symbols = {};//this variable object will contain all the currency symbolss in the expense table
-export async function advCashMngmnt() {
+export async function advCashMngmnt(req) {
 
     try {
          const { models } = req.session; //get the models in the session storage
