@@ -7,7 +7,6 @@ import multer from 'multer';
 import csv from 'csv-parser';
 import fs from 'fs';
 import path from 'path';
-import { connectDB, myDatabase,signCriteria } from '../Schemas/slyretailDbConfig.js';
 
 //=================================================================================================================================================
 //THIS CALCULATES ALL THE CASH INFLOWS AND OUTFLOWS FOR A PARTICULAR PERIOD AND PRESENTS IT TO THE USER ON AN ASCENDING ORDER
@@ -19,16 +18,13 @@ let isSaving = false;
 let insertedDocuments = [];
 let updatedDocuments = [];
 let insertedCategories = [];
-let myCashflowModel = null; let myCurrenciesModel = null; let myCashflowCategoriesModel = null;
-export async function getCashFlowArray(startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, advancedSearchInput, searchInput, payOutSearchInput) {
+export async function getCashFlowArray(req,startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, advancedSearchInput, searchInput, payOutSearchInput) {
     try {
-        const db = await connectDB(myDatabase,signCriteria);
-  if (db) {
-       myCashflowModel = CashflowModel(db);
-       cashFlows = await myCashflowModel.find();
-       myCurrenciesModel= CurrenciesModel(db);
-       myCashflowCategoriesModel = CashflowCategoriesModel(db);
-
+  const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, currenciesModel,accountingPeriodModel} = models;
+     
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -54,7 +50,7 @@ export async function getCashFlowArray(startDate, endDate, pageSize, page, payIn
         let advSearchedInputArray = []
         //CHECK THE BASE CURRENCY 
         let myRate = ''
-        let baseCurrency =await myCurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
+        let baseCurrency =await currenciesModel.findOne({ BASE_CURRENCY: 'Y' });
         if (baseCurrency) {
             myRate = baseCurrency.RATE
         }
@@ -232,9 +228,13 @@ console.log("theBeforeIncome:", theBeforeIncome);
 }
 
 
-export async function updateCashFlowDate(rowId, newDate) {
+export async function updateCashFlowDate(req,rowId, newDate) {
     try {
-        cashFlows = await myCashflowModel.find()
+        const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+        cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -245,7 +245,7 @@ export async function updateCashFlowDate(rowId, newDate) {
 
 
         console.log('i am the  update date  procedure  ');
-        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await cashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowDate: newDate
             }
@@ -260,14 +260,19 @@ export async function updateCashFlowDate(rowId, newDate) {
             }
         })
         return { amUpdated };
+}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
 //=================================================================================================
-export async function updateCashFlowType(rowId, typeSelected) {
+export async function updateCashFlowType(req,rowId, typeSelected) {
     try {
-        cashFlows = await myCashflowModel.find()
+          const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+        cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -276,7 +281,7 @@ export async function updateCashFlowType(rowId, typeSelected) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow type  procedure  ');
-        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await cashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowType: typeSelected,
                 CashFlowCategory: 'suspense'
@@ -299,11 +304,11 @@ export async function updateCashFlowType(rowId, typeSelected) {
         else if(typeSelected==='Payout'){
             typeSelected='PayOut'
         }
-                 let categoryExist =await myCashflowCategoriesModel.findOne({ category: 'suspense', Balance: typeSelected  });
+                 let categoryExist =await categoriesModel.findOne({ category: 'suspense', Balance: typeSelected  });
                console.log(typeSelected)
                if(!categoryExist){
                 try {
-                    const categoryEntry = new myCashflowCategoriesModel({ category: 'suspense', CategoryLimit: 0, CategoryLimitRange: '', Balance: typeSelected });
+                    const categoryEntry = new categoriesModel({ category: 'suspense', CategoryLimit: 0, CategoryLimitRange: '', Balance: typeSelected });
                   await categoryEntry.save()
                 } 
                 catch (error) {
@@ -311,14 +316,19 @@ export async function updateCashFlowType(rowId, typeSelected) {
                 }
                 }
         return { amUpdated };
+}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
 // //=====================================================================================================
-export async function updateCashFlowShift(rowId, shift) {
+export async function updateCashFlowShift(req,rowId, shift) {
     try {
-        cashFlows = await myCashflowModel.find()
+         const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+    cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -327,7 +337,7 @@ export async function updateCashFlowShift(rowId, shift) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow shift  procedure  ');
-        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await cashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowShift: shift
             }
@@ -342,14 +352,19 @@ export async function updateCashFlowShift(rowId, shift) {
             }
         })
         return { amUpdated };
+}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
 //====================================================================================================
-export async function updateCashFlowTax(rowId, taxDataToUpdate) {
+export async function updateCashFlowTax(req,rowId, taxDataToUpdate) {
     try {
-        cashFlows = await myCashflowModel.find()
+       const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+    cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -365,7 +380,7 @@ export async function updateCashFlowTax(rowId, taxDataToUpdate) {
 
                 if (tax.VatStatus === 'N') {
                     console.log('i am the  update cashflow vat procedure  to false ' + tax.VatStatus + rowId);
-                    await myCashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
+                    await cashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
                         {
                             $set: {
                                 "Tax.vat.VatStatus": tax.VatStatus,  // Update only the VatStatus field inside the Vat object
@@ -387,7 +402,7 @@ export async function updateCashFlowTax(rowId, taxDataToUpdate) {
                 } else if (tax.VatStatus === 'Y') {
                     console.log('i am the  update cashflow vat procedure  to true ' + tax.VatStatus + rowId);
 
-                    await myCashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
+                    await cashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
                         {
                             $set: {
                                 "Tax.vat.QRCode": tax.QRCode,  // Update only the taxStatusus field inside the Vat object
@@ -417,7 +432,7 @@ export async function updateCashFlowTax(rowId, taxDataToUpdate) {
                 if (tax.ZtfStatus === 'N') {
                     console.log('i am the  update cashflow ztf procedure FALSE ' + tax.ZtfStatus + rowId);
 
-                    await myCashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
+                    await cashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
                         {
                             $set: {
                                 "Tax.ztf.ZtfStatus": tax.ZtfStatus,  // Update only the VatStatus field inside the Vat object
@@ -440,7 +455,7 @@ export async function updateCashFlowTax(rowId, taxDataToUpdate) {
                 }
                 else if (tax.ZtfStatus === 'Y') {
                     console.log('i am the  update cashflow ztf procedure YES ' + tax.ZtfStatus + tax.LevyAmount);
-                    await myCashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
+                    await cashflowModel.updateOne({ _id: ObjectId(rowId) },  // Find the document by its _id
                         {
                             $set: {
                                 "Tax.ztf.First": tax.First,  // Update only the taxStatusus field inside the Vat object
@@ -465,15 +480,20 @@ export async function updateCashFlowTax(rowId, taxDataToUpdate) {
 
         }
         return { amUpdated }
+}
 
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
 //=====================================================================================================
-export async function updateCashFlowInvoice(rowId, InvoiceRef) {
+export async function updateCashFlowInvoice(req,rowId, InvoiceRef) {
     try {
-        cashFlows = await myCashflowModel.find()
+        const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+    cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -482,7 +502,7 @@ export async function updateCashFlowInvoice(rowId, InvoiceRef) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow InvoiceRef  procedure  ');
-        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await cashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowInvoiceRef: InvoiceRef
             }
@@ -496,16 +516,21 @@ export async function updateCashFlowInvoice(rowId, InvoiceRef) {
                 amUpdated = false;
             }
         })
-        console.log("SlyCo " + amUpdated)
+   
         return { amUpdated };
+}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
 //=====================================================================================================
-export async function updateCashFlowDescription(rowId, description) {
+export async function updateCashFlowDescription(req,rowId, description) {
     try {
-        cashFlows = await myCashflowModel.find()
+       const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+    cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -514,7 +539,7 @@ export async function updateCashFlowDescription(rowId, description) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow description  procedure  ');
-        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await cashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowDescription: description
             }
@@ -529,14 +554,19 @@ export async function updateCashFlowDescription(rowId, description) {
             }
         })
         return { amUpdated };
+}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
 //=====================================================================================================
-export async function updateCashFlowCategory(rowId, newCategory) {
+export async function updateCashFlowCategory(req,rowId, newCategory) {
     try {
-        cashFlows = await myCashflowModel.find()
+        const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+    cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -545,7 +575,7 @@ export async function updateCashFlowCategory(rowId, newCategory) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow category  procedure  ');
-        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await cashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: { CashFlowCategory: newCategory }
         }).then(result => {
             console.log(`${result.modifiedCount} document(s) updated.`);
@@ -558,15 +588,19 @@ export async function updateCashFlowCategory(rowId, newCategory) {
             }
         })
         return { amUpdated };
+}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
 //====================================================================================================================
-export async function updateCashFlowCurrency(rowId, newCurrency, cashEquivValue, newCashFlowRate1) {
+export async function updateCashFlowCurrency(req,rowId, newCurrency, cashEquivValue, newCashFlowRate1) {
     try {
-
-        cashFlows = await myCashflowModel.find()
+  const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+        cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -575,7 +609,7 @@ export async function updateCashFlowCurrency(rowId, newCurrency, cashEquivValue,
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow description  procedure  ');
-        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await cashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowCurrency: newCurrency,
                 CashFlowRate: newCashFlowRate1, CashFlowCashEquiv: cashEquivValue
@@ -590,16 +624,21 @@ export async function updateCashFlowCurrency(rowId, newCurrency, cashEquivValue,
                 amUpdated = false;
             }
         })
-        console.log("SlyCo " + amUpdated)
+     
         return { amUpdated };
+}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
 //=====================================================================================================
-export async function updateCashFlowAmount(rowId, newAmount, cashEquivValue) {
+export async function updateCashFlowAmount(req,rowId, newAmount, cashEquivValue) {
     try {
-        cashFlows = await myCashflowModel.find()
+         const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+    cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -608,7 +647,7 @@ export async function updateCashFlowAmount(rowId, newAmount, cashEquivValue) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow amount  procedure  ');
-        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await cashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowAmount: newAmount,
                 CashFlowCashEquiv: cashEquivValue
@@ -624,14 +663,19 @@ export async function updateCashFlowAmount(rowId, newAmount, cashEquivValue) {
             }
         })
         return { amUpdated };
+}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
 //====================================================================================================================
-export async function updateCashFlowRate(rowId, newRate, newCashFlowCashEquiv) {
+export async function updateCashFlowRate(req,rowId, newRate, newCashFlowCashEquiv) {
     try {
-        cashFlows = await myCashflowModel.find()
+         const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+    cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -640,7 +684,7 @@ export async function updateCashFlowRate(rowId, newRate, newCashFlowCashEquiv) {
             return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
         });
         console.log('i am the  update cashflow rate  procedure  ');
-        await myCashflowModel.updateOne({ _id: ObjectId(rowId) }, {
+        await cashflowModel.updateOne({ _id: ObjectId(rowId) }, {
             $set: {
                 CashFlowRate: newRate,
                 CashFlowCashEquiv: newCashFlowCashEquiv
@@ -657,14 +701,19 @@ export async function updateCashFlowRate(rowId, newRate, newCashFlowCashEquiv) {
         })
 
         return { amUpdated };
+}
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
 //====================================================================================================================
-export async function deleteCashFLow(checkedRowsId) {
+export async function deleteCashFLow(req,checkedRowsId) {
     try {
-        cashFlows = await myCashflowModel.find()
+        const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;
+    cashFlows = await cashflowModel.find()
         // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
         //and the settings are to be kept under local storage
         cashFlows.sort((a, b) => {
@@ -679,7 +728,7 @@ export async function deleteCashFLow(checkedRowsId) {
             const cashFlowId = checkedRowsId[i];//get the array of ids to delete
             deleteIds.push(ObjectId(cashFlowId));//make each id an object of mongo db id
         }
-        await myCashflowModel.deleteMany({ _id: { $in: deleteIds } })
+        await cashflowModel.deleteMany({ _id: { $in: deleteIds } })
             .then(result => {
                 console.log(`${result.deletedCount} document(s) were deleted`);
                 if (result.deletedCount !== 0) {
@@ -691,6 +740,7 @@ export async function deleteCashFLow(checkedRowsId) {
             })
 
         return { amDeleted };
+}
 
     } catch (error) {
         console.error(error);
@@ -707,7 +757,7 @@ export async function deleteCashFLow(checkedRowsId) {
 //             const shift = item.CashFlowShift;
 //             let existingShifts = ""
 //             //do the filtering if there are any existing shift numbers in the database also in the array
-//             existingShifts = await myCashflowModel.findOne({ CashFlowShift: shift });
+//             existingShifts = await cashflowModel.findOne({ CashFlowShift: shift });
 //             if (existingShifts === null) {
 //                 filteredItemsToProcess.push(item)
 //             }
@@ -731,7 +781,7 @@ export async function deleteCashFLow(checkedRowsId) {
 
 //         }
 //         //get what has been saved in db
-//         insertedDocuments = await myCashflowModel.find()
+//         insertedDocuments = await cashflowModel.find()
 //         return { isSaving, insertedDocuments };
 
 //     } catch (error) {
@@ -739,7 +789,7 @@ export async function deleteCashFLow(checkedRowsId) {
 //         return { isSaving: false, insertedDocuments: [] };
 //     }
 // }
-export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
+export async function insertCashFlowData(req,itemsToProcess, checkTemplateStatus) {
     let filteredItemsToProcess = [];
     let insertedDocuments = [];
     let isSaving = false;
@@ -790,7 +840,11 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
     }
     try {
         //get the base currency
-        let baseCurrency =await myCurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
+       const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel,currenciesModel,categoriesModel} = models;
+    let baseCurrency =await currenciesModel.findOne({ BASE_CURRENCY: 'Y' });
         let payInRowDataArray = []
         let payOutRowDataArray = []
         let categoriesToDb = []
@@ -836,14 +890,14 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
                     }
                 }
                 // Check if the shift exists
-                const existingPayInShift = await myCashflowModel.findOne({ CashFlowShift: shift, CashFlowType: "Pay in" });
+                const existingPayInShift = await cashflowModel.findOne({ CashFlowShift: shift, CashFlowType: "Pay in" });
                 if (existingPayInShift === null) {
                     // If the shift doesn't exist, insert the new record
                     payInRowDataArray.push(payInRowData);
 
                 }
                 // Check if the shift exists 
-                const existingCategory = await myCashflowCategoriesModel.findOne({ category: category, Balance: "PayIn" });
+                const existingCategory = await categoriesModel.findOne({ category: category, Balance: "PayIn" });
                 if (!existingCategory) {
                     let payInCat = {}; //THE NEW DOCUMEN
                     payInCat["category"] = category;
@@ -877,13 +931,13 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
                     }
                 }
                 // Check if the shift exists 
-                const existingPayOutShift = await myCashflowModel.findOne({ CashFlowShift: shift, CashFlowType: "Payout" });
+                const existingPayOutShift = await cashflowModel.findOne({ CashFlowShift: shift, CashFlowType: "Payout" });
                 if (existingPayOutShift === null) {
                     // If the shift doesn't exist, insert the new record
                     payOutRowDataArray.push(payOutRowData)
                 }
                 // Check if the shift exists 
-                const existingCategory = await myCashflowCategoriesModel.findOne({ category: category, Balance: "PayOut" });
+                const existingCategory = await categoriesModel.findOne({ category: category, Balance: "PayOut" });
                 if (!existingCategory) {
                     let payOutCat = {}; //THE NEW DOCUMEN
                     payOutCat["category"] = category;
@@ -919,7 +973,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
                 else if (data.Id !== '') {
                     try {
                         // Check if the shift exists 
-                        const existingCategory = await myCashflowCategoriesModel.findOne({ category: data.Category });
+                        const existingCategory = await categoriesModel.findOne({ category: data.Category });
                         if (!existingCategory) {
                             let payOutCat = {}; //THE NEW DOCUMEN
                             payOutCat["category"] = data.Category;
@@ -932,7 +986,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
                         const relativeRate = data.Rate / baseCurrency.RATE;
                         const cashEquivValue = Number(parseFloat(data.Amount) / parseFloat(relativeRate)).toFixed(2);
                         // Update the existing document
-                        const result = await myCashflowModel.updateOne(
+                        const result = await cashflowModel.updateOne(
                             { _id: ObjectId(data.Id) }, // Filter by _id
                             {
                                 $set: {
@@ -986,15 +1040,15 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
 
         // Perform the bulk insert operation for both Pay In and Pay Out data
         if (operations.length > 0) {
-            const result = await myCashflowModel.bulkWrite(operations);
+            const result = await cashflowModel.bulkWrite(operations);
             isSaving = true
             // If you need the actual inserted documents, you can retrieve them from the result by using their IDs
-            // insertedDocuments = await myCashflowModel.find();
+            // insertedDocuments = await cashflowModel.find();
             // Extract the IDs of the inserted documents
             const insertedIds = Object.values(result.insertedIds);
 
             // Retrieve the inserted documents using their IDs
-            insertedDocuments = await myCashflowModel.find({ _id: { $in: insertedIds } });
+            insertedDocuments = await cashflowModel.find({ _id: { $in: insertedIds } });
 
         } else {
             // return { isSaving: false, insertedDocuments: [] };
@@ -1002,7 +1056,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
         //then save any new categories
         async function saveCategoryToDb(categoryData) {
             try {
-                const categoryEntry = new myCashflowCategoriesModel(categoryData);
+                const categoryEntry = new categoriesModel(categoryData);
                 try {
                     const result = await categoryEntry.save();
                     if (result) {
@@ -1021,6 +1075,7 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
         }
 
         return { isSaving, insertedDocuments, insertedCategories }
+}
     } catch (error) {
         console.error('Error inserting documents:', error);
         return { isSaving: false, insertedDocuments: [] };
@@ -1028,11 +1083,14 @@ export async function insertCashFlowData(itemsToProcess, checkTemplateStatus) {
 }
 
 //====================================================================================================================
-export async function saveCashFlowData(itemsToProcess) {
+export async function saveCashFlowData(req,itemsToProcess) {
     try {
-        for (let a = 0; a < itemsToProcess.length; a++) {
+      const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const { cashflowModel} = models;  for (let a = 0; a < itemsToProcess.length; a++) {
             const item = itemsToProcess[a];
-            const cashflowentry = new myCashflowModel(item);
+            const cashflowentry = new cashflowModel(item);
             try {
                 const result = await cashflowentry.save();
                 if (result) {
@@ -1046,37 +1104,38 @@ export async function saveCashFlowData(itemsToProcess) {
         }
 
         return { isSaving, insertedDocuments };
+}
     } catch (error) {
         console.error('Error inserting documents:', error);
         return { amUpdated: false, updatedDocuments: [] };
     }
 }
 //====================================================================================================================
-export async function updateCashFlowData(itemsToProcess) {
-    try {
-        for (let a = 0; a < itemsToProcess.length; a++) {
-            const item = itemsToProcess[a];
-            // Update the document in the database
-            const result = await myCashflowModel.updateOne({ _id: ObjectId(item._id) }, {
-                $set: {
-                    CashFlowDate: item.CashFlowDate, CashFlowShift: item.CashFlowShift, Vat: item.Vat,
-                    CashFlowInvoiceRef: item.CashFlowInvoiceRef, CashFlowDescription: item.CashFlowDescription,
-                    CashFlowCategory: item.CashFlowCategory, CashFlowCurrency: item.CashFlowCurrency, CashFlowAmount: item.CashFlowAmount,
-                    CashFlowRate: item.CashFlowRate, CashFlowCashEquiv: item.CashFlowCashEquiv, CashFlowType: item.CashFlowType
-                }
-            })
-            if (result.modifiedCount > 0) {
-                amUpdated = true;
-                updatedDocuments.push(item); // Store the successfully updated document
-            } else {
-                amUpdated = false;
-            }
-        }
-        console.log(amDeleted + 'yes')
+// export async function updateCashFlowData(req,itemsToProcess) {
+//     try {
+//         for (let a = 0; a < itemsToProcess.length; a++) {
+//             const item = itemsToProcess[a];
+//             // Update the document in the database
+//             const result = await cashflowModel.updateOne({ _id: ObjectId(item._id) }, {
+//                 $set: {
+//                     CashFlowDate: item.CashFlowDate, CashFlowShift: item.CashFlowShift, Vat: item.Vat,
+//                     CashFlowInvoiceRef: item.CashFlowInvoiceRef, CashFlowDescription: item.CashFlowDescription,
+//                     CashFlowCategory: item.CashFlowCategory, CashFlowCurrency: item.CashFlowCurrency, CashFlowAmount: item.CashFlowAmount,
+//                     CashFlowRate: item.CashFlowRate, CashFlowCashEquiv: item.CashFlowCashEquiv, CashFlowType: item.CashFlowType
+//                 }
+//             })
+//             if (result.modifiedCount > 0) {
+//                 amUpdated = true;
+//                 updatedDocuments.push(item); // Store the successfully updated document
+//             } else {
+//                 amUpdated = false;
+//             }
+//         }
+//         console.log(amDeleted + 'yes')
 
-        return { amUpdated, updatedDocuments };
-    } catch (error) {
-        console.error('Error inserting documents:', error);
-        return { amUpdated: false, updatedDocuments: [] };
-    }
-}
+//         return { amUpdated, updatedDocuments };
+//     } catch (error) {
+//         console.error('Error inserting documents:', error);
+//         return { amUpdated: false, updatedDocuments: [] };
+//     }
+// }
