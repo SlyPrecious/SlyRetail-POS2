@@ -17,7 +17,7 @@ import { advCashMngmnt } from './Controllers/advanceCashMngmntController.js';
 import { payInData } from './Controllers/payInController.js';
 import { insertNewCurrency, updateCurrencies, updateCurrencyName, updateBaseCurrency, updateCurrencyRate, deleteCurrency } from './Controllers/currenciesController.js';
 import { payOutData } from './Controllers/payOutController.js';
-import { logout } from './Schemas/slyretailDbConfig.js';
+// import { logout } from './Schemas/slyretailDbConfig.js';
 // import { getExpenseCategoryTotals } from './Controllers/payOutCategoriesController.js';
 // import { getIncomeCategoryTotals } from './Controllers/payInCategoriesController.js';
 import { getTrialBalanceData } from './Controllers/trialBalanceController.js';
@@ -161,19 +161,19 @@ app.get('/incomeCategories', async (req, res) => {
 //   }
 // });
 //========================================================================================
-app.post('/logout', async (req, res) => {
-  try {
-    const { databaseName } = req.body;
-    console.log(databaseName + "received")
-    const { loggedOut } = await logout(databaseName)
-    res.status(200).json({
-      loggedOut: loggedOut,
-    });
-  } catch (error) {
-    console.error('Error during logout:', error);
-    res.status(500).send("An error occurred during logout.");
-  }
-});
+// app.post('/logout', async (req, res) => {
+//   try {
+//     const { databaseName } = req.body;
+//     console.log(databaseName + "received")
+//     const { loggedOut } = await logout(databaseName)
+//     res.status(200).json({
+//       loggedOut: loggedOut,
+//     });
+//   } catch (error) {
+//     console.error('Error during logout:', error);
+//     res.status(500).send("An error occurred during logout.");
+//   }
+// });
 //======================================================================================
 // Handle the incoming request to display the default contents
 app.post('/defaultDisplayThePaginationWay', async (req, res) => {
