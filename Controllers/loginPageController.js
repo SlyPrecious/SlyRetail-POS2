@@ -51,7 +51,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
             loggedInStatus = "False";
         }
         if (signingCriteria === "Sign Up") {
-            loggedInStatus = await createDatabase(email, databaseName, databasePassword, signingCriteria);
+            loggedInStatus = await createDatabase(req,email, databaseName, databasePassword, signingCriteria);
             dbName = databaseName
 
         }
@@ -285,7 +285,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
 // Function to create a database
 let loggedInStatus2 = ""
 let currentVersion = "1.3"
-async function createDatabase(email, databaseName, databasePassword, signingCriteria) {
+async function createDatabase(req,email, databaseName, databasePassword, signingCriteria) {
     try {
   const { models } = req.session; //get the models in the session storage
         if (models) {         // Access the models from the session
