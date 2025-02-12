@@ -64,7 +64,7 @@ const connectDB = async (req, databaseName, signingCriteria) => {
         // Store the values in session
         req.session.myDatabase = databaseName;
         req.session.signCriteria = signingCriteria;
-        // req.session.connection = connection.connectionString;
+        req.session.connection = connection;
 // console.log(req)
         // Return the connection object
         return { connection: connection, myDatabase: databaseName, signCriteria: signingCriteria };
