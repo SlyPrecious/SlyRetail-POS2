@@ -6,15 +6,13 @@ export async function getadvancedHeaderStatusArray(req) {
     try {
       const { models } = req.session; //get the models in the session storage
                  // Access the models from the session
-        if (models) {
+       if (!models) {
+      throw new Error('Session models not found');
+    }
         const {advHeadersModel} = models;
       const advancedHeaderStatus = await advHeadersModel.find();
         return { advancedHeaderStatus };
-        }
-        else {
-            console.error('No models found in session');
-            return { advancedHeaderStatus: [] }; // return an empty array or an error response
-        }
+      
     } catch (err) {
         console.error('Error fetching status:', err);
     }
@@ -24,7 +22,9 @@ export async function saveHeaderStatusAdv(req,headerNamefcb, headerisDisplayed) 
          try {
       const { models } = req.session; //get the models in the session storage
                  // Access the models from the session
-        if (models) {
+      if (!models) {
+      throw new Error('Session models not found');
+    }
         const {advHeadersModel} = models;
             await advHeadersModel.updateOne({ HeaderName: headerNamefcb }, {
             $set: {
@@ -40,9 +40,7 @@ export async function saveHeaderStatusAdv(req,headerNamefcb, headerisDisplayed) 
                 isSaving = false;
             }
         })
-        return { isSaving };
-        }
-           
+        return { isSaving };   
     }
     catch (error) {
         console.error(error)
