@@ -188,12 +188,14 @@ export async function getCategoryTotals(req, startDate, endDate, payOutSearchInp
 export async function getCategories(req) {
   try {
          const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {categoriesModel} = models;
     const allCashFlowCategories = await categoriesModel.find()
     return {allCashFlowCategories };
-        }      
+            
   }
   catch (err) {
     console.error('Error connecting to MongoDB:', err);
@@ -204,7 +206,9 @@ const {categoriesModel} = models;
 export async function updateAssignedCategories(req,assignedItemsArray, theCategoryName) {
   try {
        const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {categoriesModel,cashflowModel} = models;
     const cashFlowCat = await categoriesModel.find();
@@ -227,7 +231,7 @@ const {categoriesModel,cashflowModel} = models;
         console.error('Error saving cash flow entry:', saveError);
         isUpdated = false;
       }
-    }
+    
     return { isUpdated };
   }
   }catch (err) {
@@ -240,7 +244,9 @@ export async function insertCategory(req,categoryToDb) {
 
   try {
          const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {categoriesModel,cashflowModel} = models;
     const cashFlowCat = await categoriesModel.find();
@@ -263,7 +269,7 @@ const {categoriesModel,cashflowModel} = models;
     }
     // console.log(isSaving + 'co sly')
     return { isSaving, insertedCategories };
-  }
+
 
   } catch (error) {
     console.error('Error inserting documents:', error);
@@ -276,7 +282,9 @@ const {categoriesModel,cashflowModel} = models;
 export async function updateCategoryRow(req,categoryId, oldCatName, categoryName, categoryLimit, limitRange, balanceValue) {
   try {
            const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {categoriesModel,cashflowModel} = models;
     const cashFlowCat = await categoriesModel.find();
@@ -337,7 +345,7 @@ const {categoriesModel,cashflowModel} = models;
       }
     }
     return { isUpdated };
-  }
+
 
   } catch (error) {
     console.error(error);
@@ -351,7 +359,9 @@ export async function deleteCategory(req,checkedRowsId) {
   let cashFlowId = []
   try {
      const { models } = req.session; //get the models in the session storage
-if (models) {
+ if (!models) {
+      throw new Error('Session models not found');
+    }
     // Access the models from the session
 const {categoriesModel,cashflowModel} = models;
     const cashFlowCat = await categoriesModel.find();
@@ -417,7 +427,7 @@ const {categoriesModel,cashflowModel} = models;
     }
 
     return { amDeleted };
-  } 
+  
 
   } catch (error) {
     console.error(error);
