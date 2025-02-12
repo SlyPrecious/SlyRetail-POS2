@@ -289,7 +289,7 @@ let currentVersion = "1.3"
 async function createDatabase(email, databaseName, databasePassword, signingCriteria) {
     try {
   const { models } = req.session; //get the models in the session storage
-                 // Access the models from the session
+        if (models) {         // Access the models from the session
         const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, currenciesModel,accountingPeriodModel} = models;
             // Create the model with the specific connection
             currencies = await currenciesModel.find()
