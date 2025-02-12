@@ -59,7 +59,8 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
         if (signingCriteria === "Sign In") {
             try {
                 const { models } = req.session; //get the models in the session storage
-                 // Access the models from the session
+             console.log(models)
+                // Access the models from the session
         const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, currenciesModel,accountingPeriodModel} = models;
                 try {
                     const credentials = await credentialsModel.findOne({ DbPassword: databasePassword });
