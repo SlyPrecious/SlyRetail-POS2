@@ -6,19 +6,21 @@ let isModified = false
 
 export async function getAccountingPeriodDetails(req) {
   const { models } = req.session; //get the models in the session storage
-  if (models) {
+ 
+    try {
+       if (models) {
         // Access the models from the session
         const { caccountingPeriodModel} = models;
-    try {
       // const accountingPeriodModel = db.model('Accountingperiod', AccountingPeriodSettingsSchema);
       // Create the model with the specific connection
       const details = await accountingPeriodModel.find();
 
       return { details };
+    }
+         
     } catch (err) {
       console.error('Error fetching accounting details:', err);
       res.status(500).json({ error: 'Internal server error' });
-    }
   }
 }
 export async function updateAccountingPeriod(req,id, startDate) {
