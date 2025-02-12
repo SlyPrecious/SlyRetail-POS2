@@ -244,8 +244,7 @@ const {categoriesModel,cashflowModel} = models;
     }
     return { isUpdated };
   }
-  }
-  catch (err) {
+  }catch (err) {
     console.error('Error connecting to MongoDB:', err);
   }
 }
