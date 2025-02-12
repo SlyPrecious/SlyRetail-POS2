@@ -1088,7 +1088,8 @@ export async function saveCashFlowData(req,itemsToProcess) {
       const { models } = req.session; //get the models in the session storage
 if (models) {
     // Access the models from the session
-const { cashflowModel} = models;  for (let a = 0; a < itemsToProcess.length; a++) {
+const { cashflowModel} = models; 
+    for (let a = 0; a < itemsToProcess.length; a++) {
             const item = itemsToProcess[a];
             const cashflowentry = new cashflowModel(item);
             try {
