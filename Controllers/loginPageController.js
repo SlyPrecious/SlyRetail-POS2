@@ -23,9 +23,9 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
     try {
           // Step 1: Connect to the database and save connection in session
         const { connection, myDatabase, signCriteria } = await connectDB(req, databaseName, signingCriteria);
-        console.log(connection)
-        console.log('myDatabase'+myDatabase)
-        console.log('signCriteria'+signCriteria)
+        // console.log(connection)
+        // console.log('myDatabase'+myDatabase)
+        // console.log('signCriteria'+signCriteria)
         if (connection) {
            // Store the connection and other session data (this should be done in connectDB itself)
             req.session.connection = connection;  // Session is already populated with the connection and other details
@@ -74,7 +74,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                 //==============================================================
                 //first check if the versioncontrols collection exist,if not create it
                 try {
-                    const collections = await db.db.listCollections().toArray();
+                    const collections = await collection.collection.listCollections().toArray();
                     const collectionName = 'versioncontrols'
                     const collectionExists = collections.some(col => col.name === collectionName);
 
