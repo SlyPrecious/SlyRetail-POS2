@@ -10,15 +10,14 @@ let isocode = ''
 let oldBaseCurrRate = ''
 let isUpdated = ''
 let amDeleted = ''
-export async function getCategoryTotals(startDate, endDate, payOutSearchInput,searchInput,pageSize, page,theCategoryName) {
+export async function getCategoryTotals(req,startDate, endDate, payOutSearchInput,searchInput,pageSize, page,theCategoryName) {
   try {
-      const db = await connectDB(myDatabase,signCriteria);
-  if (db) {
-     const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
-    const cashFlowCat = await myCashflowCategoriesModel.find();
-    
-    const  myCashflowModelModel = CashflowModel(db);
-    const cashFlowArray = await myCashflowModelModel.find();
+   const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const {categoriesModel,cashflowModal} = models;
+    const cashFlowCat = await categoriesModel.find();
+    const cashFlowArray = await cashflowModal.find();
 
     let payOutCatArray = []
     let payOutSearchedCatArray = []
@@ -201,12 +200,13 @@ export async function getCategoryTotals(startDate, endDate, payOutSearchInput,se
 
 }
 //========================================================================================================
-export async function getCategories() {
+export async function getCategories(req) {
   try {
-       const db = await connectDB(myDatabase,signCriteria);
-        if (db) {
-          const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
-    const allCashFlowCategories = await myCashflowCategoriesModel.find()
+         const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const {categoriesModel} = models;
+    const allCashFlowCategories = await categoriesModel.find()
     return {allCashFlowCategories };
         }      
   }
@@ -216,20 +216,21 @@ export async function getCategories() {
 }
 
 //=====================================================================================================
-export async function updateAssignedCategories(assignedItemsArray, theCategoryName) {
+export async function updateAssignedCategories(req,assignedItemsArray, theCategoryName) {
   try {
-       const db = await connectDB(myDatabase,signCriteria);
-  if (db) {
-         const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
-    const cashFlowCat = await myCashflowCategoriesModel.find();
+       const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const {categoriesModel,cashflowModal} = models;
+    const cashFlowCat = await categoriesModel.find();
     
-    const  myCashflowModelModel = CashflowModel(db);
-    const cashFlowArray = await myCashflowModelModel.find();
+    const  cashflowModal = CashflowModel(db);
+    const cashFlowArray = await cashflowModal.find();
     
     for (let i = 0; i < assignedItemsArray.length; i++) {
       const cashFlowDataId = assignedItemsArray[i];
       try {
-        await myCashflowModelModel.updateOne({ _id: ObjectId(cashFlowDataId) }, {
+        await cashflowModal.updateOne({ _id: ObjectId(cashFlowDataId) }, {
           $set: {
             CashFlowCategory: theCategoryName
           }
@@ -253,20 +254,21 @@ export async function updateAssignedCategories(assignedItemsArray, theCategoryNa
 }
 
 //=====================================================================================================
-export async function insertCategory(categoryToDb) {
+export async function insertCategory(req,categoryToDb) {
 
   try {
-       const db = await connectDB(myDatabase,signCriteria);
-  if (db) {
-         const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
-    const cashFlowCat = await myCashflowCategoriesModel.find();
+         const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const {categoriesModel,cashflowModal} = models;
+    const cashFlowCat = await categoriesModel.find();
     
-    const  myCashflowModelModel = CashflowModel(db);
-    const cashFlowArray = await myCashflowModelModel.find();
+    const  cashflowModal = CashflowModel(db);
+    const cashFlowArray = await cashflowModal.find();
     for (let a = 0; a < categoryToDb.length; a++) {
       const item = categoryToDb[a];
 
-      const categoryEntry = new myCashflowCategoriesModel(item);
+      const categoryEntry = new categoriesModel(item);
       try {
         const result = await categoryEntry.save();
         if (result) {
@@ -291,22 +293,23 @@ export async function insertCategory(categoryToDb) {
 
 }
 //=====================================================================================================
-export async function updateCategoryRow(categoryId, oldCatName, categoryName, categoryLimit, limitRange, balanceValue) {
+export async function updateCategoryRow(req,categoryId, oldCatName, categoryName, categoryLimit, limitRange, balanceValue) {
   try {
-       const db = await connectDB(myDatabase,signCriteria);
-  if (db) {
-         const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
-    const cashFlowCat = await myCashflowCategoriesModel.find();
+           const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const {categoriesModel,cashflowModal} = models;
+    const cashFlowCat = await categoriesModel.find();
     
-    const  myCashflowModelModel = CashflowModel(db);
-    const cashFlowArray = await myCashflowModelModel.find();
+    const  cashflowModal = CashflowModel(db);
+    const cashFlowArray = await cashflowModal.find();
     ///loop in the cashflow array updating the category with the new category edited
     for (let i = 0; i < cashFlowArray.length; i++) {
       const cashFlowData = cashFlowArray[i];
       if (cashFlowData.CashFlowCategory === oldCatName.replace(/ /g, "_").toLowerCase()) {
         try {
           // cashFlowData.CashFlowCategory = categoryName
-          await myCashflowModelModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
+          await cashflowModal.updateOne({ _id: ObjectId(cashFlowData._id) }, {
             $set: {
               CashFlowCategory: categoryName
             }
@@ -326,11 +329,11 @@ export async function updateCategoryRow(categoryId, oldCatName, categoryName, ca
     }
     // console.log(cashFlowArray)
     //CHECK IF THE IS TO BE DELETED IS EITHER IN EXPENSE CATEGORY OR THE INCOME CATEGORY
-    const cateId = await myCashflowCategoriesModel.findOne({ _id: ObjectId(categoryId) });
+    const cateId = await categoriesModel.findOne({ _id: ObjectId(categoryId) });
     if (cateId) {
       // update the  category
       try {
-        await myCashflowCategoriesModel.updateOne({ _id: ObjectId(categoryId) }, {
+        await categoriesModel.updateOne({ _id: ObjectId(categoryId) }, {
           $set: {
             category: categoryName,
             CategoryLimit: Number(categoryLimit),
@@ -364,18 +367,19 @@ export async function updateCategoryRow(categoryId, oldCatName, categoryName, ca
   }
 }
 //=========================================================================================================================
-export async function deleteCategory(checkedRowsId) {
+export async function deleteCategory(req,checkedRowsId) {
   let incDeleteId = []
   let expDeleteId = []
   let cashFlowId = []
   try {
-   const db = await connectDB(myDatabase,signCriteria);
-  if (db) {
-      const  myCashflowCategoriesModel = CashflowCategoriesModel(db);
-    const cashFlowCat = await myCashflowCategoriesModel.find();
+     const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const {categoriesModel,cashflowModal} = models;
+    const cashFlowCat = await categoriesModel.find();
     
-    const  myCashflowModelModel = CashflowModel(db);
-    cashFlows = await myCashflowModelModel.find()
+    const  cashflowModal = CashflowModel(db);
+    cashFlows = await cashflowModal.find()
     
     // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
     //and the settings are to be kept under local storage
@@ -395,14 +399,14 @@ export async function deleteCategory(checkedRowsId) {
           cashFlowId.push(ObjectId(cashFlows[i]._id))
         }
       }
-      const checkId = await myCashflowCategoriesModel.findOne({ _id: catDataId });
+      const checkId = await categoriesModel.findOne({ _id: catDataId });
       if (checkId) {
         expDeleteId.push(ObjectId(catDataId))
       }
 
     }
     if (cashFlowId.length > 0) {
-      await myCashflowModelModel.updateMany({ _id: { $in: cashFlowId } }, {
+      await cashflowModal.updateMany({ _id: { $in: cashFlowId } }, {
         $set: {
           CashFlowCategory: 'suspense'
         }
@@ -410,7 +414,7 @@ export async function deleteCategory(checkedRowsId) {
 
     }
     if (expDeleteId.length > 0) {
-      await myCashflowCategoriesModel.deleteMany({ _id: { $in: expDeleteId } })
+      await categoriesModel.deleteMany({ _id: { $in: expDeleteId } })
         .then(result => {
           console.log(`${result.deletedCount} document(s) were deleted`);
           if (result.deletedCount !== 0) {
@@ -420,7 +424,7 @@ export async function deleteCategory(checkedRowsId) {
         })
       //also create one in the respective category collections  payouts
       //check if suspense already exist
-      const suspenseExist = await myCashflowCategoriesModel.findOne({ category: 'suspense' });
+      const suspenseExist = await categoriesModel.findOne({ category: 'suspense' });
       if (!suspenseExist) {
         await CashflowCategoriesModel.insertOne({
           category: 'suspense',
