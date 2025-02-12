@@ -8,7 +8,6 @@ let isocode = ''
 
 export async function getTrialBalanceData(req) {
     try {
-         
            const { models } = req.session; //get the models in the session storage
 if (models) {
     // Access the models from the session
