@@ -1127,31 +1127,37 @@ const { cashflowModel} = models;
     }
 }
 //====================================================================================================================
-// export async function updateCashFlowData(req,itemsToProcess) {
-//     try {
-//         for (let a = 0; a < itemsToProcess.length; a++) {
-//             const item = itemsToProcess[a];
-//             // Update the document in the database
-//             const result = await cashflowModel.updateOne({ _id: ObjectId(item._id) }, {
-//                 $set: {
-//                     CashFlowDate: item.CashFlowDate, CashFlowShift: item.CashFlowShift, Vat: item.Vat,
-//                     CashFlowInvoiceRef: item.CashFlowInvoiceRef, CashFlowDescription: item.CashFlowDescription,
-//                     CashFlowCategory: item.CashFlowCategory, CashFlowCurrency: item.CashFlowCurrency, CashFlowAmount: item.CashFlowAmount,
-//                     CashFlowRate: item.CashFlowRate, CashFlowCashEquiv: item.CashFlowCashEquiv, CashFlowType: item.CashFlowType
-//                 }
-//             })
-//             if (result.modifiedCount > 0) {
-//                 amUpdated = true;
-//                 updatedDocuments.push(item); // Store the successfully updated document
-//             } else {
-//                 amUpdated = false;
-//             }
-//         }
-//         console.log(amDeleted + 'yes')
+export async function updateCashFlowData(req,itemsToProcess) {
+    try {
+          const { models } = req.session; //get the models in the session storage
+ if (!models) {
+      throw new Error('Session models not found');
+    }
+    // Access the models from the session
+const { cashflowModel} = models; 
+        for (let a = 0; a < itemsToProcess.length; a++) {
+            const item = itemsToProcess[a];
+            // Update the document in the database
+            const result = await cashflowModel.updateOne({ _id: ObjectId(item._id) }, {
+                $set: {
+                    CashFlowDate: item.CashFlowDate, CashFlowShift: item.CashFlowShift, Vat: item.Vat,
+                    CashFlowInvoiceRef: item.CashFlowInvoiceRef, CashFlowDescription: item.CashFlowDescription,
+                    CashFlowCategory: item.CashFlowCategory, CashFlowCurrency: item.CashFlowCurrency, CashFlowAmount: item.CashFlowAmount,
+                    CashFlowRate: item.CashFlowRate, CashFlowCashEquiv: item.CashFlowCashEquiv, CashFlowType: item.CashFlowType
+                }
+            })
+            if (result.modifiedCount > 0) {
+                amUpdated = true;
+                updatedDocuments.push(item); // Store the successfully updated document
+            } else {
+                amUpdated = false;
+            }
+        }
+        console.log(amDeleted + 'yes')
 
-//         return { amUpdated, updatedDocuments };
-//     } catch (error) {
-//         console.error('Error inserting documents:', error);
-//         return { amUpdated: false, updatedDocuments: [] };
-//     }
-// }
+        return { amUpdated, updatedDocuments };
+    } catch (error) {
+        console.error('Error inserting documents:', error);
+        return { amUpdated: false, updatedDocuments: [] };
+    }
+}
