@@ -14,7 +14,6 @@ if (models) {
     // Access the models from the session
 const {currenciesModel,cashflowModal} = models;
          const cashFlows  = await cashflowModal.find()
-               const currenciesModel = CurrenciesModel(db);
         //get the isocode of the base currency
         const baseCurrency = await currenciesModel.findOne({ BASE_CURRENCY: 'Y' });
         const currName = WorldCurrencies.find(curr => curr.Currency_Name === baseCurrency.Currency_Name);//find matching currency name with the one in the cashFlow table
