@@ -107,14 +107,14 @@ app.get('/advanceCashMngmnt', async (req, res) => {
 //====================================================================================================================================
 app.get("/userAccount", async (req, res,) => {
 
-  const { currencies } = await signUpSignIn()
+  const { currencies } = await signUpSignIn(req)
   const database = dbName
   res.render('userAccount', { currencies, database });
 });
 // //======================================================================================================
 app.get('/currencies', async (req, res) => {
   try {
-    const { currencies } = await advCashMngmnt();
+    const { currencies } = await advCashMngmnt(req);
     res.json(currencies);
   } catch (err) {
     console.error('Error fetching currencies:', err);
@@ -124,7 +124,7 @@ app.get('/currencies', async (req, res) => {
 //======================================================================================================
 app.get('/expenseCategories', async (req, res) => {
   try {
-    const { expCategories } = await advCashMngmnt();
+    const { expCategories } = await advCashMngmnt(req);
     res.json(expCategories);
   } catch (err) {
     console.error('Error fetching expenseCategories:', err);
@@ -133,7 +133,7 @@ app.get('/expenseCategories', async (req, res) => {
 });
 app.get('/incomeCategories', async (req, res) => {
   try {
-    const { incCategories } = await advCashMngmnt();
+    const { incCategories } = await advCashMngmnt(req);
     res.json(incCategories);
   } catch (err) {
     console.error('Error fetching incomeCategories:', err);
