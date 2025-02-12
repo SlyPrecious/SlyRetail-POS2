@@ -17,7 +17,7 @@ let currencies = [];
 let dbConnection = null; // Global database connection
 
 // SignUp/SignIn function
-async function signUpSignIn(databaseName, email, databasePassword, signingCriteria) {
+async function signUpSignIn(req,databaseName, email, databasePassword, signingCriteria) {
     let currentVersion = "1.3"
     try {
           // Step 1: Connect to the database and save connection in session
