@@ -261,9 +261,6 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                         //set the latest version currentVersion
                         versionControlModel.updateOne({ _id: ObjectId(existingVersion._id) },
                             { set: { version: currentVersion } });
-                        // }
-
-                    }
                 } catch (error) {
                     console.error("Error occurred while saving version:", error);
                     return
