@@ -3,21 +3,20 @@ import { ObjectId } from 'mongodb';
 import { CashflowModel } from '../Schemas/slyretailCashflowSchemas.js';
 import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
 import { WorldCurrencies } from "../public/js/worldCurrency.js";
-import { connectDB, myDatabase,signCriteria } from '../Schemas/slyretailDbConfig.js';
-
    
 let isocode = ''
 
-export async function getTrialBalanceData() {
+export async function getTrialBalanceData(req) {
     try {
-          const db = await connectDB(myDatabase,signCriteria);
-         if (db) {
-        // //THIS CODE IS SENDING THE ARRAY OF CURRENCIES FROM THE DATABASE TO THE HTML/ CLIENT'S SIDE THE LIST OF CURRENCIES ON THE MY EXPENSES DROPDOWN MENU
-  const myCashflowModel = CashflowModel(db);
-         const cashFlows  = await myCashflowModel.find()
-               const myCurrenciesModel = CurrenciesModel(db);
+         
+           const { models } = req.session; //get the models in the session storage
+if (models) {
+    // Access the models from the session
+const {currenciesModel,cashflowModal} = models;
+         const cashFlows  = await cashflowModal.find()
+               const currenciesModel = CurrenciesModel(db);
         //get the isocode of the base currency
-        const baseCurrency = await myCurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
+        const baseCurrency = await currenciesModel.findOne({ BASE_CURRENCY: 'Y' });
         const currName = WorldCurrencies.find(curr => curr.Currency_Name === baseCurrency.Currency_Name);//find matching currency name with the one in the cashFlow table
         if (currName) {
             isocode = currName.ISO_Code
@@ -32,7 +31,7 @@ export async function getTrialBalanceData() {
                 const relativeRate = parseFloat(cashFlowData.CashFlowRate / baseCurrency.RATE);
                 const calculatedCashEquiv = Number(parseFloat(cashFlowData.CashFlowAmount / relativeRate)).toFixed(2);
                 // console.log(relativeRate)
-                await myCashflowModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
+                await cashflowModal.updateOne({ _id: ObjectId(cashFlowData._id) }, {
                     $set: {
                         CashFlowCashEquiv: calculatedCashEquiv
                     }
@@ -47,7 +46,7 @@ export async function getTrialBalanceData() {
                 const relativeRate = parseFloat(cashFlowData.CashFlowRate / baseCurrency.RATE);
                 const calculatedCashEquiv = Number(parseFloat(cashFlowData.CashFlowAmount / relativeRate)).toFixed(2);
                 // console.log(relativeRate)
-                await myCashflowModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
+                await cashflowModal.updateOne({ _id: ObjectId(cashFlowData._id) }, {
                     $set: {
                         CashFlowCashEquiv: calculatedCashEquiv
                     }
