@@ -15,9 +15,9 @@ export async function getCategoryTotals(req,startDate, endDate, payOutSearchInpu
    const { models } = req.session; //get the models in the session storage
 if (models) {
     // Access the models from the session
-const {categoriesModel,cashflowModal} = models;
+const {categoriesModel,cashflowModel} = models;
     const cashFlowCat = await categoriesModel.find();
-    const cashFlowArray = await cashflowModal.find();
+    const cashFlowArray = await cashflowModel.find();
 
     let payOutCatArray = []
     let payOutSearchedCatArray = []
@@ -221,16 +221,14 @@ export async function updateAssignedCategories(req,assignedItemsArray, theCatego
        const { models } = req.session; //get the models in the session storage
 if (models) {
     // Access the models from the session
-const {categoriesModel,cashflowModal} = models;
+const {categoriesModel,cashflowModel} = models;
     const cashFlowCat = await categoriesModel.find();
-    
-    const  cashflowModal = CashflowModel(db);
-    const cashFlowArray = await cashflowModal.find();
+    const cashFlowArray = await cashflowModel.find();
     
     for (let i = 0; i < assignedItemsArray.length; i++) {
       const cashFlowDataId = assignedItemsArray[i];
       try {
-        await cashflowModal.updateOne({ _id: ObjectId(cashFlowDataId) }, {
+        await cashflowModel.updateOne({ _id: ObjectId(cashFlowDataId) }, {
           $set: {
             CashFlowCategory: theCategoryName
           }
@@ -260,11 +258,9 @@ export async function insertCategory(req,categoryToDb) {
          const { models } = req.session; //get the models in the session storage
 if (models) {
     // Access the models from the session
-const {categoriesModel,cashflowModal} = models;
+const {categoriesModel,cashflowModel} = models;
     const cashFlowCat = await categoriesModel.find();
-    
-    const  cashflowModal = CashflowModel(db);
-    const cashFlowArray = await cashflowModal.find();
+    const cashFlowArray = await cashflowModel.find();
     for (let a = 0; a < categoryToDb.length; a++) {
       const item = categoryToDb[a];
 
@@ -298,18 +294,16 @@ export async function updateCategoryRow(req,categoryId, oldCatName, categoryName
            const { models } = req.session; //get the models in the session storage
 if (models) {
     // Access the models from the session
-const {categoriesModel,cashflowModal} = models;
+const {categoriesModel,cashflowModel} = models;
     const cashFlowCat = await categoriesModel.find();
-    
-    const  cashflowModal = CashflowModel(db);
-    const cashFlowArray = await cashflowModal.find();
+    const cashFlowArray = await cashflowModel.find();
     ///loop in the cashflow array updating the category with the new category edited
     for (let i = 0; i < cashFlowArray.length; i++) {
       const cashFlowData = cashFlowArray[i];
       if (cashFlowData.CashFlowCategory === oldCatName.replace(/ /g, "_").toLowerCase()) {
         try {
           // cashFlowData.CashFlowCategory = categoryName
-          await cashflowModal.updateOne({ _id: ObjectId(cashFlowData._id) }, {
+          await cashflowModel.updateOne({ _id: ObjectId(cashFlowData._id) }, {
             $set: {
               CashFlowCategory: categoryName
             }
@@ -375,11 +369,9 @@ export async function deleteCategory(req,checkedRowsId) {
      const { models } = req.session; //get the models in the session storage
 if (models) {
     // Access the models from the session
-const {categoriesModel,cashflowModal} = models;
+const {categoriesModel,cashflowModel} = models;
     const cashFlowCat = await categoriesModel.find();
-    
-    const  cashflowModal = CashflowModel(db);
-    cashFlows = await cashflowModal.find()
+    cashFlows = await cashflowModel.find()
     
     // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her 
     //and the settings are to be kept under local storage
@@ -406,7 +398,7 @@ const {categoriesModel,cashflowModal} = models;
 
     }
     if (cashFlowId.length > 0) {
-      await cashflowModal.updateMany({ _id: { $in: cashFlowId } }, {
+      await cashflowModel.updateMany({ _id: { $in: cashFlowId } }, {
         $set: {
           CashFlowCategory: 'suspense'
         }
