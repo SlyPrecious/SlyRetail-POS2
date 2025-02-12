@@ -1,18 +1,18 @@
 import { accountingPeriodModel } from '../Schemas/slyretailAccountingPeriodSettingsSchemas.js';
 import { ObjectId } from 'mongodb';
-import { connectDB, myDatabase,signCriteria} from '../Schemas/slyretailDbConfig.js';
+// import { connectDB, myDatabase,signCriteria} from '../Schemas/slyretailDbConfig.js';
 
 let isModified = false
 
-export async function getAccountingPeriodDetails() {
-  // Step 1: Create a connection
-  const db = await connectDB(myDatabase,signCriteria);
-  if (db) {
+export async function getAccountingPeriodDetails(req) {
+  const { models } = req.session; //get the models in the session storage
+  if (models) {
+        // Access the models from the session
+        const { caccountingPeriodModel} = models;
     try {
       // const accountingPeriodModel = db.model('Accountingperiod', AccountingPeriodSettingsSchema);
       // Create the model with the specific connection
-      const accountingModel = accountingPeriodModel(db);
-      const details = await accountingModel.find();
+      const details = await accountingPeriodModel.find();
 
       return { details };
     } catch (err) {
@@ -21,17 +21,19 @@ export async function getAccountingPeriodDetails() {
     }
   }
 }
-export async function updateAccountingPeriod(id, startDate) {
+export async function updateAccountingPeriod(req,id, startDate) {
   // Parse the startDate to a Date object
   try {
     // Step 1: Create a connection
-    const db = await connectDb(myDatabase,signCriteria);
-    if (db) {
+  const { models } = req.session; //get the models in the session storage
+  if (models) {
+        // Access the models from the session
+        const {accountingPeriodModel} = models;
       const start = new Date(startDate);
       // Calculate end date as December 31 of the same year
       // const endDate = new Date(start.getFullYear(), 11, 31); // Month is 0-indexed
-      const accountingModel = accountingPeriodModel(db);
-      const result = await accountingModel.updateOne(
+   
+      const result = await accountingPeriodModel.updateOne(
         // const result = await accountingPeriodModel.updateOne(
         { _id: ObjectId(id) },
         { $set: { startDate: start } }
