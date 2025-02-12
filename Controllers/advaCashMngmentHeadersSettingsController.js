@@ -41,8 +41,7 @@ export async function saveHeaderStatusAdv(req,headerNamefcb, headerisDisplayed) 
             }
         })
         return { isSaving };   
-    }
-    catch (error) {
+    }catch (error) {
         console.error(error)
     }
 }
