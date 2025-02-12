@@ -12,7 +12,7 @@ export async function getAccountingPeriodDetails(req) {
       throw new Error('Session models not found');
     }
         // Access the models from the session
-        const { caccountingPeriodModel} = models;
+        const { accountingPeriodModel} = models;
       // const accountingPeriodModel = db.model('Accountingperiod', AccountingPeriodSettingsSchema);
       // Create the model with the specific connection
       const details = await accountingPeriodModel.find();
