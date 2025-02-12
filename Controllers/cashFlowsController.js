@@ -222,8 +222,7 @@ console.log("theBeforeIncome:", theBeforeIncome);
         };
         return { data };
   
-    }
-    catch (err) {
+    }catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 
