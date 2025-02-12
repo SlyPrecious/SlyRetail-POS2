@@ -22,13 +22,13 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
     let currentVersion = "1.3"
     try {
           // Step 1: Connect to the database and save connection in session
-        const { db, myDatabase, signCriteria } = await connectDB(req, databaseName, signingCriteria);
-        console.log(db)
+        const { connection, myDatabase, signCriteria } = await connectDB(req, databaseName, signingCriteria);
+        console.log(connection)
         console.log('myDatabase'+myDatabase)
         console.log('signCriteria'+signCriteria)
-        if (db) {
+        if (connection) {
            // Store the connection and other session data (this should be done in connectDB itself)
-            req.session.connection = db;  // Session is already populated with the connection and other details
+            req.session.connection = connection;  // Session is already populated with the connection and other details
 
             // Create the model with the specific connection
             // const  myaccountingPeriodModelModel = accountingPeriodModel(db);
@@ -40,13 +40,13 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
             // const     myCategoriesModelModel = CategoriesModel(db);
                // Save models in session if you need to use them later
             req.session.models = {
-                  accountingPeriodModel: accountingPeriodModel(db),
-                advHeadersModel: advaHeadersModel(db),
-                cashflowModel: CashflowModel(db),
-                versionControlModel: versionControlModel(db),
-                currenciesModel: CurrenciesModel(db),
-                credentialsModel: CredentialsModel(db),
-                categoriesModel: CategoriesModel(db)
+                  accountingPeriodModel: accountingPeriodModel(connection),
+                advHeadersModel: advaHeadersModel(connection),
+                cashflowModel: CashflowModel(connection),
+                versionControlModel: versionControlModel(connection),
+                currenciesModel: CurrenciesModel(connection),
+                credentialsModel: CredentialsModel(connection),
+                categoriesModel: CategoriesModel(connection)
                 
             };
         }
