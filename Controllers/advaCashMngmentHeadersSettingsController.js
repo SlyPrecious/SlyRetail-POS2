@@ -3,7 +3,7 @@ import { connectDB, myDatabase,signCriteria } from '../Schemas/slyretailDbConfig
 let advancedHeaderStatus = []
 let isSaving = false;
 let modifiedCount = ""
-export async function getadvancedHeaderStatusArray() {
+export async function getadvancedHeaderStatusArray(req) {
     try {
       const { models } = req.session; //get the models in the session storage
                  // Access the models from the session
@@ -16,7 +16,7 @@ export async function getadvancedHeaderStatusArray() {
         console.error('Error fetching status:', err);
     }
 }
-export async function saveHeaderStatusAdv(headerNamefcb, headerisDisplayed) {
+export async function saveHeaderStatusAdv(req,headerNamefcb, headerisDisplayed) {
     // process the database connection request
     try {
         //THERE ARE OTHER HEADERS LIKE VAT THAT SHOULD BE OPENED AFTER SUBSCRIPTIONS, ALL THOSE LOGIC WILL BE MANAGED HERE
