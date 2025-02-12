@@ -203,4 +203,4 @@ const connectDB = async (req, databaseName, signingCriteria) => {
 // //         console.error(`Error closing MongoDB connection for ${databaseName}:`, error);
 // //     }
 // // };
-// export { connectDB };
+export { connectDB };
