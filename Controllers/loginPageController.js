@@ -98,7 +98,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                 //FOR UPGRADES
                 try {
                     // const db = await connectDB(databaseName, signingCriteria); // Reuse the connection globally
-                    const cashflowData = db.collection('cashflows')
+                    const cashflowData = connection.collection('cashflows')
                     const CashflowData = await cashflowData.find().toArray()
                     //get the currencies
                     currencies = await currenciesModel.find()
