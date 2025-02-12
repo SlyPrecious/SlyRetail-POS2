@@ -142,12 +142,12 @@ const {currenciesModel} = models;
                     });
             }
         }
+    return { isUpdated };
      }
     }
     catch (err) {
         console.error('Error UPDATING CURRENCIES:', err);
     }
-    return { isUpdated };
 }
 //==========================================================================================================
 export async function updateCurrencyRate(req,currencyId, CurrencyRate) {
@@ -166,12 +166,12 @@ const {currenciesModel} = models;
                 }
             })
             .catch(error => console.error(error));
+    return { isUpdated };
     }
     }
     catch (err) {
         console.error('Error UPDATING CURRENCIES rate:', err);
     }
-    return { isUpdated };
 }
 //==========================================================================================================
 export async function deleteCurrency(req,idToDelete) {
@@ -197,11 +197,13 @@ const {currenciesModel,cashflowModal} = models;
                 .catch(error => console.error(error));
         
         }
+    return { amDeleted };
+    
      }
+        
     }
     catch (err) {
         console.error('Error deleting CURRENCIES:', err);
     }
-    return { amDeleted };
 }
 //============================================================================================================
