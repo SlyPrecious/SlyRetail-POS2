@@ -11,6 +11,10 @@ export async function getadvancedHeaderStatusArray(req) {
       const advancedHeaderStatus = await advHeadersModel.find();
         return { advancedHeaderStatus };
         }
+        else {
+            console.error('No models found in session');
+            return { advancedHeaderStatus: [] }; // return an empty array or an error response
+        }
     } catch (err) {
         console.error('Error fetching status:', err);
     }
@@ -38,7 +42,7 @@ export async function saveHeaderStatusAdv(req,headerNamefcb, headerisDisplayed) 
         })
         return { isSaving };
         }
-            
+           
     }
     catch (error) {
         console.error(error)
