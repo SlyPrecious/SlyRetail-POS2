@@ -67,7 +67,7 @@ const connectDB = async (req, databaseName, signingCriteria) => {
         req.session.connection = connection;
 // console.log(req)
         // Return the connection object
-        return { connection: connection, myDatabase: databaseName, signCriteria: signCriteria };
+        return { connection: connection, myDatabase: databaseName, signCriteria: signingCriteria };
     } catch (error) {
         isConnected = false;
         console.error('Error connecting to MongoDB:', error);
