@@ -288,9 +288,9 @@ let loggedInStatus2 = ""
 let currentVersion = "1.3"
 async function createDatabase(email, databaseName, databasePassword, signingCriteria) {
     try {
-
-        const db = await connectDB(databaseName);
-        if (db) {
+  const { models } = req.session; //get the models in the session storage
+                 // Access the models from the session
+        const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, currenciesModel,accountingPeriodModel} = models;
             // Create the model with the specific connection
             currencies = await currenciesModel.find()
             //this is to keep the current structure of databases, the web interface does not have a version but the database will need to be controlled
