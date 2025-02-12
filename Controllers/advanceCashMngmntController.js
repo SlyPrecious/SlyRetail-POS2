@@ -14,7 +14,9 @@ export async function advCashMngmnt(req) {
 
     try {
          const { models } = req.session; //get the models in the session storage
-         if (models) {
+       if (!models) {
+      throw new Error('Session models not found');
+    }
              // Access the models from the session
 const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, currenciesModel,accountingPeriodModel} = models;
         // //THIS CODE IS SENDING THE ARRAY OF CURRENCIES FROM THE DATABASE TO THE HTML/ CLIENT'S SIDE THE LIST OF CURRENCIES ON THE MY EXPENSES DROPDOWN MENU
@@ -32,9 +34,8 @@ const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, cur
         isBaseCurrency = baseCurrency.Currency_Name;
         //CREATE THE INTERVAL ARRAY
     return { isBaseCurrency: isBaseCurrency,  currencies: currencies, isoCode: isoCode };
-         }
-    }
-    catch (err) {
+         
+    }catch (err) {
         console.error('Error connecting to MongoDB:', err);
     }
 }
