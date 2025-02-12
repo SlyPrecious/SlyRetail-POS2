@@ -14,13 +14,14 @@ let symbols = {};//this variable object will contain all the currency symbolss i
 export async function advCashMngmnt() {
 
     try {
-          const db = await connectDB(myDatabase,signCriteria);
-         if (db) {
+         const { models } = req.session; //get the models in the session storage
+         if (models) {
+             // Access the models from the session
+const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, currenciesModel,accountingPeriodModel} = models;
         // //THIS CODE IS SENDING THE ARRAY OF CURRENCIES FROM THE DATABASE TO THE HTML/ CLIENT'S SIDE THE LIST OF CURRENCIES ON THE MY EXPENSES DROPDOWN MENU
-  const myCurrenciesModel = CurrenciesModel(db);
-        currencies = await myCurrenciesModel.find()
+        currencies = await currenciesModel.find()
         //find the base currency in the collection that is where there is a Y
-        const baseCurrency = await myCurrenciesModel.findOne({ BASE_CURRENCY: 'Y' });
+        const baseCurrency = await currenciesModel.findOne({ BASE_CURRENCY: 'Y' });
         //LOOP WITHIN THE WORLD CURRENCIES ARRAY SO THAT WE CAN ACCESS THE ISO CODE FOR THE BASE CURRENCY SELECTED
         for (let i = 0; i < WorldCurrencies.length; i++) {
             const WorldCurrency = WorldCurrencies[i];
