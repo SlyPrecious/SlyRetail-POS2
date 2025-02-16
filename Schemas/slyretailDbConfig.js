@@ -62,9 +62,9 @@ const connectDB = async (req, databaseName, signingCriteria) => {
         }
 
         // Store the values in session
-        req.session.myDatabase = databaseName;
-        req.session.signCriteria = signingCriteria;
-        req.session.connection = connection;
+        req.session.myDatabase = databaseName; // we only need this is session storage and return the unique id of the storage and sedn it to the client side browser thru the use of cookies
+//        req.session.signCriteria = signingCriteria; //no need
+ //       req.session.connection = connection; //not safe
 // console.log(req)
         // Return the connection object
         return { connection: connection, myDatabase: databaseName, signCriteria: signingCriteria };
