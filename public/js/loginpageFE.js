@@ -176,10 +176,40 @@ submitButton.addEventListener('click', (e) => {
     }).then(response => response.json())
         .then(data => {
             if (data.loggedInStatus === "True") {
-                notification('Login Successful... Directing to page.');
-                document.querySelector('.myloader').style.display = 'none'
 
-                window.location.href = '/advanceCashMngmnt';  // This runs in the browser
+                // Accessing session ID cookie (express-session's default name is 'connect.sid')
+                const getSessionId = () => {
+                    const cookies = document.cookie.split('; ');
+                    console.log(cookies);
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].split('=');
+                        if (cookie[0] === 'connect.sid') {
+                            // Decode the URL-encoded session ID
+                            const sessionId = decodeURIComponent(cookie[1]);
+                            //Remove the 's:' prefix and return only the actual session ID
+                            const actualSessionId = sessionId.split(':')[1].split('.')[0];
+                            return actualSessionId;  // Return only the session ID without 's:'
+                        }
+                    }
+                    return null; // If the session cookie is not found
+                };
+
+                console.log(getSessionId());
+                localStorage.setItem('sessionId', getSessionId())
+
+
+                const mySessionId = getSessionId()
+                if (mySessionId !== null) {
+                    notification('Login Successful... Directing to page.');
+                    document.querySelector('.myloader').style.display = 'none'
+                    window.location.href = '/advanceCashMngmnt';  // This runs in the browser
+                }
+                else {
+                    // notification('Login failed. Please try again.');
+                    document.querySelector('.myloader').style.display = 'none'
+                    notification(data.loggedInStatus);
+
+                }
             } else {
                 document.querySelector('.myloader').style.display = 'none'
                 notification(data.loggedInStatus);
