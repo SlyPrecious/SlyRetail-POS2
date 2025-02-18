@@ -10,14 +10,16 @@ import csv from 'csv-parser';
 import express from 'express';
 import bodyParser from 'body-parser';
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
+
 
 //THE CONTROLLERS
 import { signUpSignIn, dbName } from './Controllers/loginPageController.js';
 import { advCashMngmnt } from './Controllers/advanceCashMngmntController.js';
 import { payInData } from './Controllers/payInController.js';
+import { logout } from './Schemas/slyretailDbConfig.js';
 import { insertNewCurrency, updateCurrencies, updateCurrencyName, updateBaseCurrency, updateCurrencyRate, deleteCurrency } from './Controllers/currenciesController.js';
 import { payOutData } from './Controllers/payOutController.js';
-// import { logout } from './Schemas/slyretailDbConfig.js';
 // import { getExpenseCategoryTotals } from './Controllers/payOutCategoriesController.js';
 // import { getIncomeCategoryTotals } from './Controllers/payInCategoriesController.js';
 import { getTrialBalanceData } from './Controllers/trialBalanceController.js';
@@ -44,12 +46,19 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+// Initialize cookie-parser middleware
+app.use(cookieParser());
 // Use express-session middleware
 app.use(session({
-  secret: 'your-secret-key',  // A secret key to sign the session ID cookie
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false } // `secure: true` should be used in HTTPS
+  secret: 'your-secret-key',  // Secret key to sign the session ID cookie
+  // secret: req.sessionID,  // Secret key to sign the session ID cookie
+  resave: false,              // Don't save session if unmodified
+  saveUninitialized: true,    // Save uninitialized sessions (before any data is stored)
+  cookie: {
+    httpOnly: false,         // Prevent access to the cookie via JavaScript
+    secure: false,          // Set to true if you're using HTTPS
+    maxAge: 60 * 60 * 3000  // Set the session duration to 1 hour (in milliseconds)
+  }
 }));
 //===================================================================================
 // Render login page using EJS template
@@ -65,12 +74,10 @@ app.get('/', (req, res) => {
 // Handle login form submission
 app.post('/signinsignup', async (req, res) => {
   const { buttonContent, dbName, email, myPassword } = req.body;
-  // let loggedInStatus = ""
   // Run the sign-up/sign-in logic
   try {
-   const {loggedInStatus} = await signUpSignIn(req,dbName, email, myPassword, buttonContent) //THIS STAGE SHOULD WAIT FOR THE RESPONSE FROM THE FUNCTIONS WITH THE loggedInStatus, NO NEXT LINE SHOULD RUN WITH A BLANK loggedInStatus
+    const { loggedInStatus } = await signUpSignIn(req, dbName, email, myPassword, buttonContent) //THIS STAGE SHOULD WAIT FOR THE RESPONSE FROM THE FUNCTIONS WITH THE loggedInStatus, NO NEXT LINE SHOULD RUN WITH A BLANK loggedInStatus
     //THIS WHERE YOU WILL SHOW THE NEXT PAGE TO GO TO WHE SUCCESSFULLY LOGED IN
-  console.log(loggedInStatus)
     if (loggedInStatus === "True") {
       // req.session.dbName = { username: dbName };  // Store user info in the session
       res.json({ loggedInStatus: "True" }); //then let the user know
@@ -95,26 +102,33 @@ app.get('/dbname', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+//========================================================================================================
 app.get('/advanceCashMngmnt', async (req, res) => {
   try {
-    const { isBaseCurrency, expCategories, incCategories, currencies, isoCode, totalIncome, totalExpenses } = await advCashMngmnt();
-    res.render('advanceCashMngmnt', { isBaseCurrency, expCategories, incCategories, currencies, isoCode, totalIncome, totalExpenses });
+    const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+    //Remove the 's:' prefix and return only the actual session ID
+    const sessionId = actualSessionId.split(':')[1].split('.')[0];
+    const { isBaseCurrency, currencies, isoCode } = await advCashMngmnt(req, sessionId);
+    res.render('advanceCashMngmnt', { isBaseCurrency, currencies, isoCode });
   } catch (error) {
     console.error("Error in sign-in/sign-up", error);
     res.status(500).json({ error: "internal server error" });
   }
 });
 //====================================================================================================================================
-// app.get("/userAccount", async (req, res,) => {
+app.get("/userAccount", async (req, res,) => {
 
-//   const { currencies } = await signUpSignIn(req)
-//   const database = dbName
-//   res.render('userAccount', { currencies, database });
-// });
-// // //======================================================================================================
+  const { currencies } = await signUpSignIn()
+  const database = dbName
+  res.render('userAccount', { currencies, database });
+});
+// //======================================================================================================
 app.get('/currencies', async (req, res) => {
   try {
-    const { currencies } = await advCashMngmnt(req);
+    const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+    //Remove the 's:' prefix and return only the actual session ID
+    const sessionId = actualSessionId.split(':')[1].split('.')[0];
+    const { currencies } = await advCashMngmnt(req, sessionId);
     res.json(currencies);
   } catch (err) {
     console.error('Error fetching currencies:', err);
@@ -124,7 +138,10 @@ app.get('/currencies', async (req, res) => {
 //======================================================================================================
 app.get('/expenseCategories', async (req, res) => {
   try {
-    const { expCategories } = await advCashMngmnt(req);
+    const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+    //Remove the 's:' prefix and return only the actual session ID
+    const sessionId = actualSessionId.split(':')[1].split('.')[0];
+    const { expCategories } = await advCashMngmnt(req, sessionId);
     res.json(expCategories);
   } catch (err) {
     console.error('Error fetching expenseCategories:', err);
@@ -133,7 +150,10 @@ app.get('/expenseCategories', async (req, res) => {
 });
 app.get('/incomeCategories', async (req, res) => {
   try {
-    const { incCategories } = await advCashMngmnt(req);
+    const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+    //Remove the 's:' prefix and return only the actual session ID
+    const sessionId = actualSessionId.split(':')[1].split('.')[0];
+    const { incCategories } = await advCashMngmnt(req, sessionId);
     res.json(incCategories);
   } catch (err) {
     console.error('Error fetching incomeCategories:', err);
@@ -144,7 +164,7 @@ app.get('/incomeCategories', async (req, res) => {
 // app.get('/payOut', async (req, res,) => {
 //   try {
 //     const { isoCode, currencies, expenseCategories, expenses, symbols, totalCostIncome, UpdatedExpenses, isBaseCurrency, totalCostExpenses } = await payOutData();
-//     res.render('payout', { isoCode, currencies, expenseCategories, expenses, symbols, totalCostIncome, UpdatedExpenses, isBaseCurrency, totalCostExpenses });
+//     res.render('payOut', { isoCode, currencies, expenseCategories, expenses, symbols, totalCostIncome, UpdatedExpenses, isBaseCurrency, totalCostExpenses });
 //   } catch (error) {
 //     console.error("Error in payOut", error);
 //     res.status(500).json({ error: "internal server error" });
@@ -154,26 +174,27 @@ app.get('/incomeCategories', async (req, res) => {
 // app.get('/payIn', async (req, res,) => {
 //   try {
 //     const { symbols, income, isBaseCurrency, categories, isoCode, currencies } = await payInData();
-//     res.render('payin', { symbols, income, isBaseCurrency, categories, isoCode, currencies });
+//     res.render('payIn', { symbols, income, isBaseCurrency, categories, isoCode, currencies });
 //   } catch (error) {
 //     console.error("Error in payIn", error);
 //     res.status(500).json({ error: "internal server error" });
 //   }
 // });
 //========================================================================================
-// app.post('/logout', async (req, res) => {
-//   try {
-//     const { databaseName } = req.body;
-//     console.log(databaseName + "received")
-//     const { loggedOut } = await logout(databaseName)
-//     res.status(200).json({
-//       loggedOut: loggedOut,
-//     });
-//   } catch (error) {
-//     console.error('Error during logout:', error);
-//     res.status(500).send("An error occurred during logout.");
-//   }
-// });
+// endpoint for signing out
+app.post('/logout', async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+    console.log(sessionId + "received")
+    const { loggedOut } = await logout(req, sessionId)
+    res.status(200).json({
+      loggedOut: loggedOut,
+    });
+  } catch (error) {
+    console.error('Error during logout:', error);
+    res.status(500).send("An error occurred during logout.");
+  }
+});
 //======================================================================================
 // Handle the incoming request to display the default contents
 app.post('/defaultDisplayThePaginationWay', async (req, res) => {
@@ -188,7 +209,8 @@ app.post('/defaultDisplayThePaginationWay', async (req, res) => {
     const advancedSearchInput = (req.body.advancedSearchInput);
     const searchInput = (req.body.searchInput);
     const payOutSearchInput = (req.body.payOutSearchInput);
-    const { data } = await getCashFlowArray(req,startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, advancedSearchInput, searchInput, payOutSearchInput);
+    const sessionId = (req.body.sessionId);
+    const { data } = await getCashFlowArray(req, startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, advancedSearchInput, searchInput, payOutSearchInput, sessionId);
 
     // Send a response back to the client
     res.json(data);
@@ -201,7 +223,10 @@ app.post('/defaultDisplayThePaginationWay', async (req, res) => {
 //THIS IS FOR CUSTOMISATION OF COLUMNS AND HEADINGS
 app.get('/getAdvHeaderStatus', async (req, res) => {
   try {
-    const { advancedHeaderStatus } = await getadvancedHeaderStatusArray(req)
+    const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+    //Remove the 's:' prefix and return only the actual session ID
+    const sessionId = actualSessionId.split(':')[1].split('.')[0];
+    const { advancedHeaderStatus } = await getadvancedHeaderStatusArray(req, sessionId)
     res.json(advancedHeaderStatus);
   } catch (err) {
     console.error('Error fetching status:', err);
@@ -209,27 +234,27 @@ app.get('/getAdvHeaderStatus', async (req, res) => {
   }
 });
 //==============================================================================
-app.get('/getPayInHeaderStatus', async (req, res) => {
-  try {
-    const { payInHeaderStatus } = await getpayInHeaderStatusArray(req); // Destructure directly
-    res.json(payInHeaderStatus); // Return the status as part of the response object
-  } catch (err) {
-    console.error('Error fetching status:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+// app.get('/getPayInHeaderStatus', async (req, res) => {
+//   try {
+//     const { payInHeaderStatus } = await getpayInHeaderStatusArray(); // Destructure directly
+//     res.json(payInHeaderStatus); // Return the status as part of the response object
+//   } catch (err) {
+//     console.error('Error fetching status:', err);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 
 
-//==================================================================================
-app.get('/getPayOutHeaderStatus', async (req, res) => {
-  try {
-    const { payOutHeaderStatus } = await getpayOutHeaderStatusArray(req)
-    res.json(payOutHeaderStatus);
-  } catch (err) {
-    console.error('Error fetching status:', err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+// //==================================================================================
+// app.get('/getPayOutHeaderStatus', async (req, res) => {
+//   try {
+//     const { payOutHeaderStatus } = await getpayOutHeaderStatusArray()
+//     res.json(payOutHeaderStatus);
+//   } catch (err) {
+//     console.error('Error fetching status:', err);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 //========================================================================================================
 
 app.post('/getCategoriesTotals', async (req, res) => {
@@ -242,7 +267,8 @@ app.post('/getCategoriesTotals', async (req, res) => {
     const pageSize = parseInt(req.body.pageSize);
     const page = parseInt(req.body.page);
     const theCategoryName = req.body.theCategoryName
-    const { data } = await getCategoryTotals(req,startDate, endDate, payOutSearchInput, searchInput, pageSize, page, theCategoryName)
+    const sessionId = req.body.sessionId
+    const { data } = await getCategoryTotals(req, startDate, endDate, payOutSearchInput, searchInput, pageSize, page, theCategoryName, sessionId)
     res.json(data);
 
   } catch (err) {
@@ -253,9 +279,9 @@ app.post('/getCategoriesTotals', async (req, res) => {
 //============================================================================================================
 //Update Header Status For: ADVANCED CASH MANAGEMENT
 app.post('/updateHeaderStatusAdv', async (req, res) => {
-  const { headerNamefcb, headerisDisplayed } = req.body;
+  const { headerNamefcb, headerisDisplayed, sessionId } = req.body;
   try {
-    const { isSaving } = await saveHeaderStatusAdv(req,headerNamefcb, headerisDisplayed)
+    const { isSaving } = await saveHeaderStatusAdv(req, headerNamefcb, headerisDisplayed, sessionId)
     //ON CONDITION THAT THE DOCUMENT HAS BEEN SAVED IN THE MONGO DB SUCCESSFULLY
     res.status(200).json({
       isSaving: isSaving,
@@ -266,41 +292,41 @@ app.post('/updateHeaderStatusAdv', async (req, res) => {
   }
 })
 //=====================================================================================
-//Update Header Status For: PayIn
-app.post('/updateHeaderStatusPayin', async (req, res) => {
-  const { headerNamefcb, headerisDisplayed } = req.body;
-  try {
-    const { isSaving } = await saveHeaderStatusPayIn(req,headerNamefcb, headerisDisplayed)
-    //ON CONDITION THAT THE DOCUMENT HAS BEEN SAVED IN THE MONGO DB SUCCESSFULLY
-    res.status(200).json({
-      isSaving: isSaving,
-    });
-  } catch (error) {
-    res.status(403).json({ isSaving: false, })
-    console.error(error)
-  }
-})
-//==============================================================================================
-//Update Header Status For: PayIn
-app.post('/updateHeaderStatusPayOut', async (req, res) => {
-  const { headerNamefcb, headerisDisplayed } = req.body;
-  try {
-    const { isSaving } = await saveHeaderStatusPayOut(req,headerNamefcb, headerisDisplayed)
-    //ON CONDITION THAT THE DOCUMENT HAS BEEN SAVED IN THE MONGO DB SUCCESSFULLY
-    res.status(200).json({
-      isSaving: isSaving,
-    });
-  } catch (error) {
-    res.status(403).json({ isSaving: false, })
-    console.error(error)
-  }
-})
+// //Update Header Status For: PayIn
+// app.post('/updateHeaderStatusPayin', async (req, res) => {
+//   const { headerNamefcb, headerisDisplayed } = req.body;
+//   try {
+//     const { isSaving } = await saveHeaderStatusPayIn(headerNamefcb, headerisDisplayed)
+//     //ON CONDITION THAT THE DOCUMENT HAS BEEN SAVED IN THE MONGO DB SUCCESSFULLY
+//     res.status(200).json({
+//       isSaving: isSaving,
+//     });
+//   } catch (error) {
+//     res.status(403).json({ isSaving: false, })
+//     console.error(error)
+//   }
+// })
+// //==============================================================================================
+// //Update Header Status For: PayIn
+// app.post('/updateHeaderStatusPayOut', async (req, res) => {
+//   const { headerNamefcb, headerisDisplayed } = req.body;
+//   try {
+//     const { isSaving } = await saveHeaderStatusPayOut(headerNamefcb, headerisDisplayed)
+//     //ON CONDITION THAT THE DOCUMENT HAS BEEN SAVED IN THE MONGO DB SUCCESSFULLY
+//     res.status(200).json({
+//       isSaving: isSaving,
+//     });
+//   } catch (error) {
+//     res.status(403).json({ isSaving: false, })
+//     console.error(error)
+//   }
+// })
 //================================================================================================
 // define the '/updatetheCashFlowDate' endpoint to handle POST requests
 app.post('/updateCashFlowDate', async (req, res) => {
-  const { rowId, newDate } = req.body;
+  const { rowId, newDate, sessionId } = req.body;
   try {
-    const { amUpdated } = await updateCashFlowDate(req,rowId, newDate)
+    const { amUpdated } = await updateCashFlowDate(req, rowId, newDate, sessionId)
     res.status(200).json({ amUpdated: amUpdated })
   }
   catch (error) {
@@ -313,9 +339,9 @@ app.post('/updateCashFlowDate', async (req, res) => {
 //==========================================================================================================
 ///updateCashFlowType'
 app.post('/updateCashFlowType', async (req, res) => {
-  const { rowId, typeSelected, newCategory, categoryToDb } = req.body;
+  const { rowId, typeSelected, sessionId } = req.body;
   try {
-    const { amUpdated } = await updateCashFlowType(req,rowId, typeSelected, newCategory, categoryToDb)
+    const { amUpdated } = await updateCashFlowType(req, rowId, typeSelected, sessionId)
     res.status(200).json({ amUpdated: amUpdated })
   }
   catch (error) {
@@ -326,9 +352,9 @@ app.post('/updateCashFlowType', async (req, res) => {
 //==========================================================================================================
 ///updateCashFlowShift'
 app.post('/updateCashFlowShift', async (req, res) => {
-  const { rowId, shift } = req.body;
+  const { rowId, shift, sessionId } = req.body;
   try {
-    const { amUpdated } = await updateCashFlowShift(req,rowId, shift)
+    const { amUpdated } = await updateCashFlowShift(req, rowId, shift, sessionId)
     res.status(200).json({ amUpdated: amUpdated })
   }
   catch (error) {
@@ -340,9 +366,9 @@ app.post('/updateCashFlowShift', async (req, res) => {
 })
 //==========================================================================================================
 app.post('/updateCashFlowTax', async (req, res) => {
-  const { rowId, taxDataToUpdate, taxStatus } = req.body;
+  const { rowId, taxDataToUpdate, sessionId } = req.body;
   try {
-    const { amUpdated } = await updateCashFlowTax(req,rowId, taxDataToUpdate)
+    const { amUpdated } = await updateCashFlowTax(req, rowId, taxDataToUpdate, sessionId)
     console.log(amUpdated)
     res.status(200).json({ amUpdated: amUpdated })
   }
@@ -356,10 +382,10 @@ app.post('/updateCashFlowTax', async (req, res) => {
 
 //==========================================================================================================
 app.post('/updateCashFlowInvoice', async (req, res) => {
-  const { rowId, InvoiceRef } = req.body;
+  const { rowId, InvoiceRef, sessionId } = req.body;
   // process the database connection request
   try {
-    const { amUpdated } = await updateCashFlowInvoice(req,rowId, InvoiceRef)
+    const { amUpdated } = await updateCashFlowInvoice(req, rowId, InvoiceRef, sessionId)
     res.status(200).json({ amUpdated: amUpdated })
   }
   catch (error) {
@@ -370,11 +396,10 @@ app.post('/updateCashFlowInvoice', async (req, res) => {
 })
 //======================================================================================================================
 app.post('/updateCashFlowDescription', async (req, res) => {
-  const { rowId, description } = req.body;
+  const { rowId, description, sessionId } = req.body;
   // process the database connection request
   try {
-    const { amUpdated } = await updateCashFlowDescription(req,rowId, description)
-    console.log("Sly " + amUpdated)
+    const { amUpdated } = await updateCashFlowDescription(req, rowId, description, sessionId)
     res.status(200).json({ amUpdated: amUpdated })
   }
   catch (error) {
@@ -386,9 +411,9 @@ app.post('/updateCashFlowDescription', async (req, res) => {
 
 //===================================================================================================================================
 app.post('/updateCashFlowCategory', async (req, res) => {
-  const { rowId, newCategory } = req.body;
+  const { rowId, newCategory, sessionId } = req.body;
   try {
-    const { amUpdated } = await updateCashFlowCategory(req,rowId, newCategory)
+    const { amUpdated } = await updateCashFlowCategory(req, rowId, newCategory, sessionId)
     res.status(200).json({ amUpdated: amUpdated })
   }
   catch (error) {
@@ -401,11 +426,11 @@ app.post('/updateCashFlowCategory', async (req, res) => {
 
 //====================================================================================================================================
 app.post('/updateCashFlowCurrency', async (req, res) => {
-  const { rowId, newCurrency, cashEquivValue2, newCashFlowRate } = req.body;
+  const { rowId, newCurrency, cashEquivValue2, newCashFlowRate, sessionId } = req.body;
   const newCashFlowRate1 = parseFloat(newCashFlowRate)
   const cashEquivValue = parseFloat(cashEquivValue2)
   try {
-    const { amUpdated } = await updateCashFlowCurrency(req,rowId, newCurrency, cashEquivValue, newCashFlowRate1)
+    const { amUpdated } = await updateCashFlowCurrency(req, rowId, newCurrency, cashEquivValue, newCashFlowRate1, sessionId)
     res.status(200).json({ amUpdated: amUpdated })
   }
   catch (error) {
@@ -417,11 +442,11 @@ app.post('/updateCashFlowCurrency', async (req, res) => {
 
 //====================================================================================================================================
 app.post('/updateCashFlowAmount', async (req, res) => {
-  const { rowId, newCashFlowAmount, cashEquivValue3 } = req.body;
+  const { rowId, newCashFlowAmount, cashEquivValue3, sessionId } = req.body;
   const newAmount = parseFloat(newCashFlowAmount);
   const cashEquivValue = parseFloat(cashEquivValue3);
   try {
-    const { amUpdated } = await updateCashFlowAmount(req,rowId, newAmount, cashEquivValue)
+    const { amUpdated } = await updateCashFlowAmount(req, rowId, newAmount, cashEquivValue, sessionId)
     res.status(200).json({ amUpdated: amUpdated })
   }
   catch (error) {
@@ -432,11 +457,11 @@ app.post('/updateCashFlowAmount', async (req, res) => {
 })
 //===================================================================================================================================
 app.post('/updateCashFlowRate', async (req, res) => {
-  const { rowId, newCashFlowRate, newCashFlowCashEquiv1 } = req.body;
+  const { rowId, newCashFlowRate, newCashFlowCashEquiv1, sessionId } = req.body;
   const newRate = parseFloat(newCashFlowRate);
   const newCashFlowCashEquiv = parseFloat(newCashFlowCashEquiv1);
   try {
-    const { amUpdated } = await updateCashFlowRate(req,rowId, newRate, newCashFlowCashEquiv)
+    const { amUpdated } = await updateCashFlowRate(req, rowId, newRate, newCashFlowCashEquiv, sessionId)
     console.log("Sly " + amUpdated)
     res.status(200).json({ amUpdated: amUpdated })
   }
@@ -452,9 +477,9 @@ app.post('/updateCashFlowRate', async (req, res) => {
 //DELETING ROW BASED ON ID
 app.delete('/delete', async (req, res) => {
   console.log('i am the delete row procedure ');
-  const { checkedRowsId } = req.body;
+  const { checkedRowsId, sessionId } = req.body;
   try {
-    const { amDeleted } = await deleteCashFLow(req,checkedRowsId)
+    const { amDeleted } = await deleteCashFLow(req, checkedRowsId, sessionId)
     res.status(200).json({ amDeleted: amDeleted })
   }
   catch (error) {
@@ -468,9 +493,9 @@ app.delete('/delete', async (req, res) => {
 
 app.post('/saveCashflow', async (req, res) => { // CONNECT THE API END POINT
   //take the array transfered
-  const { itemsToProcess } = req.body
+  const { itemsToProcess, sessionId } = req.body
   try {
-    const { isSaving, insertedDocuments } = await saveCashFlowData(req,itemsToProcess)
+    const { isSaving, insertedDocuments } = await saveCashFlowData(req, itemsToProcess, sessionId)
 
     res.status(200).json({
       isSaving: isSaving,
@@ -486,7 +511,9 @@ app.post('/saveCashflow', async (req, res) => { // CONNECT THE API END POINT
 
 // ==========================================================================================
 app.post('/cashFlowData', upload.single('csvFile'), (req, res) => {
-
+  // Access the sessionid from the form data
+  const sessionId = req.body.sessionid;
+  console.log(sessionId)
   // Get the file path using __dirname and the uploaded file's filename
   const filePath = path.join(__dirname, 'uploads', req.file.filename);
 
@@ -530,7 +557,7 @@ app.post('/cashFlowData', upload.single('csvFile'), (req, res) => {
       })
       .on('end', async () => {
         try {
-          const { isSaving, insertedDocuments, insertedCategories } = await insertCashFlowData(req,itemsToProcess, checkTemplateStatus);
+          const { isSaving, insertedDocuments, insertedCategories } = await insertCashFlowData(req, itemsToProcess, checkTemplateStatus, sessionId);
           res.status(200).json({
             isSaving: isSaving,
             documents: insertedDocuments,
@@ -565,7 +592,10 @@ app.post('/cashFlowData', upload.single('csvFile'), (req, res) => {
 //===================================================================================
 app.get('/getCategories', async (req, res) => {
   try {
-    const { allCashFlowCategories } = await getCategories(req);
+    const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+    //Remove the 's:' prefix and return only the actual session ID
+    const sessionId = actualSessionId.split(':')[1].split('.')[0];
+    const { allCashFlowCategories } = await getCategories(req, sessionId);
     // console.log(allCashFlowCategories +'sly')
     res.json(allCashFlowCategories);
   } catch (err) {
@@ -577,7 +607,7 @@ app.get('/getCategories', async (req, res) => {
 app.post('/UpdateCashFlowData', async (req, res) => { // CONNECT THE API END POINT TO UPDATE ONE EXPENSE PER TIME
   const { itemsToProcess } = req.body
   try {
-    const { amUpdated, insertedDocuments } = await updateCashFlowData(req,itemsToProcess)
+    const { amUpdated, insertedDocuments } = await updateCashFlowData(itemsToProcess)
     console.log(amUpdated)
     res.status(200).json({
       amUpdated: amUpdated,
@@ -593,9 +623,9 @@ app.post('/UpdateCashFlowData', async (req, res) => { // CONNECT THE API END POI
 //========================================================================================
 app.post('/insertCategory', async (req, res) => { // CONNECT THE API END POINT
 
-  const { categoryToDb } = req.body;
+  const { categoryToDb, sessionId } = req.body;
   try {
-    const { isSaving, insertedCategories } = await insertCategory(req,categoryToDb)
+    const { isSaving, insertedCategories } = await insertCategory(req, categoryToDb, sessionId)
     // console.log(insertedCategories)
     // console.log(isSaving)
     res.status(200).json({
@@ -611,10 +641,10 @@ app.post('/insertCategory', async (req, res) => { // CONNECT THE API END POINT
 })
 //======================================================================================================
 app.post('/updateAssignedDocs', async (req, res) => { // CONNECT THE API END POINT
-  const { assignedItemsArray } = req.body; //TAKE THE VARIABLES TRANSFERED
+  const { assignedItemsArray, sessionId } = req.body; //TAKE THE VARIABLES TRANSFERED
   const theCategoryName = req.body.theCategoryName; //TAKE THE VARIABLES TRANSFERED
   try {
-    const { isUpdated } = await updateAssignedCategories(req,assignedItemsArray, theCategoryName)
+    const { isUpdated } = await updateAssignedCategories(req, assignedItemsArray, theCategoryName, sessionId)
     res.status(200).json({
       isUpdated: isUpdated,
     });
@@ -633,8 +663,9 @@ app.post('/UpdateCategoryRow', async (req, res) => { // CONNECT THE API END POIN
   const categoryLimit = req.body.categoryLimit;
   const limitRange = req.body.limitRange;
   const balanceValue = req.body.balanceValue;
+  const sessionId = req.body.sessionId;
   try {
-    const { isUpdated } = await updateCategoryRow(req,categoryId, oldCatName, categoryName, categoryLimit, limitRange, balanceValue)
+    const { isUpdated } = await updateCategoryRow(req, categoryId, oldCatName, categoryName, categoryLimit, limitRange, balanceValue, sessionId)
     res.status(200).json({
       isUpdated: isUpdated,
     });
@@ -648,9 +679,9 @@ app.post('/UpdateCategoryRow', async (req, res) => { // CONNECT THE API END POIN
 //====================================================================================================================
 //DELETING PAYMENT TYPE ROW 
 app.delete('/deleteCategoriesRows', async (req, res) => {
-  const { checkedRowsId } = req.body;
+  const { checkedRowsId, sessionId } = req.body;
   try {
-    const { amDeleted } = await deleteCategory(req,checkedRowsId)
+    const { amDeleted } = await deleteCategory(req, checkedRowsId, sessionId)
     console.log(amDeleted)
 
     res.status(200).json({
@@ -676,7 +707,8 @@ app.post('/getArrayForExport', async (req, res) => {
     const payOutFilterCategory = (req.body.payOutFilterCategory);
     const exportingCriteria = (req.body.exportingCriteria);
     const advExportingCriteria = (req.body.advExportingCriteria);
-    const { data } = await exportingArray(req,startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, exportingCriteria, advExportingCriteria);
+    const sessionId = (req.body.sessionId);
+    const { data } = await exportingArray(req, startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, exportingCriteria, advExportingCriteria, sessionId);
     // Send a response back to the client
     res.json(data);
   } catch (err) {
@@ -685,25 +717,13 @@ app.post('/getArrayForExport', async (req, res) => {
   }
 });
 //=========================================================================================
-// Handle the incoming request to get the array for importing
-app.post('/getArrayForImport', async (req, res) => {
-  try {
-    // let data = []
-    const { cashFlows } = await arrayForImport(req);
-    //THIS MUST ONLY CONTAINS THE INFORMATION OF WHATEVER THAT IS THE CURRENT PAGE BY THE USER
-    // Send a response back to the client
-    res.status(200).json({
-      cashFlows: cashFlows
-    });
-  } catch (err) {
-    console.error('Error:', err);
-    res.status(500).json({ error: 'An error occurred' });
-  }
-})
-//===================================================================================
 app.get('/details', async (req, res) => {
   try {
-    const { details } = await getAccountingPeriodDetails(req);
+    // Get the session ID from the 'connect.sid' cookie
+    const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+    //Remove the 's:' prefix and return only the actual session ID
+    const sessionId = actualSessionId.split(':')[1].split('.')[0];
+    const { details } = await getAccountingPeriodDetails(req, sessionId);
     // console.log(details)
     res.json(details);
   } catch (err) {
@@ -715,8 +735,9 @@ app.get('/details', async (req, res) => {
 app.post('/updateAccountingPeriod', async (req, res) => {
   const id = req.body.id;
   const startDate = req.body.startDate;
+  const sessionId = req.body.sessionId;
   try {
-    const { isModified } = await updateAccountingPeriod(req,id, startDate);
+    const { isModified } = await updateAccountingPeriod(req, id, startDate, sessionId);
     res.status(200).json({
       isModified: isModified
     });
@@ -730,8 +751,11 @@ app.post('/updateAccountingPeriod', async (req, res) => {
 app.get('/cashFlowArray', async (req, res) => {
 
   try {
-    // let data = []
-    const { cashFlows } = await arrayForImport(req);
+    // Get the session ID from the 'connect.sid' cookie
+    const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+    //Remove the 's:' prefix and return only the actual session ID
+    const sessionId = actualSessionId.split(':')[1].split('.')[0];
+    const { cashFlows } = await arrayForImport(req, sessionId);
     // Send a response back to the client
     res.status(200).json(cashFlows);
   } catch (err) {
@@ -741,16 +765,27 @@ app.get('/cashFlowArray', async (req, res) => {
 });
 //=======================================================================================
 app.get('/TrialBalance', async (req, res) => {
-  const { isocode, totalCostIncome, totalCostExpenses } = await getTrialBalanceData(req)
+  // Get the session ID from the 'connect.sid' cookie
+  const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+  //Remove the 's:' prefix and return only the actual session ID
+  const sessionId = actualSessionId.split(':')[1].split('.')[0];
+  const { isocode, totalCostIncome, totalCostExpenses } = await getTrialBalanceData(req, sessionId)
   const accountName = dbName
-  res.render("trialBalance", { isocode, accountName, totalCostIncome, totalCostExpenses });
+  res.render("TrialBalance", { isocode, accountName, totalCostIncome, totalCostExpenses });
 });
 
 //===========================================================================================
 //CATEGORIES PAGE
+
 app.get('/Categories', async (req, res) => {
-  const { isocode } = await getCategories()
-  res.render("categories", { isocode });
+  // Get the session ID from the 'connect.sid' cookie
+  const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+  //Remove the 's:' prefix and return only the actual session ID
+  const sessionId = actualSessionId.split(':')[1].split('.')[0];
+
+  const { isocode } = await getCategories(req, sessionId)
+  res.render("Categories", { isocode });
+  // res.render("Categories", { isocode }, { sessionId });
 });
 
 //===================================================================================
@@ -771,9 +806,9 @@ app.post('/UpdateCurrencies', async (req, res) => { // CONNECT THE API END POINT
   const paymentType = req.body.paymentType; //TAKE THE VARIABLES TRANSFERED
   const paymentName = req.body.paymentName;
   const paymentRate = req.body.paymentRate;
+  const sessionId = req.body.sessionId;
   try {
-    const { isUpdated } = await updateCurrencies(req,currencyId, paymentType, paymentName, paymentRate)
-    console.log(isUpdated)
+    const { isUpdated } = await updateCurrencies(req, currencyId, paymentType, paymentName, paymentRate, sessionId)
     res.status(200).json({
       isUpdated: isUpdated
     });
@@ -789,10 +824,9 @@ app.post('/UpdateCurrencies', async (req, res) => { // CONNECT THE API END POINT
 
 app.post('/updateBaseCurrency', async (req, res) => {
   const paymentId = req.body.paymentId;
-  // const baseCurrRate = req.body.baseCurrRate;
+  const sessionId = req.body.sessionId;
   try {
-    const { isUpdated } = await updateBaseCurrency(req,paymentId)
-    console.log(isUpdated + 'base currency')
+    const { isUpdated } = await updateBaseCurrency(req, paymentId, sessionId)
     res.status(200).json({
       isUpdated: isUpdated
     });
@@ -806,9 +840,9 @@ app.post('/createNewCurrency', async (req, res) => { // CONNECT THE API END POIN
   const paymentType = req.body.paymentType; //TAKE THE VARIABLES TRANSFERED
   const paymentName = req.body.paymentName;
   const paymentRate = req.body.paymentRate;
+  const sessionId = req.body.sessionId;
   try {
-    const { isSaved } = await insertNewCurrency(req,paymentType, paymentName, paymentRate)
-    console.log(isSaved)
+    const { isSaved } = await insertNewCurrency(req, paymentType, paymentName, paymentRate, sessionId)
     res.status(200).json({
       isSaved: isSaved
     });
@@ -823,9 +857,9 @@ app.post('/UpdateCurrenciesName', async (req, res) => { // CONNECT THE API END P
 
   const currencyId = req.body.currencyId; //TAKE THE VARIABLES TRANSFERED
   const paymentType = req.body.newPaymentType; //TAKE THE VARIABLES TRANSFERED
+  const sessionId = req.body.sessionId; //TAKE THE VARIABLES TRANSFERED
   try {
-    const { isUpdated } = await updateCurrencyName(req,currencyId, paymentType)
-    console.log(isUpdated)
+    const { isUpdated } = await updateCurrencyName(req, currencyId, paymentType, sessionId)
     res.status(200).json({
       isUpdated: isUpdated
     });
@@ -837,10 +871,9 @@ app.post('/UpdateCurrenciesName', async (req, res) => { // CONNECT THE API END P
 //==================================================================================================
 //RateCell to post the value and update database
 app.post('/updateCurrencyRate', async (req, res) => {
-  const { currencyId, CurrencyRate } = req.body;
+  const { currencyId, CurrencyRate, sessionId } = req.body;
   try {
-    const { isUpdated } = updateCurrencyRate(req,currencyId, CurrencyRate)
-    console.log(isUpdated)
+    const { isUpdated } = updateCurrencyRate(req, currencyId, CurrencyRate, sessionId)
     res.status(200).json({
       isUpdated: isUpdated
     });
@@ -853,10 +886,9 @@ app.post('/updateCurrencyRate', async (req, res) => {
 // //================================================================================================
 //DELETING PAYMENT TYPE ROW 
 app.delete('/deletePaymentTypeRows', async (req, res) => {
-  const { idToDelete } = req.body;
+  const { idToDelete, sessionId } = req.body;
   try {
-    const { amDeleted } = await deleteCurrency(req,idToDelete)
-    console.log(amDeleted)
+    const { amDeleted } = await deleteCurrency(req, idToDelete, sessionId)
     res.status(200).json({
       amDeleted: amDeleted
     });
@@ -866,10 +898,7 @@ app.delete('/deletePaymentTypeRows', async (req, res) => {
   }
 })
 //================================================================================================
-// app.listen(2000, function () {
-//   console.log("Server started on port 2000");
-// });
-
 app.listen(2000, function () {
   console.log("Server started on port 2000");
 });
+
