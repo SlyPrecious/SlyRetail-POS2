@@ -26,7 +26,7 @@
         <p class="loader-text">Loading...</p>
     </div>
     <div class="myloader" style="display: none;"></div>
-   <div class="theLoader">
+    <div class="theLoader">
         <div id="spinner"></div>
     </div>
     <div id="tool-bar" class="toolbar" style="display: none;">
@@ -104,7 +104,82 @@
 
         </div>
     </div>
-    
+    <div class="expense">
+        <!-- test of the new edit form -->
+        <div class="form-adv-input" id="adv-details-Form" style=" z-index: 9999;position: absolute;margin-left: 84px;
+                        margin-top: 56px;">
+            <form class="editForm" id="addCashFlowform" method="POST" action="/AdvancedCashManagement">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="Description">Description:</label>
+                        <input type="text" name="" id="description-input" minlength="3" maxlength="25" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="category">Category</label>
+                        <input type="text" name="" id="" disabled="true">
+                        <div class="catemenu">
+                            <div class="cate-btn">
+                                <span class="cate-Btn-Span" style="width: 100%;">No Category</span>
+                                <div class="ccaret"></div>
+                            </div>
+                            <ul class="categories">
+                                <li class="cate-option">
+                                    <option>
+                                    </option>
+                                </li>
+                            </ul>
+                            <ul class="incCategories">
+                                <li class="incCate-option">
+                                    <option>
+                                    </option>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <label for="currency">Currency</label>
+                        <input type="text" name="" id="" disabled="true">
+                        <div class="selectmenu">
+                            <div class="select-btn">
+                                <span class="btn-text" style="width: 100%;">Payment Type</span>
+                                <div class="caretForm"></div>
+                            </div>
+                            <ul class="currencies">
+                                <li class="option">
+                                    <option>
+                                    </option>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="amount">Amount</label>
+                        <input type="number" name="amount" pattern="[0-9]+([.][0-9]+)?" step="any"
+                            class="current-amount" id="current-amount-input">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="rate">Rate</label>
+                        <span for="sub" class="current-rate" id="label-rate">RATE</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="invoiceNo">Invoice No</label>
+                        <input type="text" name="" class="invoice" id="invoice-input">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="shiftNo">Shift No</label>
+                        <input type="text" name="" class="shift" id="shift-input">
+                    </div>
+                </div>
+                <button type="submit" class="saveCashFlow">ADD</button>
+                <label class="myCurrentId" for="dep" hidden>Id</label>
+                <label class="myCurrentDate" for="dep" hidden>Date</label>
+                <label class="myCurrentType" for="dep" hidden>Type</label>
+            </form>
+        </div>
+    </div>
     <!-- <div class="container"> -->
     <div class="second_card">
         <div id="chartContainer">
@@ -171,8 +246,8 @@
                             <p class="form-text">Drag and drop your file here</p>
                         </div>
                         <div class="mb-3">
-                            <p> You can download our <a id="download-template-link" href="Templates/CashFlowTemplate.csv"
-                                    download>CSV
+                            <p> You can download our <a id="download-template-link"
+                                    href="Templates/ExpensesTemplate.csv" download>CSV
                                     Template</a>
                         </div>
                         <div class="form-buttons">
@@ -180,14 +255,14 @@
                             <button type="button" id="cancel-btn">Retry</button>
                         </div>
                     </form>
-                </div>        
+                </div>
 
             </div>
             <div class="columns">
                 <div class="dropdown" style="display:inline-block;">
                     <button class="btn" type="button" id="columnId" data-bs-toggle="dropdown" aria-expanded="false"
                         style="background-color: transparent;">
-                            <i class="fa fa-columns advColumn"  aria-hidden="true"></i>
+                        <i class="fa fa-columns advColumn" aria-hidden="true"></i>
                     </button>
                     <ul class="dropdown-menu">
                         <li>
@@ -277,35 +352,35 @@
             </table>
         </div>
 
-            <div class="footer" style="display: none;">
-                <div class="pagination">
-                    <span id="previous" style="font-size: 25px; margin-right: 15px;">&laquo;</span>
-                    <div id="pagination"></div>
-                    <p class="statusText" style="color: black; margin-top: 13px;"> <span class="spanText"></span> of
-                        <span class="spanText1"></span> |
-                    <div class="dropdown" style="margin-top: 7px;">
-                        <button class="btn dropdown-toggle paginationBtn" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false" style="outline: none;border: none;background-color: transparent;">
-                            <span class="statusSpan" style="width: 20px;">Rows Per Page</span>
-                            <span class="rowsPerPage"></span>
-                        </button>
-                        <!-- <div class="paginationContainer" style="margin-top:-6%;"> -->
-                        <ul class="dropdown-menu">
-                            <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId0"
-                                    href="#">5</a></li>
-                            <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId1"
-                                    href="#">10</a></li>
-                            <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId2"
-                                    href="#">50</a></li>
-                        </ul>
-                    </div>
-                    </p>
-                    <span id="next" style="font-size: 25px;margin-left: 15px;">&raquo;</span>
+        <div class="footer" style="display: none;">
+            <div class="pagination">
+                <span id="previous" style="font-size: 25px; margin-right: 15px;">&laquo;</span>
+                <div id="pagination"></div>
+                <p class="statusText" style="color: black; margin-top: 13px;"> <span class="spanText"></span> of
+                    <span class="spanText1"></span> |
+                <div class="dropdown" style="margin-top: 7px;">
+                    <button class="btn dropdown-toggle paginationBtn" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false" style="outline: none;border: none;background-color: transparent;">
+                        <span class="statusSpan" style="width: 20px;">Rows Per Page</span>
+                        <span class="rowsPerPage"></span>
+                    </button>
+                    <!-- <div class="paginationContainer" style="margin-top:-6%;"> -->
+                    <ul class="dropdown-menu">
+                        <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId0"
+                                href="#">5</a></li>
+                        <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId1"
+                                href="#">10</a></li>
+                        <li class="paginationList"><a class="dropdown-item paginationItems" id="paginationId2"
+                                href="#">50</a></li>
+                    </ul>
                 </div>
+                </p>
+                <span id="next" style="font-size: 25px;margin-left: 15px;">&raquo;</span>
             </div>
+        </div>
 
 
-      <!-- undo vat modal -->
+        <!-- undo vat modal -->
         <div class="deleteAcc" id="deleteRowsId">
             <div class="deleteRowsContent">
                 <p class="deleteMsg" style="margin-top: 11%;"></p>
@@ -317,7 +392,7 @@
             </div>
             <img src="images/redCross.png" id="closeDelete2" alt="" srcset="">
         </div>
-        
+
         <!-- Modal -->
         <div id="success_tic" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -334,10 +409,12 @@
                                     <h3 style="margin-top:20px;color:#1ab394 ;font-weight: 200;">Import
                                         Completed
                                     </h3>
-                                    <h4  class="uploadData" style="margin-top:20px;color:black;display: none;">Your list of <span class="itemsCount"></span> cashFlows has
+                                    <h4 class="uploadData" style="margin-top:20px;color:black;display: none;">Your list
+                                        of <span class="itemsCount"></span> cashFlows has
                                         been successfully uploaded</h4>
-                                        <h4 class="noUploadData" style="margin-top:20px;color:black;display: none;">No cashflows
-                                            uploaded,cashflows already exist</h4>
+                                    <h4 class="noUploadData" style="margin-top:20px;color:black;display: none;">No
+                                        cashflows
+                                        uploaded,cashflows already exist</h4>
                                     <button id="okay">Ok</button>
                                 </div>
                     </div>
