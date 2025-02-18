@@ -1,103 +1,205 @@
-import { CashflowModel } from '../Schemas/slyretailCashflowSchemas.js';
-let cashFlows = [] //SO THAT IT WILL BE ENABLED TO BE SORTED
-let cashFlowArray = []
-let allCashFlows = []
+import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
+import { ObjectId } from 'mongodb';
+import { connectDB } from '../Schemas/slyretailDbConfig.js';
 
-export async function exportingArray(req,startDate, endDate, pageSize, page, payInFilterCategory, payOutFilterCategory, exportingCriteria, advExportingCriteria) {
+let isUpdated = false
+let amDeleted = false
+let isSaved = false;
+let databaseName = ""
+let signingCriteria = ""
+
+export async function updateCurrencies(req, currencyId, paymentType, paymentName, paymentRate, sessionId) {
     try {
-           const { models } = req.session; //get the models in the session storage
-if (!models) {
-      throw new Error('Session models not found');
+        const db = await connectDB(req, databaseName, signingCriteria, sessionId);
+        if (db) {
+            // Create the model with the specific connection
+            const myCurrenciesModel = CurrenciesModel(db);
+            console.log('i am the  procedure of updating  currencies document in payment type ');
+            // insert the new payment
+            await myCurrenciesModel.updateOne({ _id: ObjectId(currencyId) }, {
+                $set: {
+                    Currency_Name: paymentName,
+                    RATE: Number(paymentRate),
+                    paymentType: paymentType
+                }
+            })
+                .then(result => {
+                    console.log(`${result.matchedCount} document(s) matched the filter criteria.`);
+                    console.log(`${result.modifiedCount} document(s) were updated with the new field value.`);
+                    if (result.modifiedCount !== '') {
+                        isUpdated = true;
+                    }
+                })
+                .catch(error => console.error(error));
+        }
     }
-    // Access the models from the session
-const {cashflowModel} = models;
-          cashFlows  = await cashflowModel.find()
-        // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her and the settings to be kept under local storage
-        cashFlows.sort((a, b) => {
-            const [dayA, monthA, yearA] = a.CashFlowDate.split('/');
-            const [dayB, monthB, yearB] = b.CashFlowDate.split('/');
-            return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
-        });
-
-        for (let a = 0; a < cashFlows.length; a++) { //first loop for the purpose of PAYINs AND OUTs totals
-            //DURING THIS LOOP, ONE CAN TAKE ADVANTAGE AND CALCULATE THE OPENING BAL FOR BOTH THE PAYINs AND OUTs
-            const row = cashFlows[a];
-            const date = row.CashFlowDate;
-            const parts = date.split("/");
-            const formattedDate = parts[1] + "/" + parts[0] + "/" + parts[2];
-            const formattedDates2 = new Date(formattedDate);
-            if (startDate.getTime() <= formattedDates2.getTime() && formattedDates2.getTime() <= endDate.getTime()) {
-                if (row.CashFlowType === 'Payout') {
-                    //CODE FOR CALCULATING THE TOTAL PAYOUTs
-                    //if there is a category filter, update the totals per category
-                    if (payOutFilterCategory === "NoPayOutCatFilter") {
-                        //THEN CREATE THE ARRAY FOR all the PAYouts
-                        cashFlowArray.push(cashFlows[a]) //'IF THIS CODE IS THE SAME THEN WHAT IS THE REASON FOR THE IF CONDITION
-                    } else if (row.CashFlowCategory === payOutFilterCategory) {
-                        //THEN CREATE THE ARRAY FOR all the PAYouts
-                        cashFlowArray.push(cashFlows[a])//'IF THIS CODE IS THE SAME THEN WHAT IS THE REASON FOR THE IF CONDITION
-                    }
+    catch (err) {
+        console.error('Error UPDATING CURRENCIES:', err);
+    }
+    return { isUpdated };
+}
+//===========================================================================================
+export async function updateCurrencyName(req, currencyId, paymentType, sessionId) {
+    try {
+        const db = await connectDB(req, databaseName, signingCriteria, sessionId);
+        if (db) {
+            // Create the model with the specific connection
+            const myCurrenciesModel = CurrenciesModel(db);
+            console.log('i am the  procedure of updating  currencies name in payment type ');
+            // insert the new payment
+            await myCurrenciesModel.updateOne({ _id: ObjectId(currencyId) }, {
+                $set: {
+                    paymentType: paymentType
                 }
-
-                if (row.CashFlowType === 'Pay in') {
-                    //CODE FOR CALCULATING THE TOTAL PAYINs on a condition
-                    //if there is a category filter, update the totals per category
-                    if (payInFilterCategory === "NoPayInCatFilter") {
-                        //THEN CREATE THE ARRAY FOR all the PAYINs
-                        cashFlowArray.push(cashFlows[a])//'IF THIS CODE IS THE SAME THEN WHAT IS THE REASON FOR THE IF CONDITION
-                    } else if (row.CashFlowCategory === payInFilterCategory) {
-                        //THEN CREATE THE ARRAY FOR all the PAYINs
-                        cashFlowArray.push(cashFlows[a])//'IF THIS CODE IS THE SAME THEN WHAT IS THE REASON FOR THE IF CONDITION
+            })
+                .then(result => {
+                    console.log(`${result.matchedCount} document(s) matched the filter criteria.`);
+                    console.log(`${result.modifiedCount} document(s) were updated with the new field value.`);
+                    if (result.modifiedCount !== '') {
+                        isUpdated = true;
                     }
+                })
+                .catch(error => console.error(error));
+        }
+    }
+    catch (err) {
+        console.error('Error UPDATING CURRENCIES:', err);
+    }
+    return { isUpdated };
+}
+//=========================================================================================================================
+export async function insertNewCurrency(req, paymentType, paymentName, paymentRate, sessionId) {
+    try {
+        const db = await connectDB(req, databaseName, signingCriteria, sessionId);
+        if (db) {
+            // Create the model with the specific connection
+            const myCurrenciesModel = CurrenciesModel(db);
+            console.log('procedure for inserting new currency')
+            // insert the new payment
+            let data = {
+                Currency_Name: paymentName, BASE_CURRENCY: " N", //TO FIX THIS WE NEED AN N/OFF BUTTON FOR BASE CURRENCY OPTION
+                RATE: Number(paymentRate), paymentType: paymentType
+            }
+            const currencyEntry = new myCurrenciesModel(data);
+            try {
+                const result = await currencyEntry.save();
+                if (result) {
+                    isSaved = true;
                 }
-                //get the full array of payins and payouts
-                allCashFlows.push(cashFlows[a])
+            } catch (saveError) {
+                console.error('Error saving cash flow entry:', saveError);
+                isSaved = false;
             }
         }
-        //THEN CREATE THE ARRAY FOR PAYINS, FOR THE CURRENT RANGE 'this is the one to go to the client side js'
-        let itemsToProcess = []
-        if (exportingCriteria === "ExportSelected") {
-        }//when the user wants to export the current page (STILL REQUIRE AND UPGRADE)
-        else if (exportingCriteria === 'FullExport') {
-            itemsToProcess = cashFlowArray
-        }
-        else if (exportingCriteria === 'ExportCurrentPage') {
-            const startIndex = (parseInt(page) - 1) * parseInt(pageSize);
-            const endIndex = startIndex + parseInt(pageSize);
-            itemsToProcess = cashFlowArray.slice(startIndex, endIndex);
-        }
-        else if (advExportingCriteria === 'FullExport') {
-            itemsToProcess = allCashFlows
-        }
-        const data = {
-            startDate: startDate,
-            endDate: endDate,
-            itemsToProcess: itemsToProcess //THIS MUST ONLY CONTAINS THE INFORMATION OF WHATEVER THAT IS THE CURRENT PAGE BY THE USER
-        };
-        return { data, cashFlows };
-    }catch (err) {
-        console.error('Error connecting to MongoDB:', err);
+    } catch (err) {
+        console.error('Error UPDATING CURRENCIES:', err);
     }
+    return { isSaved };
+
 }
-//==============================================================================================================================
-export async function arrayForImport(req) {
+
+//==========================================================================================================================
+export async function updateBaseCurrency(req, paymentId, sessionId) {
     try {
-        
-           const { models } = req.session; //get the models in the session storage
-if (!models) {
-      throw new Error('Session models not found');
+        const db = await connectDB(req, databaseName, signingCriteria, sessionId);
+        if (db) {
+            // Create the model with the specific connection
+            const myCurrenciesModel = CurrenciesModel(db);
+            console.log('i am the update base currency procedure');
+            const currencies = await myCurrenciesModel.find(); //Put the multiple currencies into an array 'note that this is the whole document, but we want to tap into the name object only'
+            // Loop through the currencies and check for the ID of the checked one
+            for (let i = 0; i < currencies.length; i++) {
+                const currency = currencies[i];
+                const isBaseCurrency = currency._id.toString() === paymentId;
+                //FIRST CONVERT ALL CURRENCIES TO N
+                await myCurrenciesModel.updateOne({ _id: ObjectId(currency._id) }, { $set: { BASE_CURRENCY: 'N' } })
+                    .then(result => {
+                        console.log(`Updated ${result.modifiedCount} documents to N.`);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+                // If it's the checked currency, update the baseCurrency field to "Y"
+                if (isBaseCurrency) {
+                    await myCurrenciesModel.updateOne({ _id: ObjectId(paymentId) }, { $set: { BASE_CURRENCY: 'Y' } })
+                        .then(result => {
+                            console.log(`Updated ${result.modifiedCount} documents to Y`);
+                            if (result.modifiedCount !== 0) {
+                                isUpdated = true;
+
+                            }
+                            if (result.modifiedCount === 0) {
+                                isUpdated = false;
+
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            isUpdated = false;
+
+                        });
+                }
+            }
+        }
     }
-    // Access the models from the session
-const {cashflowModel} = models;
-          cashFlows  = await cashflowModel.find()
-        // Always Sort the array by 'income date' in ascending order, when the user want to change this it is up to her and the settings to be kept under local storage
-        cashFlows.sort((a, b) => {
-            const [dayA, monthA, yearA] = a.CashFlowDate.split('/');
-            const [dayB, monthB, yearB] = b.CashFlowDate.split('/');
-            return new Date(yearA, monthA - 1, dayA) - new Date(yearB, monthB - 1, dayB);
-        });
-        return {cashFlows };
-         }catch (err) {
-        console.error('Error connecting to MongoDB:', err);
+    catch (err) {
+        console.error('Error UPDATING CURRENCIES:', err);
     }
+    return { isUpdated };
 }
+//==========================================================================================================
+export async function updateCurrencyRate(req, currencyId, CurrencyRate, sessionId) {
+    try {
+        const db = await connectDB(req, databaseName, signingCriteria, sessionId);
+        if (db) {
+            // Create the model with the specific connection
+            const myCurrenciesModel = CurrenciesModel(db);
+            console.log('i am the  procedure of updating  currencies rate in payment type ');
+            // insert the new payment
+            await myCurrenciesModel.updateOne({ _id: ObjectId(currencyId) }, { $set: { RATE: Number(CurrencyRate) } })
+                .then(result => {
+                    console.log(`${result.matchedCount} document(s) matched the filter criteria.`);
+                    console.log(`${result.modifiedCount} document(s) were updated with the new field value.`);
+                    if (result.modifiedCount !== '') {
+                        isUpdated = true;
+                    }
+                })
+                .catch(error => console.error(error));
+        }
+    }
+    catch (err) {
+        console.error('Error UPDATING CURRENCIES rate:', err);
+    }
+    return { isUpdated };
+}
+//==========================================================================================================
+export async function deleteCurrency(req, idToDelete, sessionId) {
+    try {
+        const db = await connectDB(req, databaseName, signingCriteria, sessionId);
+        if (db) {
+            // Create the model with the specific connection
+            const myCurrenciesModel = CurrenciesModel(db);
+            console.log('i am the  procedure of deleting currency  ');
+            for (let a = 0; a < idToDelete.length; a++) {
+                const element = idToDelete[a];
+                // insert the new payment
+                await myCurrenciesModel.deleteOne({ _id: ObjectId(element) })
+                    .then(result => {
+                        console.log(`${result.deletedCount} document(s) matched the filter criteria.`);
+                        if (result.deletedCount !== 0) {
+                            amDeleted = true;
+                        }
+                        else {
+                            amDeleted = false
+                        }
+                    })
+                    .catch(error => console.error(error));
+            }
+        }
+    }
+    catch (err) {
+        console.error('Error deleting CURRENCIES:', err);
+    }
+    return { amDeleted };
+}
+//============================================================================================================
