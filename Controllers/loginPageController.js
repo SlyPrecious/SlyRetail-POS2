@@ -398,4 +398,4 @@ async function createDatabase(req, email, databaseName, databasePassword, signin
 
 //===========================================================================================
 
-export { dbName, signUpSignIn, dbConnection }; 
+export { signUpSignIn, dbConnection }; 
