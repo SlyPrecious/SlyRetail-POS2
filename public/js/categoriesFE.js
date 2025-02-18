@@ -43,6 +43,8 @@ fetch('/currencies')
                         newExpenseCategories.push(element)
                     }
                 }
+                const spinner = document.querySelector('#spinner')
+
                 //FUNCTION TO REMOVE THE LOADER
                 function displayContainerBlocks() {
                     document.querySelector('.loader-container').style.display = 'none'
@@ -50,9 +52,21 @@ fetch('/currencies')
                     document.querySelector('.icon-nav').style.display = 'block'
                     document.querySelector('.BigContainerCat').style.display = 'block'
                 }
+                function displaySpinner() {
+                    spinner.style.display = "block";
+                    document.querySelector('.BigContainerCat').style.display = 'none'
+                    document.querySelector(".theLoader").style.display = "flex";
+                }
+                function removeSpinner() {
+                    spinner.style.display = "none";
+                    document.querySelector('.BigContainerCat').style.display = 'block'
+                    document.querySelector(".theLoader").style.display = "none";
+                }
                 const submitCategory = document.querySelector('.submitCategory')
                 //=================================================================================================
-
+                //GET THE SESSION ID FROM THE LOCALSTORAGE
+                const sessionId = localStorage.getItem('sessionId')
+                //======================================================================================
                 //GET THE ISOCODE OF THE BASE CURRENCY
                 const baseCurrName = Array.from(newCurrencies).find(curr => curr.BASE_CURRENCY === "Y");//find matching currency name with the one in the incomes table
 
@@ -188,12 +202,15 @@ fetch('/currencies')
                     addNewRow(categoryArrayToDisplay)
                 }
                 function defaultDisplayContent() {
+                    displaySpinner()
                     fetch('/getCategories')
                         .then(response => response.json())
                         .then(allCashFlowCategories => {
-                            displayContainerBlocks()//DISPLY ALL BLOCKS
                             categoryArrayToDisplay = allCashFlowCategories
+                            removeSpinner()
                             addNewRow(categoryArrayToDisplay)
+                            // displayContainerBlocks()//DISPLY ALL BLOCKS
+
                         })
                 }
 
@@ -210,7 +227,6 @@ fetch('/currencies')
                     const tbody = table.getElementsByTagName('tbody')[0]; // Get the table body
                     //LOOP IN THE ARRAY DISPLAYING ROWS WITH THE DATA
                     // // sort by category name
-                    console.log(categoryArrayToDisplay)
                     categoryArrayToDisplay = categoryArrayToDisplay.sort((a, b) => {
                         const nameA = a.category.toUpperCase(); // ignore upper and lowercase
                         const nameB = b.category.toUpperCase(); // ignore upper and lowercase
@@ -724,7 +740,7 @@ fetch('/currencies')
                         updateAssignedDocs(assignedItemsArray, theCategoryName)
                         //Clear the data withing the current modal and innitialize zero on the area with total amount of that category'
                         document.querySelector('.catAmount').innerText = Number(0).toFixed(2)
-                         const allTableRows = document.querySelectorAll('.categoryRows')
+                        const allTableRows = document.querySelectorAll('.categoryRows')
                         for (let h = 0; h < allTableRows.length; h++) {
                             const row = allTableRows[h];
                             row.style.display = 'none'
@@ -858,7 +874,8 @@ fetch('/currencies')
                             endDate: endDate,
                             pageSize: pageSize,
                             page: page,
-                            theCategoryName: theCategoryName
+                            theCategoryName: theCategoryName,
+                            sessionId: sessionId
                         })
                     })
                         .then(response => response.json())
@@ -1100,7 +1117,8 @@ fetch('/currencies')
                             },
                             body: JSON.stringify({
                                 assignedItemsArray,
-                                theCategoryName
+                                theCategoryName,
+                                sessionId
                             })
                         })
                             .then(response => response.json())
@@ -1236,6 +1254,7 @@ fetch('/currencies')
                         },
                         body: JSON.stringify({
                             categoryToDb,
+                            sessionId
                         })
                     })
                         .then(response => response.json())
@@ -1259,7 +1278,7 @@ fetch('/currencies')
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ categoryId, oldCatName, categoryName, categoryLimit, limitRange, balanceValue })
+                        body: JSON.stringify({ categoryId, oldCatName, categoryName, categoryLimit, limitRange, balanceValue, sessionId })
                     })
                         .then(response => response.json())
                         .then(data => {
@@ -1290,6 +1309,7 @@ fetch('/currencies')
                             },
                             body: JSON.stringify({
                                 checkedRowsId,
+                                sessionId
 
                             })
                         })
