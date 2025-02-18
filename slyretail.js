@@ -14,7 +14,7 @@ import cookieParser from 'cookie-parser';
 
 
 //THE CONTROLLERS
-import { signUpSignIn, dbName } from './Controllers/loginPageController.js';
+import { signUpSignIn } from './Controllers/loginPageController.js';
 import { advCashMngmnt } from './Controllers/advanceCashMngmntController.js';
 import { payInData } from './Controllers/payInController.js';
 import { logout } from './Schemas/slyretailDbConfig.js';
@@ -96,11 +96,20 @@ app.post('/signinsignup', async (req, res) => {
 //get the database name of the loggd account
 app.get('/dbname', async (req, res) => {
   try {
-    res.json({ dbName });
-  } catch (err) {
-    console.error('Error fetching dbName:', err);
+    const actualSessionId = req.cookies['connect.sid']; // Access the cookie directly
+    //Remove the 's:' prefix and return only the actual session ID
+    const sessionId = actualSessionId.split(':')[1].split('.')[0];
+    if (req.sessionID === sessionId) {
+      // console.log("iam the new1111 " + req.session.myDatabase)
+      const dbName = req.session.myDatabase
+      res.json({ dbName });
+    }
+
+  } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
+
+
 });
 //========================================================================================================
 app.get('/advanceCashMngmnt', async (req, res) => {
