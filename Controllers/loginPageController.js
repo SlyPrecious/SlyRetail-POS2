@@ -2,7 +2,6 @@ import { MongoClient, ObjectId } from 'mongodb';
 import { CredentialsModel } from '../Schemas/slyretailLoginSchemas.js';
 import { connectDB } from '../Schemas/slyretailDbConfig.js';
 import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
-import { CashflowCategoriesModel } from '../Schemas/slyretailCategoriesSchemas.js';
 import { accountingPeriodModel } from '../Schemas/slyretailAccountingPeriodSettingsSchemas.js';
 import { advaHeadersModel } from '../Schemas/slyretailAdvCashMngmntHeadersSettingsSchemas.js';
 import { payInHeadersModel } from '../Schemas/slyretailPayInHeadersSettingsSchemas.js';
@@ -16,57 +15,43 @@ let loggedInStatus = "False";
 let dbName = "";
 let currencies = [];
 let dbConnection = null; // Global database connection
-
+//get variables that will cantain all the variables
+let myaccountingPeriodModelModel = null; let myCredentialsModelModel = null; let mypayInHeadersModelModel = null; let myCashflowModelModel = null;
+let myversionControlModelModel = null; let mypayOutHeadersModelModel = null; let myCurrenciesModelModel = null;
 // SignUp/SignIn function
-async function signUpSignIn(req,databaseName, email, databasePassword, signingCriteria) {
+async function signUpSignIn(req, databaseName, email, databasePassword, signingCriteria) {
     let currentVersion = "1.3"
     try {
-          // Step 1: Connect to the database and save connection in session
-        const { connection, myDatabase, signCriteria } = await connectDB(req, databaseName, signingCriteria);
-        // console.log(connection)
-        // console.log('myDatabase'+myDatabase)
-        // console.log('signCriteria'+signCriteria)
-        if (connection) {
-            console.log('connection')
-           // Store the connection and other session data (this should be done in connectDB itself)
-            req.session.connection = connection;  // Session is already populated with the connection and other details
-               // Save models in session if you need to use them later
-            req.session.models = {
-                  accountingPeriodModel: accountingPeriodModel(connection),
-                advHeadersModel: advaHeadersModel(connection),
-                cashflowModel: CashflowModel(connection),
-                versionControlModel: versionControlModel(connection),
-                currenciesModel: CurrenciesModel(connection),
-                credentialsModel: CredentialsModel(connection),
-                categoriesModel: CashflowCategoriesModel(connection)
-                
-            };
+        const db = await connectDB(req, databaseName, signingCriteria);
+        if (db) {
+            // Create the model with the specific connection
+            myaccountingPeriodModelModel = accountingPeriodModel(db);
+            mypayInHeadersModelModel = payInHeadersModel(db);
+            myCashflowModelModel = CashflowModel(db);
+            myversionControlModelModel = versionControlModel(db);
+            mypayOutHeadersModelModel = payOutHeadersModel(db);
+            myCurrenciesModelModel = CurrenciesModel(db);
+            myCredentialsModelModel = CredentialsModel(db);
         }
         else {
             loggedInStatus = "False";
         }
         if (signingCriteria === "Sign Up") {
-            loggedInStatus = await createDatabase(req,email, databaseName, databasePassword, signingCriteria);
+            loggedInStatus = await createDatabase(req, email, databaseName, databasePassword, signingCriteria);
             dbName = databaseName
 
         }
 
         if (signingCriteria === "Sign In") {
             try {
-                const { models } = req.session; //get the models in the session storage
-             console.log(models)
-                // Access the models from the session
-        const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, currenciesModel,accountingPeriodModel} = models;
                 try {
-                    const credentials = await credentialsModel.findOne({ DbPassword: databasePassword });
+                    const credentials = await myCredentialsModelModel.findOne({ DbPassword: databasePassword });
                     if (credentials) { //THEN CHECK ALSO IF THE PASSWORD IS THERE AND MATCHING
                         loggedInStatus = "True";
                         dbName = databaseName
-                        currencies = await currenciesModel.find()
+                        currencies = await myCurrenciesModelModel.find()
                     } else {
                         loggedInStatus = "Password dont match or account dont exist";
-                        console.log('password dont match')
-                        // return loggedInStatus
                     }
                 } catch (error) {
                     console.error("Error occurred while querying CredentialsModel:", error);
@@ -75,13 +60,13 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                 //==============================================================
                 //first check if the versioncontrols collection exist,if not create it
                 try {
-                    const collections = await connection.db.listCollections().toArray();
+                    const collections = await db.db.listCollections().toArray();
                     const collectionName = 'versioncontrols'
                     const collectionExists = collections.some(col => col.name === collectionName);
 
                     if (!collectionExists) {
                         //this is to keep the current structure of databases, the web interface does not have a version but the database will need to be controlled
-                        const newVersionEntry = new versionControlModel({ version: currentVersion });
+                        const newVersionEntry = new myversionControlModelModel({ version: currentVersion });
                         await newVersionEntry.save()
                             .then(() => console.log('New version entry saved successfully!'))
                             .catch(error => {
@@ -99,13 +84,13 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                 //FOR UPGRADES
                 try {
                     // const db = await connectDB(databaseName, signingCriteria); // Reuse the connection globally
-                    const cashflowData = connection.collection('cashflows')
+                    const cashflowData = db.collection('cashflows')
                     const CashflowData = await cashflowData.find().toArray()
                     //get the currencies
-                    currencies = await currenciesModel.find()
+                    currencies = await myCurrenciesModelModel.find()
 
                     // Filter documents where the 'Vat' field is null or missing
-                    const existingVersion = await versionControlModel.find();
+                    const existingVersion = await myversionControlModelModel.find();
                     if (existingVersion.version === '1' && existingVersion.version !== currentVersion) {
                         //this is to keep the current structure of databases, the web interface does not have a version but the database will need to be controlled
                         cashFlows = await CashflowModel.find()
@@ -125,7 +110,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                             await row.save();
                         }
                         //set the latest version currentVersion
-                        await versionControlModel.updateOne(
+                        await myversionControlModelModel.updateOne(
                             { _id: ObjectId(existingVersion._id) },
                             { $set: { version: currentVersion } } // Correct
                         )
@@ -134,7 +119,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                     if (existingVersion.version === "1.2" && existingVersion.version !== currentVersion) {
                         try {
                             // Loop through each cash flow document
-                            const cashFlows = await cashflowModel.find();
+                            const cashFlows = await myCashflowModelModel.find();
                             for (let a = 0; a < cashFlows.length; a++) {
                                 const row = cashFlows[a];
                                 // Initialize Tax.vat if it doesn't exist
@@ -160,7 +145,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                                     ZtfStatus: documentZtf.ZtfStatus || 'N',
                                 }
 
-                                const cashflowEntry = new cashflowModel(row);
+                                const cashflowEntry = new CashflowModel(row);
                                 await cashflowEntry.save();
                             }
                         }
@@ -168,7 +153,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                             console.error("Error during the operation:", error);
                         }
                         //set the latest version currentVersion
-                        await versionControlModel.updateOne(
+                        await myversionControlModelModel.updateOne(
                             { _id: ObjectId(existingVersion._id) },
                             { $set: { version: currentVersion } } // Correct
                         )
@@ -183,7 +168,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                                 row.Vat && typeof row.Vat === 'object' && Object.keys(row.Vat).length > 0
                             );
                             // Loop through each cash flow document
-                            const cashFlows = await cashflowModel.find();
+                            const cashFlows = await myCashflowModelModel.find();
                             for (let a = 0; a < cashFlows.length; a++) {
                                 const row = cashFlows[a];
 
@@ -217,7 +202,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                                     }
 
                                 });
-                                const cashflowEntry = new cashflowModel(row);
+                                const cashflowEntry = new myCashflowModelModel(row);
                                 await cashflowEntry.save();
                                 // remove the Vat field using $unset directly on the database 
                                 cashflowData.updateOne(
@@ -234,7 +219,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
 
                         //CHANGE HEADERNAME vAT TO tAX 
                         try {
-                            await advHeadersModel.updateOne({ HeaderName: 'Vat' }, {
+                            await mypayOutHeadersModelModel.updateOne({ HeaderName: 'Vat' }, {
                                 $set: {
                                     HeaderName: 'Tax'
                                 }
@@ -242,23 +227,48 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                                 console.log(`${result.modifiedCount} document(s) updated.`);
 
                             })
-                            // Check if the document already exists with HeaderName: 'Type'
-                            const existingHeader = await advHeadersModel.findOne({ HeaderName: 'Type' });
-
-                            if (!existingHeader) {
-                                // If the document doesn't exist, create a new one
-                                const newHeader = new advHeadersModel({ HeaderName: 'Type', isDisplayed: true });
-                                const result = await newHeader.save();
-                            }
-
                         } catch (err) {
                             console.error('Error connecting to MongoDB:', err);
                         }
+                        try {
+                            await mypayInHeadersModelModel.updateOne({ HeaderName: 'Vat' }, {
+                                $set: {
+                                    HeaderName: 'Tax'
+                                }
+                            }).then(result => {
+                                console.log(`${result.modifiedCount} document(s) updated.`);
+
+                            })
+                        } catch (err) {
+                            console.error('Error connecting to MongoDB:', err);
+                        }
+                        // try {
+                        //     await advaHeadersModel.updateOne({ HeaderName: 'Vat' }, {
+                        //         $set: {
+                        //             HeaderName: 'Tax'
+                        //         }
+                        //     }).then(result => {
+                        //         console.log(`${result.modifiedCount} document(s) updated.`);
+
+                        //     })
+                        //     // Check if the document already exists with HeaderName: 'Type'
+                        //     const existingHeader = await advaHeadersModel.findOne({ HeaderName: 'Type' });
+
+                        //     if (!existingHeader) {
+                        //         // If the document doesn't exist, create a new one
+                        //         const newHeader = new advaHeadersModel({ HeaderName: 'Type', isDisplayed: true });
+                        //         const result = await newHeader.save();
+                        //     }
+
+                        // } catch (err) {
+                        //     console.error('Error connecting to MongoDB:', err);
+                        // }
                         //set the latest version currentVersion
-                        versionControlModel.updateOne({ _id: ObjectId(existingVersion._id) },
-                            { $set: { version: currentVersion } });
+                        myversionControlModelModel.updateOne({ _id: ObjectId(existingVersion._id) },
+                            { set: { version: currentVersion } });
+                        // }
+
                     }
-                    
                 } catch (error) {
                     console.error("Error occurred while saving version:", error);
                     return
@@ -269,6 +279,7 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
                 return
             }
         }
+        console.log(loggedInStatus + ' Controller loggin status')
         return { loggedInStatus }
         // return { loggedInStatus: loggedInStatus, currencies: currencies };
     } catch (error) {
@@ -281,17 +292,17 @@ async function signUpSignIn(req,databaseName, email, databasePassword, signingCr
 // Function to create a database
 let loggedInStatus2 = ""
 let currentVersion = "1.3"
-async function createDatabase(req,email, databaseName, databasePassword, signingCriteria) {
+async function createDatabase(req, email, databaseName, databasePassword, signingCriteria) {
     try {
-  const { models } = req.session; //get the models in the session storage
-      if (!models) {
-      throw new Error('Session models not found');
-    }    // Access the models from the session
-        const { credentialsModel,advHeadersModel, cashflowModel,versionControlModel, currenciesModel,accountingPeriodModel} = models;
+        const db = await connectDB(req, databaseName, signingCriteria);
+        // const db = await connectDB(req, databaseName, signingCriteria);
+        if (db) {
+            console.log('on creation')
             // Create the model with the specific connection
-            currencies = await currenciesModel.find()
+            // const currModel = myCurrenciesModelModel(db);
+            currencies = await myCurrenciesModelModel.find()
             //this is to keep the current structure of databases, the web interface does not have a version but the database will need to be controlled
-            const newVersionEntry = new versionControlModel({ version: currentVersion });
+            const newVersionEntry = new myversionControlModelModel({ version: currentVersion });
             await newVersionEntry.save()
                 .then(() => console.log('New version entry saved successfully!'))
                 .catch(error => {
@@ -314,7 +325,7 @@ async function createDatabase(req,email, databaseName, databasePassword, signing
             }
 
             try {
-                const currencyEntry = new currenciesModel({ Currency_Name: 'USD', paymentType: 'CASH', RATE: Number(1).toFixed(2), BASE_CURRENCY: 'Y' });
+                const currencyEntry = new myCurrenciesModelModel({ Currency_Name: 'USD', paymentType: 'CASH', RATE: Number(1).toFixed(2), BASE_CURRENCY: 'Y' });
                 // const currencyEntry = new CurrenciesModel({ Currency_Name: 'USD', paymentType: 'CASH', RATE: Number(1).toFixed(2), BASE_CURRENCY: 'Y' });
                 const result = await currencyEntry.save();
             } catch (error) {
@@ -324,27 +335,47 @@ async function createDatabase(req,email, databaseName, databasePassword, signing
             try {
                 //a collection called accounting period
                 const currentYear = new Date().getFullYear();
-                const accountingEntry = new accountingPeriodModel({ startDate: (`${currentYear}-01-01`) });
+                const accountingEntry = new myaccountingPeriodModelModel({ startDate: (`${currentYear}-01-01`) });
                 const result = await accountingEntry.save();
             } catch (error) {
                 console.error("Error inserting accounting period", error);
                 return
             }
-            const data = [{ HeaderName: 'Date', isDisplayed: true }, { HeaderName: 'ShiftNo', isDisplayed: true },{ HeaderName: 'Type', isDisplayed: true },
+            const data = [{ HeaderName: 'Date', isDisplayed: true }, { HeaderName: 'ShiftNo', isDisplayed: true },
             { HeaderName: 'InvoiceRef', isDisplayed: true }, { HeaderName: 'Tax', isDisplayed: true }, { HeaderName: 'Description', isDisplayed: true },
             { HeaderName: 'Category', isDisplayed: true }, { HeaderName: 'Currency', isDisplayed: true }, { HeaderName: 'Amount', isDisplayed: true },
             { HeaderName: 'Rate', isDisplayed: true }, { HeaderName: 'CashEquiv', isDisplayed: true }, { HeaderName: 'RunningBalance', isDisplayed: true }]
+            try {
+                // try {
+                //     // Using insertMany to insert multiple documents at once
+                //     await advaHeadersModel.insertMany(data);
+                //     const result = new advaHeadersModel({ HeaderName: 'Tax', isDisplayed: true });
+                //     await result.save();
+                // } catch (error) {
+                //     console.error('Error saving adv headers:', error);
+                // }
+
                 try {
                     // Using insertMany to insert multiple documents at once
-                    await advHeadersModel.insertMany(data);
+                    await mypayInHeadersModelModel.insertMany(data);
                 } catch (error) {
-                    console.error('Error saving adv headers:', error);
+                    console.error('Error saving payin headers:', error);
                 }
+                try {
+                    // Using insertMany to insert multiple documents at once
+                    await mypayOutHeadersModelModel.insertMany(data);
+                } catch (error) {
+                    console.error('Error saving payout headers:', error);
+                }
+            } catch (error) {
+                console.error('Error inserting headers:', error);
+            }
 
             // Save credentials
             const createAndSaveCredentials = async (User_Account, DbPassword, Email) => {
                 try {
-                    const newCredentials = new credentialsModel({ User_Account, DbPassword, Email });
+                    // await connectDB(databaseName);
+                    const newCredentials = new myCredentialsModelModel({ User_Account, DbPassword, Email });
                     await newCredentials.save();
                     return "True";
                 } catch (error) {
@@ -354,7 +385,9 @@ async function createDatabase(req,email, databaseName, databasePassword, signing
             };
 
             loggedInStatus2 = await createAndSaveCredentials(databaseName, databasePassword, email);
-       
+        } else {
+            loggedInStatus2 = "False";
+        }
         return loggedInStatus2
     } catch (error) {
         console.error('Error creating database:', error);
