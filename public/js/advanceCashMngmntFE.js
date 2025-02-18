@@ -1,7 +1,3 @@
-//============================================================================
-//import { format } from "path";
-//import moment from "moment";
-//import moment from "moment/moment.js";
 
 import { WorldCurrencies } from "./worldCurrency.js";
 let newCurrencies = []; let newIncomeCategories = [];
@@ -38,8 +34,9 @@ fetch('/currencies')
                         });
                         //clear the edit mode status 
                         localStorage.removeItem('editMode')
-                        function displayContainerBlocks() {
+                        const spinner = document.querySelector('#spinner')
 
+                        function displayContainerBlocks() {
                             document.querySelector(".loader-container").style.display = "none";
                             document.querySelector(".theLoader").style.display = "none";
                             document.querySelector(".icon-nav").style.display = "block";
@@ -49,6 +46,20 @@ fetch('/currencies')
                             document.querySelector(".main-card-second").style.display = "block";
 
                         }
+                        function removeContainerBlocks() {
+                            document.querySelector(".loader-container").style.display = "none";
+                            document.querySelector(".theLoader").style.display = "flex";
+                            spinner.style.display = "block";
+                            document.querySelector(".icon-nav").style.display = "block";
+                            document.querySelector(".toolbar").style.display = "block";
+                            document.getElementById("chartContainer").style.display = "none";
+                            document.querySelector(".card1").style.display = "none";
+                            document.querySelector(".main-card-second").style.display = "none";
+
+                        }
+                        //=========================================================================================
+                        //GET THE SESSION ID FROM THE LOCALSTORAGE
+                        const sessionId = localStorage.getItem('sessionId')
                         //=======================================================================================
                         // Get the modal element
                         const deleteModal = document.querySelector('.deleteModal');
@@ -164,7 +175,6 @@ fetch('/currencies')
                         }
 
                         //======================================================================================
-                        const spinner = document.querySelector('#spinner')
                         //user-defined function to download CSV file  
                         function downloadCSV(csv, filename) {
                             var csvFile;
@@ -244,7 +254,8 @@ fetch('/currencies')
                                         endDate: eDate,
                                         pageSize: pageSize,
                                         page: page,
-                                        advExportingCriteria: advExportingCriteria
+                                        advExportingCriteria: advExportingCriteria,
+                                        sessionId: sessionId
                                     })
                                 })
                                     .then(response => response.json())
@@ -381,96 +392,96 @@ fetch('/currencies')
                             }
                         })
                         //===========================================================================
-                        // //const categorySpan = document.querySelector('.cate-Btn-Span');
-                        // const categoriesDrpn = document.querySelector('.categories');
-                        // const categoriesDrpn1 = document.querySelector('.incCategories');
-                        // const catCaret = document.querySelector('.ccaret');
+                        //const categorySpan = document.querySelector('.cate-Btn-Span');
+                        const categoriesDrpn = document.querySelector('.categories');
+                        const categoriesDrpn1 = document.querySelector('.incCategories');
+                        const catCaret = document.querySelector('.ccaret');
 
-                        // //THIS IS FOR THE SELECT PAYMENT TYPE DROPDOWN MENU
-                        // const selectBtn = document.querySelector(".select-btn");
-                        // const selectMenu = document.querySelector('.currencies');
-                        // const caret = document.querySelector('.caretForm');
-                        // let myType = ''
+                        //THIS IS FOR THE SELECT PAYMENT TYPE DROPDOWN MENU
+                        const selectBtn = document.querySelector(".select-btn");
+                        const selectMenu = document.querySelector('.currencies');
+                        const caret = document.querySelector('.caretForm');
+                        let myType = ''
 
-                        // document.querySelector(".cate-btn").addEventListener("click", function () {
-                        //     if (document.querySelector('.myCurrentType').innerText === 'Pay in') {
-                        //         categoriesDrpn1.classList.toggle('categories-open2');
-                        //         catCaret.classList.toggle('caret-rotate');
-                        //     }
-                        //     if (document.querySelector('.myCurrentType').innerText === 'Payout') {
-                        //         categoriesDrpn.classList.toggle('categories-open3');
-                        //         catCaret.classList.toggle('caret-rotate1');
-                        //     }
+                        document.querySelector(".cate-btn").addEventListener("click", function () {
+                            if (document.querySelector('.myCurrentType').innerText === 'Pay in') {
+                                categoriesDrpn1.classList.toggle('categories-open2');
+                                catCaret.classList.toggle('caret-rotate');
+                            }
+                            if (document.querySelector('.myCurrentType').innerText === 'Payout') {
+                                categoriesDrpn.classList.toggle('categories-open3');
+                                catCaret.classList.toggle('caret-rotate1');
+                            }
 
-                        // });
+                        });
 
-                        // selectBtn.addEventListener("click", function () {
-                        //     if (categoriesDrpn.classList.contains('categories-open3')) {
-                        //         catCaret.classList.remove('caret-rotate1');
-                        //         categoriesDrpn.classList.remove('categories-open3');
-                        //     }
-                        //     if (categoriesDrpn1.classList.contains('categories-open2')) {
-                        //         catCaret.classList.remove('caret-rotate');
+                        selectBtn.addEventListener("click", function () {
+                            if (categoriesDrpn.classList.contains('categories-open3')) {
+                                catCaret.classList.remove('caret-rotate1');
+                                categoriesDrpn.classList.remove('categories-open3');
+                            }
+                            if (categoriesDrpn1.classList.contains('categories-open2')) {
+                                catCaret.classList.remove('caret-rotate');
 
-                        //         categoriesDrpn1.classList.remove('categories-open2');
-                        //     }
-                        //     // add the rotate style to the caret element
-                        //     caret.classList.toggle('caret-rotate');
-                        //     // then make the Drpn open
-                        //     selectMenu.classList.toggle('currencies-open2');
-                        // });
+                                categoriesDrpn1.classList.remove('categories-open2');
+                            }
+                            // add the rotate style to the caret element
+                            caret.classList.toggle('caret-rotate');
+                            // then make the Drpn open
+                            selectMenu.classList.toggle('currencies-open2');
+                        });
 
                         //when the currencies Drpn is open, loop thru all the list of currencies puting the event listeners
-                        // const options = document.querySelectorAll(".option");
-                        // options.forEach(option => {
-                        //     option.addEventListener("click", function () {
-                        //         //when the currency has been selected, let it be shown on the screen by renaming 'Select Payment Type into the selected currency'
-                        //         document.querySelector(".btn-text").innerText = option.innerText;
-                        //         const formRate = document.getElementById('label-rate');
-                        //         //update the text content of the rate span with the corresponding rate
-                        //         //loop thru the currencies array checking if the selected currency matches the currency name in the array if it does collect
-                        //         //the  rate of the matched currency name
-                        //         for (let i = 0; i < newCurrencies.length; i++) {
-                        //             const currency_rate = newCurrencies[i]
-                        //             if (option.innerText === currency_rate.Currency_Name) {
-                        //                 const rateSpan = currency_rate.RATE;
-                        //                 formRate.innerText = rateSpan;
-                        //             }
-                        //             //  console.log(formRate.innerText)
+                        const options = document.querySelectorAll(".option");
+                        options.forEach(option => {
+                            option.addEventListener("click", function () {
+                                //when the currency has been selected, let it be shown on the screen by renaming 'Select Payment Type into the selected currency'
+                                document.querySelector(".btn-text").innerText = option.innerText;
+                                const formRate = document.getElementById('label-rate');
+                                //update the text content of the rate span with the corresponding rate
+                                //loop thru the currencies array checking if the selected currency matches the currency name in the array if it does collect
+                                //the  rate of the matched currency name
+                                for (let i = 0; i < newCurrencies.length; i++) {
+                                    const currency_rate = newCurrencies[i]
+                                    if (option.innerText === currency_rate.Currency_Name) {
+                                        const rateSpan = currency_rate.RATE;
+                                        formRate.innerText = rateSpan;
+                                    }
+                                    //  console.log(formRate.innerText)
 
-                        //         }
-                        //         //then rotate the caret to its normal position
-                        //         caret.classList.remove('ccaret-rotate');
-                        //         //and close the dropdown menu
-                        //         selectMenu.classList.remove('currencies-open');
-                        //         //Soon after adding the name, add all other things like the rate and so forth...
-                        //     });
-                        // });
+                                }
+                                //then rotate the caret to its normal position
+                                caret.classList.remove('ccaret-rotate');
+                                //and close the dropdown menu
+                                selectMenu.classList.remove('currencies-open');
+                                //Soon after adding the name, add all other things like the rate and so forth...
+                            });
+                        });
 
-                        // //WHEN THE USER CLICKES THE CATEGORY DROPDOWN ON THE EDIT FORM
-                        // //when the categories categoriesDropdown is open, loop thru all the list of Categories putting the event listeners
-                        // const coptions = document.querySelectorAll(".cate-option");
-                        // const incOptions = document.querySelectorAll(".incCate-option");
-                        // const categoryCaret = document.querySelector('.ccaret'); //remove ama payout cat 
-                        // coptions.forEach(categoryOptions => {
-                        //     categoryOptions.addEventListener("click", function () {
-                        //         //when the category has been selected, let it be shown on the screen by renaming 'Category... into the selected category'
-                        //         document.querySelector(".cate-Btn-Span").innerText = categoryOptions.innerText;
-                        //         catCaret.classList.remove('caret-rotate1');
-                        //         categoriesDrpn.classList.remove('categories-open3');
-                        //     })
-                        // })
+                        //WHEN THE USER CLICKES THE CATEGORY DROPDOWN ON THE EDIT FORM
+                        //when the categories categoriesDropdown is open, loop thru all the list of Categories putting the event listeners
+                        const coptions = document.querySelectorAll(".cate-option");
+                        const incOptions = document.querySelectorAll(".incCate-option");
+                        const categoryCaret = document.querySelector('.ccaret'); //remove ama payout cat 
+                        coptions.forEach(categoryOptions => {
+                            categoryOptions.addEventListener("click", function () {
+                                //when the category has been selected, let it be shown on the screen by renaming 'Category... into the selected category'
+                                document.querySelector(".cate-Btn-Span").innerText = categoryOptions.innerText;
+                                catCaret.classList.remove('caret-rotate1');
+                                categoriesDrpn.classList.remove('categories-open3');
+                            })
+                        })
 
-                        // //remove ama payin cat 
-                        // incOptions.forEach(categoryOptions => {
-                        //     categoryOptions.addEventListener("click", function () {
-                        //         //when the category has been selected, let it be shown on the screen by renaming 'Category... into the selected category'
-                        //         document.querySelector(".cate-Btn-Span").innerText = categoryOptions.innerText;
-                        //         catCaret.classList.remove('caret-rotate');
-                        //         categoriesDrpn.classList.remove('categories-open2');
+                        //remove ama payin cat 
+                        incOptions.forEach(categoryOptions => {
+                            categoryOptions.addEventListener("click", function () {
+                                //when the category has been selected, let it be shown on the screen by renaming 'Category... into the selected category'
+                                document.querySelector(".cate-Btn-Span").innerText = categoryOptions.innerText;
+                                catCaret.classList.remove('caret-rotate');
+                                categoriesDrpn.classList.remove('categories-open2');
 
-                        //     })
-                        // })
+                            })
+                        })
 
 
 
@@ -900,6 +911,8 @@ fetch('/currencies')
                         const editBtn = document.querySelector('.editBtn');
                         editBtn.addEventListener('click', function (event) {
                             if (editBtn.textContent === 'Edit') {
+                                //load the loader here
+                                displaySpinner()
                                 localStorage.removeItem('advCurrentPage')
                                 //display the import button
                                 document.querySelector('.importContainer').style.display = 'block';
@@ -1103,7 +1116,6 @@ fetch('/currencies')
                             }
                             const advancedSearchInput = localStorage.getItem('advSearchInput');
                             //apply a loader 
-                            displaySpinner()
                             fetch('/defaultDisplayThePaginationWay', {
                                 method: 'POST',
                                 headers: {
@@ -1114,7 +1126,8 @@ fetch('/currencies')
                                     endDate: endDate,
                                     pageSize: pageSize,
                                     page: page,
-                                    advancedSearchInput: advancedSearchInput
+                                    advancedSearchInput: advancedSearchInput,
+                                    sessionId: sessionId
                                 })
                             })
                                 .then(response => response.json())
@@ -1802,14 +1815,20 @@ fetch('/currencies')
                                                     },
                                                     body: JSON.stringify({
                                                         headerNamefcb,
-                                                        headerisDisplayed
+                                                        headerisDisplayed,
+                                                        sessionId
                                                     })
                                                 })
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         // Show alert
-                                                        if (data.isSaving) {//get the isSaving variable form the server 
+                                                        if (data.isSaving === true) {//get the isSaving variable form the server 
                                                             spinner.style.display = 'none'//remove progress bar
+                                                            notification('Updated')
+                                                        }
+                                                        else {
+                                                            notification("Not updated..error occured");
+
                                                         }
 
                                                     })
@@ -1855,17 +1874,21 @@ fetch('/currencies')
                                                     },
                                                     body: JSON.stringify({
                                                         headerNamefcb,
-                                                        headerisDisplayed
+                                                        headerisDisplayed,
+                                                        sessionId
                                                     })
                                                 })
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         // Show alert
-                                                        if (data.isSaving) {
-
+                                                        if (data.isSaving === true) {
                                                             spinner.style.display = 'none'//remove progress bar
+                                                            notification('Updated')
                                                         }
+                                                        else {
+                                                            notification("Not updated..error occured");
 
+                                                        }
                                                     })
 
                                                     .catch(error => {
@@ -1913,15 +1936,20 @@ fetch('/currencies')
                                                     },
                                                     body: JSON.stringify({
                                                         headerNamefcb,
-                                                        headerisDisplayed
+                                                        headerisDisplayed,
+                                                        sessionId
                                                     })
                                                 })
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         // Show alert
-                                                        if (data.isSaving) {
-
+                                                        if (data.isSaving === true) {
+                                                            notification('Updated')
                                                             spinner.style.display = 'none'//remove progress bar
+                                                        }
+                                                        else {
+                                                            notification("Not updated..error occured");
+
                                                         }
 
                                                     })
@@ -1968,15 +1996,22 @@ fetch('/currencies')
                                                     },
                                                     body: JSON.stringify({
                                                         headerNamefcb,
-                                                        headerisDisplayed
+                                                        headerisDisplayed,
+                                                        sessionId
                                                     })
                                                 })
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         // Show alert
-                                                        if (data.isSaving) {
+                                                        if (data.isSaving === tru) {
 
                                                             spinner.style.display = 'none'//remove progress bar
+                                                            notification('Updated')
+
+                                                        }
+                                                        else {
+                                                            notification("Not updated..error occured");
+
                                                         }
 
                                                     })
@@ -2027,17 +2062,23 @@ fetch('/currencies')
                                                     },
                                                     body: JSON.stringify({
                                                         headerNamefcb,
-                                                        headerisDisplayed
+                                                        headerisDisplayed,
+                                                        sessionId
                                                     })
                                                 })
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         // Show alert
-                                                        if (data.isSaving) {
+                                                        if (data.isSaving === true) {
 
                                                             spinner.style.display = 'none'//remove progress bar
-                                                        }
+                                                            notification('Updated')
 
+                                                        }
+                                                        else {
+                                                            notification("Not updated..error occured");
+
+                                                        }
                                                     })
 
                                                     .catch(error => {
@@ -2081,15 +2122,21 @@ fetch('/currencies')
                                                     },
                                                     body: JSON.stringify({
                                                         headerNamefcb,
-                                                        headerisDisplayed
+                                                        headerisDisplayed,
+                                                        sessionId
                                                     })
                                                 })
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         // Show alert
-                                                        if (data.isSaving) {
+                                                        if (data.isSaving === true) {
 
                                                             spinner.style.display = 'none'//remove progress bar
+                                                            notification('Updated')
+
+                                                        } else {
+                                                            notification("Not updated..error occured");
+
                                                         }
 
                                                     })
@@ -2137,15 +2184,22 @@ fetch('/currencies')
                                                     },
                                                     body: JSON.stringify({
                                                         headerNamefcb,
-                                                        headerisDisplayed
+                                                        headerisDisplayed,
+                                                        sessionId
                                                     })
                                                 })
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         // Show alert
-                                                        if (data.isSaving) {
+                                                        if (data.isSaving === true) {
 
                                                             spinner.style.display = 'none'//remove progress bar
+                                                            notification('Updated')
+
+                                                        }
+                                                        else {
+                                                            notification("Not updated..error occured");
+
                                                         }
 
                                                     })
@@ -2191,15 +2245,22 @@ fetch('/currencies')
                                                     },
                                                     body: JSON.stringify({
                                                         headerNamefcb,
-                                                        headerisDisplayed
+                                                        headerisDisplayed,
+                                                        sessionId
                                                     })
                                                 })
                                                     .then(response => response.json())
                                                     .then(data => {
                                                         // Show alert
-                                                        if (data.isSaving) {
+                                                        if (data.isSaving === true) {
 
                                                             spinner.style.display = 'none'//remove progress bar
+                                                            notification('Updated')
+
+                                                        }
+                                                        else {
+                                                            notification("Not updated..error occured");
+
                                                         }
 
                                                     })
@@ -2286,7 +2347,6 @@ fetch('/currencies')
                                     notification('invalid date format')
                                     return
                                 }
-                               
 
                             }
                             cashFlowDate.addEventListener('keydown', (event) => {
@@ -2307,74 +2367,77 @@ fetch('/currencies')
                                 }
 
                                 // Add click and keydown event listeners in one line
+                                // Add click and keydown event listeners in one line
                                 if (event.key === "Enter" || event.key === 'Tab') {//WHEN ENTER IS CLICKED or tab is clicked
                                     event.preventDefault()
                                     let date = cashFlowDate.innerText
-                                    fixDate(date)
-                                     if (rowId === '') {
-                                    hasId = false
-
-                                }
-                                else if (rowId !== '') {
-                                    hasId = true
-                                    //UPDATE THE ARRAY
-                                    for (let a = 0; a < cashFlowArray.length; a++) {
-
-                                        if (cashFlowArray[a]._id === rowId) {
-                                            cashFlowArray[a].CashFlowDate = cashFlowDate.innerText
-                                        }
+                                    const newDate = fixDate(date)
+                                    if (rowId === '') {
+                                        hasId = false
 
                                     }
-                                    const parts = (cashFlowDate.innerText).split("/");
-                                    const formattedDate = parts[1] + "/" + parts[0] + "/" + parts[2];
-                                    const formattedDates2 = new Date(formattedDate);
-                                    startDate = new Date(formattedDates2);//ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
-                                    endDate = new Date(formattedDates2);
-                                    // remove the stored date range from local storage
-                                    localStorage.removeItem('firstDate');
-                                    localStorage.removeItem('lastDate');
-                                    // Store the start and end date values in localStorage
-                                    localStorage.setItem('firstDate', startDate);
-                                    localStorage.setItem('lastDate', endDate);
-                                    // initializeDateRangePicker()
+                                    else if (rowId !== '') {
+                                        hasId = true
+                                        //UPDATE THE ARRAY
+                                        for (let a = 0; a < cashFlowArray.length; a++) {
 
-                                    fetch('/updateCashFlowDate', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify({
-                                            rowId,
-                                            newDate
-                                        })
-                                    })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            // Show alert
-                                            if (data.amUpdated) {
-                                                notification('Updated')
-                                                // spinner.style.display = 'none'
-                                                //UPDATE THE INTERFACE IF THE ARRAY UPDATE HAS SOMETHING
-                                                const sDate =
-                                                    localStorage.getItem("firstDate"); //DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
-                                                const eDate =
-                                                    localStorage.getItem("lastDate");
-                                                const startDate = new Date(sDate); //ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
-                                                const endDate = new Date(eDate);
-                                                // initializeDateRangePicker()
-                                                defaultDisplayContent2(startDate, endDate);
-
-                                            }
-                                            else if (data.amUpdated === false) {
-                                                spinner.style.display = "none";
+                                            if (cashFlowArray[a]._id === rowId) {
+                                                cashFlowArray[a].CashFlowDate = cashFlowDate.innerText
                                             }
 
+                                        }
+                                        const parts = (cashFlowDate.innerText).split("/");
+                                        const formattedDate = parts[1] + "/" + parts[0] + "/" + parts[2];
+                                        const formattedDates2 = new Date(formattedDate);
+                                        startDate = new Date(formattedDates2);//ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
+                                        endDate = new Date(formattedDates2);
+                                        // remove the stored date range from local storage
+                                        localStorage.removeItem('firstDate');
+                                        localStorage.removeItem('lastDate');
+                                        // Store the start and end date values in localStorage
+                                        localStorage.setItem('firstDate', startDate);
+                                        localStorage.setItem('lastDate', endDate);
+                                        // initializeDateRangePicker()
+
+                                        fetch('/updateCashFlowDate', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify({
+                                                rowId,
+                                                newDate
+                                            })
                                         })
-                                        .catch(error => {
-                                            console.error(`Error updating Date field for expense ID: ${rowId}`, error);
-                                        });
-return
-                                }
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                // Show alert
+                                                if (data.amUpdated === true) {
+                                                    notification('Updated')
+                                                    // spinner.style.display = 'none'
+                                                    //UPDATE THE INTERFACE IF THE ARRAY UPDATE HAS SOMETHING
+                                                    const sDate =
+                                                        localStorage.getItem("firstDate"); //DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
+                                                    const eDate =
+                                                        localStorage.getItem("lastDate");
+                                                    const startDate = new Date(sDate); //ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
+                                                    const endDate = new Date(eDate);
+                                                    // initializeDateRangePicker()
+                                                    // defaultDisplayContent2(startDate, endDate);
+
+                                                }
+                                                else {
+                                                    notification("Not updated..error occured");
+                                                    defaultDisplayContent2(startDate, endDate);
+
+                                                }
+
+                                            })
+                                            .catch(error => {
+                                                console.error(`Error updating Date field for expense ID: ${rowId}`, error);
+                                            });
+                                        return
+                                    }
                                     //check if the text is present
                                     if (cashFlowDate.innerText !== '') {
                                         //now focus on the next cell
@@ -2390,23 +2453,28 @@ return
                                 }
                             })
                             // shift
-                            // expenseShiftCell.addEventListener("click", function (event) {
-                            //     let date = cashFlowDate.innerText
-                            //     fixDate(date)
-                            // })
+                            expenseShiftCell.addEventListener("click", function (event) {
+                                let date = cashFlowDate.innerText
+                                fixDate(date)
+                            })
                             invoiceCell.addEventListener("click", function (event) {
                                 let date = cashFlowDate.innerText
                                 fixDate(date)
-                                 if (invoiceStatus.isDisplayed === true) {
-                                            //MOVE FOCUS TO INVOICE CELL
-                                            invoiceCell.contentEditable = true
-                                            invoiceCell.focus()
-                                        }
-                                       
+                                //condition that helpd if the user dont need to record tax,they can jus exclude it and click on the next cell
+                                if (invoiceStatus.isDisplayed === true && cashFlowDate.innerText !== '' && typeCell.innerText !== '') {
+                                    //MOVE FOCUS TO INVOICE CELL
+                                    invoiceCell.contentEditable = true
+                                    invoiceCell.focus()
+                                }
                             })
                             descriptionCell.addEventListener("click", function (event) {
                                 let date = cashFlowDate.innerText
                                 fixDate(date)
+                                if (descriptionCell.isDisplayed === true && cashFlowDate.innerText !== '' && typeCell.innerText !== '') {
+                                    //MOVE FOCUS TO INVOICE CELL
+                                    invoiceCell.contentEditable = true
+                                    invoiceCell.focus()
+                                }
                             })
                             // newEmptyRow.querySelector('.categories-cell').addEventListener("click", function (event) {
                             //     let date = cashFlowDate.innerText
@@ -2556,6 +2624,10 @@ return
 
                                         }
                                         emptyRow.querySelector('.typeSpan').innerText = type.innerText //ita what has been selected pa ttpe dropdown zvipinde mu TD
+
+                                        //fill the expenseShiftcell with txt aps
+                                        expenseShiftCell.innerText = 'APS' //all previous shifts
+
                                         if (vatStatus.isDisplayed === true) {
                                             //MOVE FOCUS TO VAT CELL
                                             // previousState = false
@@ -2598,23 +2670,7 @@ return
                                             else {
                                                 newEmptyRow.classList.add('rowPayIn')
                                             }
-                                            //get the inserted value
-                                            // let payInCat = {};
-                                            // if (newCategory.includes(" ")) {
-                                            //     payInCat["category"] = newCategory.replace(/ /g, "_").toLowerCase();
-                                            //     newCategory = newCategory.replace(/ /g, "_").toLowerCase();
-                                            // }
-                                            // else {
-                                            //     payInCat["category"] = newCategory.toLowerCase();
-                                            //     newCategory = newCategory.toLowerCase();
-                                            // }
-                                            // payInCat["CategoryLimit"] = 0;
-                                            // payInCat["CategoryLimitRange"] = "";
-                                            // payInCat["Balance"] = "PayIn";
-                                            // const categoryName = Array.from(newIncomeCategories).find(cat => (cat.category).toLowerCase() === newCategory)
-                                            // if (!categoryName) {
-                                            //     categoryToDb.push(payInCat)
-                                            // }
+
                                         }
                                         if (type.innerText === 'Payout') {
                                             if (newEmptyRow.classList.contains('rowPayIn')) {
@@ -2632,27 +2688,10 @@ return
                                                 newEmptyRow.classList.add('rowPayOut')
                                             }
 
-                                            //then save in the category array mu database
-                                            //get the inserted value
-                                            // let payOutCat = {};
-                                            // if (newCategory.includes(" ")) {
-                                            //     payOutCat["category"] = newCategory.replace(/ /g, "_").toLowerCase();
-                                            //     newCategory = newCategory.replace(/ /g, "_").toLowerCase();
-                                            // }
-                                            // else {
-                                            //     payOutCat["category"] = newCategory.toLowerCase();
-                                            //     newCategory = newCategory.toLowerCase();
-                                            // }
-                                            // payOutCat["CategoryLimit"] = 0;
-                                            // payOutCat["CategoryLimitRange"] = "";
-                                            // payOutCat["Balance"] = "PayOut";
-                                            // const categoryName = Array.from(newExpenseCategories).find(cat => (cat.category).toLowerCase() === newCategory)
-                                            // if (!categoryName) {
-                                            //     categoryToDb.push(payOutCat)
-                                            // }
-                                        }
 
-                                        newEmptyRow.querySelector('.categorySpan').innerText = newCategory
+                                        }
+                                        spinner.style.display = 'block';
+                                        newEmptyRow.querySelector('.categorySpan').innerText = 'suspense'
                                         newEmptyRow.querySelector('.typeSpan').innerText = type.innerText //ita what has been selected pa ttpe dropdown zvipinde mu TD
                                         document.querySelector('.totalExpenses').innerText = Number(totalPayOutsRange).toFixed(2);
                                         document.querySelector('.totalIncome').innerText = Number(totalPayInsRange).toFixed(2);
@@ -2674,10 +2713,9 @@ return
                                             document.querySelector('.CashBalance').style.color = 'black';
                                             document.querySelector('.CashBalance').innerText = baseCurrCode + '  ' + Number(cashBalance).toFixed(2);;//place the cash Equiv value on the cashEquiv cell
                                         }
-                                        spinner.style.display = 'block';
                                         const typeSelected = type.innerText
                                         // if (categoryToDb.length > 0) {
-                                        //     insertCategoryRecord(categoryToDb)
+                                        //     insertCategoryRecord(categoryToDb, sessionId)
                                         // }
                                         //endesa ku database the result
                                         fetch('/updateCashFlowType', {
@@ -2688,8 +2726,9 @@ return
                                             body: JSON.stringify({
                                                 rowId,
                                                 typeSelected,
-                                                newCategory,
-                                                categoryToDb
+                                                // newCategory,
+                                                // categoryToDb,
+                                                sessionId
                                             })
                                         })
                                             .then(response => response.json())
@@ -2698,11 +2737,10 @@ return
                                                 if (data.amUpdated === true) {
                                                     notification('Updated')
                                                     spinner.style.display = 'none'
-
-                                                    defaultDisplayContent2(startDate, endDate)
+                                                    // defaultDisplayContent2(startDate, endDate)
                                                 }
                                                 else {
-                                                    notification('Updated')
+                                                    notification('Not updated..error occured')
                                                     spinner.style.display = 'none'
                                                     defaultDisplayContent2(startDate, endDate)
 
@@ -3135,6 +3173,7 @@ return
                                         rowId,
                                         taxDataToUpdate,
                                         taxStatus,
+                                        sessionId
                                     }),
                                 })
                                     .then((response) => response.json())
@@ -3143,7 +3182,12 @@ return
                                         if (data.amUpdated === true) {
                                             notification("Updated");
                                             spinner.style.display = "none";
-                                            defaultDisplayContent2(startDate, endDate)
+                                            // defaultDisplayContent2(startDate, endDate)
+                                        }
+                                        else {
+                                            notification("Not updated..error occured");
+                                            defaultDisplayContent2(startDate, endDate);
+
                                         }
                                     })
                                     .catch((error) => {
@@ -3180,13 +3224,14 @@ return
 
                                     if (rowId === '') {
                                         // MOVE FOCUS TO DESCRIPTION CELL
-                                      if (descriptionStatus.isDisplayed === true) {
+                                        if (descriptionStatus.isDisplayed === true) {
                                             //MOVE FOCUS TO DESCRIPTION CELL
                                             cashFlowDescriptionCell.contentEditable = true
                                             cashFlowDescriptionCell.focus()
                                         }
                                     }
                                     else if (rowId !== '') {
+                                        spinner.style.display = 'block'
                                         //  use the fetch for the route with POST method and update the expense rate in the database
                                         fetch('/updateCashFlowInvoice', {
                                             method: 'POST',
@@ -3195,16 +3240,22 @@ return
                                             },
                                             body: JSON.stringify({
                                                 rowId,
-                                                InvoiceRef
+                                                InvoiceRef,
+                                                sessionId
                                             })
                                         })
                                             .then(response => response.json())
                                             .then(data => {
                                                 // Show alert
-                                                if (data.amUpdated) {
+                                                if (data.amUpdated === true) {
                                                     notification('Updated')
                                                     spinner.style.display = 'none'
-                                                    defaultDisplayContent2(startDate, endDate)
+                                                    // defaultDisplayContent2(startDate, endDate)
+                                                }
+                                                else {
+                                                    notification("Not updated..error occured");
+                                                    defaultDisplayContent2(startDate, endDate);
+
                                                 }
 
                                             })
@@ -3266,7 +3317,7 @@ return
                                         notification('category Already Exist')
                                         return
                                     }
-                                    insertCategoryRecord(categoryToDb)
+                                    insertCategoryRecord(categoryToDb, sessionId)
                                     if (rowId !== '') {
                                         const newCategory = insertedCategoryName.value
                                         categoryTodatabase(newCategory)
@@ -3292,7 +3343,7 @@ return
                                         return
                                     }
                                     const balanceValue = 'PayIn'
-                                    insertCategoryRecord(categoryToDb, balanceValue)
+                                    insertCategoryRecord(categoryToDb, sessionId)
                                     newEmptyRow.querySelector('#dropdownForm').style.display = 'none'; // Create a new dropdown instance
                                     const dropdownMenu = new bootstrap.Dropdown(newEmptyRow.querySelector('.currbtnSpan')); // Create a new dropdown instance
                                     dropdownMenu.toggle(); // Toggle the dropdown
@@ -3311,43 +3362,39 @@ return
                                 const dropdownMenu2 = new bootstrap.Dropdown(newEmptyRow.querySelector('.categorySpan')); // Create a new dropdown instance
                                 dropdownMenu2.hide();//close category dropdwn menu
                             }
-                            const payOutSubmitButton = newEmptyRow.querySelector('.submitCat');
+                            const payOutSubmitButton = newEmptyRow.querySelector(`.submitCat`)
+                            //on click of the add button send data to database
+                            payOutSubmitButton.addEventListener("click", (event) => {
+                                event.preventDefault();
 
-payOutSubmitButton.addEventListener("click", (event) => {
-    event.preventDefault();
+                                // Perform your action (e.g., sending data to the database)
+                                createNewCategory();
 
-    // Perform your action (e.g., sending data to the database)
-    createNewCategory();
+                                // Close the category dropdown
+                                const categoryDropdownElement = newEmptyRow.querySelector('.categorySpan');
+                                if (categoryDropdownElement) {
+                                    const categoryDropdown = new bootstrap.Dropdown(categoryDropdownElement);
+                                    categoryDropdown.hide(); // Close the category dropdown
+                                } else {
+                                    console.error("Category dropdown element not found!");
+                                }
 
-    // Close the category dropdown
-    const categoryDropdownElement = newEmptyRow.querySelector('.categorySpan');
-    if (categoryDropdownElement) {
-        const categoryDropdown = new bootstrap.Dropdown(categoryDropdownElement);
-        categoryDropdown.hide(); // Close the category dropdown
-    } else {
-        console.error("Category dropdown element not found!");
-    }
-
-    // Open the currency dropdown
-    const currencyDropdownButton = newEmptyRow.querySelector('.currbtnSpan');
-    if (currencyDropdownButton) {
-        const currencyDropdown = new bootstrap.Dropdown(currencyDropdownButton);
-        currencyDropdown.toggle(); // Open the currency dropdown
-    } else {
-        console.error("Currency dropdown button not found!");
-    }
-});
+                                // Open the currency dropdown
+                                const currencyDropdownButton = newEmptyRow.querySelector('.currbtnSpan');
+                                if (currencyDropdownButton) {
+                                    const currencyDropdown = new bootstrap.Dropdown(currencyDropdownButton);
+                                    currencyDropdown.toggle(); // Open the currency dropdown
+                                } else {
+                                    console.error("Currency dropdown button not found!");
+                                }
+                            });
                             //if the key pressed is enter , add the event on the category cell
                             newEmptyRow.querySelector('.categories-cell').addEventListener("keydown", (event) => {
                                 if (event.key === 'Enter') {
                                     event.preventDefault()
                                     if (newEmptyRow.querySelector('#dropdownForm').style.display === 'block') {
                                         createNewCategory()
- const dropdownMenu = new bootstrap.Dropdown(newEmptyRow.querySelector('.categorySpan')); // Create a new dropdown instance
-                                        dropdownMenu.hide(); //close the ctegory dropdwon
-                                        const nextDropdownButton = newEmptyRow.querySelector('.currbtnSpan');
-                                        const nextDropdown = new bootstrap.Dropdown(nextDropdownButton);
-                                        nextDropdown.toggle(); // Open the currency droPDOWN
+
                                     }
                                 }
                             })
@@ -3463,15 +3510,20 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                             body: JSON.stringify({
                                                 rowId,
                                                 description,
+                                                sessionId
                                             })
                                         })
                                             .then(response => response.json())
                                             .then(data => {
                                                 // Show alert
-                                                if (data.amUpdated) {
+                                                if (data.amUpdated === true) {
                                                     notification('Updated')
                                                     spinner.style.display = 'none'
-                                                    defaultDisplayContent2(startDate, endDate)
+                                                    // defaultDisplayContent2(startDate, endDate)
+                                                } else {
+                                                    notification("Not updated..error occured");
+                                                    defaultDisplayContent2(startDate, endDate);
+
                                                 }
 
                                             })
@@ -3564,15 +3616,21 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                     body: JSON.stringify({
                                         rowId,
                                         newCategory,
+                                        sessionId
                                     }),
                                 })
                                     .then((response) => response.json())
                                     .then((data) => {
                                         // Show alert
                                         if (data.amUpdated === true) {
-                                            defaultDisplayContent2(startDate, endDate)
+                                            // defaultDisplayContent2(startDate, endDate)
                                             spinner.style.display = "none";
                                             notification("Updated");
+                                        }
+                                        else {
+                                            notification("Not updated..error occured");
+                                            defaultDisplayContent2(startDate, endDate);
+
                                         }
                                     })
                                     .catch((error) => {
@@ -3699,17 +3757,23 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                         rowId,
                                         newCurrency,
                                         newCashFlowRate,
-                                        cashEquivValue2
+                                        cashEquivValue2,
+                                        sessionId
                                     }),
 
                                 })
                                     .then(response => response.json())
                                     .then(data => {
                                         // Show alert
-                                        if (data.amUpdated) {
+                                        if (data.amUpdated === true) {
                                             notification('Updated')
                                             spinner.style.display = 'none'
-                                            defaultDisplayContent2(startDate, endDate)
+                                            // defaultDisplayContent2(startDate, endDate)
+                                        }
+                                        else {
+                                            notification("Not updated..error occured");
+                                            defaultDisplayContent2(startDate, endDate);
+
                                         }
 
                                     })
@@ -3811,7 +3875,7 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                                     }
                                                 }
                                                 if (categoryToDb.length > 0) {
-                                                    insertCategoryRecord(categoryToDb)
+                                                    insertCategoryRecord(categoryToDb, sessionId)
                                                 }
                                             }
 
@@ -3821,32 +3885,15 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                             const Currency_Name = newEmptyRow.querySelector('.currbtnSpan').innerText;
                                             const CashFlowAmount = parseFloat(newEmptyRow.querySelector('.expAmount').innerText);
                                             const CashFlowRate = parseFloat(newEmptyRow.querySelector('.expRate').innerText);
-                                             //check if the user has entered vat stuff 
-                                          
-                                            if (Object.keys(vatEntry).length === 0 ) {
-                                            vatEntry = {
-                                            QRCode: '',
-                                            DeviceId: 0,
-                                            ZimraFsNo: '',
-                                            VatNumber:0,
-                                            TinNumber: 0,
-                                            VatAmount: 0,
-                                            VatStatus: 'N', // Add additional status or logic if needed
-                                            taxName: 'vat', // Add additional status or logic if needed
-                                             }
+
+
+                                            if (Object.keys(vatEntry).length === 0) {
+                                                vatEntry = { QRCode: '', DeviceId: 0, ZimraFsNo: '', VatNumber: 0, TinNumber: 0, VatAmount: 0, VatStatus: 'N', taxName: 'vat', }
                                             }
 
-                                         if (Object.keys(ztfEntry).length === 0) {
-                                            ztfEntry = {
-                                            First: '',
-                                            Second: '',
-                                            LevyAmount: 0,
-                                            ZtfStatus: 'N', // Add additional status or logic if needed
-                                            taxName: 'ztf', // Add additional status or logic if needed
-                                             }
+                                            if (Object.keys(ztfEntry).length === 0) {
+                                                ztfEntry = { First: '', Second: '', LevyAmount: 0, ZtfStatus: 'N', taxName: 'ztf', }
                                             }
-                                            console.log(vatEntry)
-                                            console.log(ztfEntry)
                                             // scroll to the beginning of the table
                                             // tableContainer.scrollLeft = 0;
                                             //FIRST UPDATE THE ARRAY WITH THE INSERTED DATA
@@ -3884,7 +3931,7 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                             //USE OUR ONE AND ONLY FUNCTION TO SAVE TO DATABASE
                                             if (itemsToProcess.length > 0) {
                                                 expenseAmount.blur(); // Remove focus from amount cell
-                                                saveCashFlowRecord(itemsToProcess)
+                                                saveCashFlowRecord(itemsToProcess, sessionId)
                                             }
                                         }
                                         else if (rowId !== '') {
@@ -3931,16 +3978,22 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                                 body: JSON.stringify({
                                                     rowId,
                                                     newCashFlowAmount,
-                                                    cashEquivValue3
+                                                    cashEquivValue3,
+                                                    sessionId
                                                 })
                                             })
                                                 .then(response => response.json())
                                                 .then(data => {
                                                     // Show alert
-                                                    if (data.amUpdated) {
+                                                    if (data.amUpdated === true) {
                                                         notification('Updated')
                                                         spinner.style.display = 'none'
-                                                        defaultDisplayContent2(startDate, endDate)
+                                                        // defaultDisplayContent2(startDate, endDate)
+                                                    }
+                                                    else {
+                                                        notification("Not updated..error occured");
+                                                        defaultDisplayContent2(startDate, endDate);
+
                                                     }
 
                                                 })
@@ -4033,16 +4086,22 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                                 body: JSON.stringify({
                                                     rowId,
                                                     newCashFlowRate,
-                                                    newCashFlowCashEquiv
+                                                    newCashFlowCashEquiv,
+                                                    sessionId
                                                 })
                                             })
                                                 .then(response => response.json())
                                                 .then(data => {
                                                     // Show alert
-                                                    if (data.amUpdated) {
+                                                    if (data.amUpdated == true) {
                                                         notification('Updated')
                                                         spinner.style.display = 'none'
-                                                        defaultDisplayContent2(startDate, endDate)
+                                                        // defaultDisplayContent2(startDate, endDate)
+                                                    }
+                                                    else {
+                                                        notification("Not updated..error occured");
+                                                        defaultDisplayContent2(startDate, endDate);
+
                                                     }
 
                                                 })
@@ -4107,6 +4166,8 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                     deleteModal.style.display = 'none';
                                     deleteRowsModal.style.display = 'none'
                                     checkedRows = []
+                                    //appliy spinner
+                                    displaySpinner()
                                     try {
                                         fetch('/delete', {
                                             method: 'DELETE',
@@ -4114,21 +4175,29 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                                 'Content-Type': 'application/json'
                                             },
                                             body: JSON.stringify({
-                                                checkedRowsId
+                                                checkedRowsId,
+                                                sessionId
                                             })
                                         })
                                             .then(response => {
                                                 return response.json()
                                             })
                                             .then(data => {
-                                                if (data.amDeleted) {
+                                                if (data.amDeleted === true) {
                                                     notification("Deleted");
                                                     currentPage = 1
                                                     localStorage.setItem('advCurrentPage', currentPage)
                                                     if (document.querySelector(".myCheck").checked === true) {
                                                         document.querySelector(".myCheck").checked = false
                                                     }
+                                                    location.href = "/advanceCashMngmnt"
+                                                    // defaultDisplayContent2(startDate, endDate)
+
+                                                }
+                                                else {
+                                                    notification("Not Deleted..error occured");
                                                     defaultDisplayContent2(startDate, endDate)
+
                                                 }
                                             })
 
@@ -4141,16 +4210,17 @@ payOutSubmitButton.addEventListener("click", (event) => {
                         })
                         //==================================================================================================
                         //FUNCTION TO CALL WHEN SAVING NEW RECORD
-                        async function saveCashFlowRecord(itemsToProcess) {
+                        async function saveCashFlowRecord(itemsToProcess, sessionId) {
                             //THEN LET THE SERVER STORE IT IN THE DATABASE
-                            spinner.style.display = 'block'
+                            // displaySpinner()
                             fetch('/saveCashflow', { //THIS IS AN API END POINT TO CARRY THE VARIABLE NAMES TO ANOTHER JS MODULE WHICH WILL BE THE SEVER
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    itemsToProcess
+                                    itemsToProcess,
+                                    sessionId
                                 }) // THE VARIABLES ARE STORED AS JOSON OBJECT, TRANSFEREABLE TO SERVER MODULE WHEN THE SERVER TAPS INTOR BODY-PARSER
                             })
                                 .then(response => response.json())
@@ -4205,19 +4275,19 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                         }
                                         // localStorage.setItem('expCurrentPage', currentPage);
                                         defaultDisplayContent2(startDate, endDate);
-                                        spinner.style.display = 'none';
-
                                     } else {
                                         // Error saving data
                                         console.error('Error saving data');
                                         spinner.style.display = 'none';
                                         displayContainerBlocks()
+                                        notification("Not updated..error occured");
+                                        defaultDisplayContent2(startDate, endDate);
                                     }
                                 })
                                 .catch(error => console.error(error));
                         }
                         //============================================================================================
-                        function insertCategoryRecord(categoryToDb) {
+                        function insertCategoryRecord(categoryToDb, sessionId) {
                             //THEN SEND INFORMATION TO THE DATABASE, UPDATING ONLY THE CASH EQUIV STATUS NOT THE ENTIRE COLLECTION
                             fetch("/insertCategory", {
                                 //THIS IS AN API END POINT TO CARRY THE VARIABLE NAMES TO ANOTHER JS MODULE WHICH WILL BE THE SEVER
@@ -4227,6 +4297,7 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                 },
                                 body: JSON.stringify({
                                     categoryToDb,
+                                    sessionId
                                 }),
                             })
                                 .then((response) => response.json())
@@ -4264,6 +4335,10 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                         if (hasId === true) {
                                             defaultDisplayContent2(startDate, endDate)
                                         }
+                                    }
+                                    else {
+                                        notification("Category not saved..error occured");
+                                        defaultDisplayContent2(startDate, endDate)
                                     }
                                 })
                                 .catch((error) => {
@@ -4318,7 +4393,6 @@ payOutSubmitButton.addEventListener("click", (event) => {
                             if (page === null) {
                                 page = 1
                             }
-
                             fetch('/defaultDisplayThePaginationWay', {
                                 method: 'POST',
                                 headers: {
@@ -4329,6 +4403,7 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                     endDate: endDate,
                                     pageSize: pageSize,
                                     page: page,
+                                    sessionId: sessionId
 
                                 })
                             })
@@ -5256,6 +5331,7 @@ payOutSubmitButton.addEventListener("click", (event) => {
                             //call this function based on which mode we are
                             const editMode = localStorage.getItem('editMode')
                             if (editMode !== null) {
+
                                 const sDate = localStorage.getItem('firstDate');
                                 const eDate = localStorage.getItem('lastDate');
                                 startDate = new Date(sDate)
@@ -5728,10 +5804,12 @@ payOutSubmitButton.addEventListener("click", (event) => {
                                     localStorage.setItem('advCurrentPage', currentPage)
 
                                     if (editMode === null) {
+                                        removeContainerBlocks()
                                         defaultDisplayContent(startDate, endDate)
                                     }
                                     else if (editMode !== null) {
-                                        console.log('tamu two')
+                                        //load the loader here
+                                        displaySpinner()
                                         defaultDisplayContent2(startDate, endDate)
                                     }
                                 },
@@ -6059,6 +6137,8 @@ payOutSubmitButton.addEventListener("click", (event) => {
                         async function uploadCSV(csvFile) {
                             const formData = new FormData();
                             formData.append("csvFile", csvFile);  // Append the CSV file to the FormData object
+                            //append also the sessionid to the form data
+                            formData.append('sessionId', sessionId);
                             try {
 
                                 const response = await fetch("/cashFlowData", {
