@@ -771,7 +771,7 @@ app.get('/TrialBalance', async (req, res) => {
   const sessionId = actualSessionId.split(':')[1].split('.')[0];
   const { isocode, totalCostIncome, totalCostExpenses } = await getTrialBalanceData(req, sessionId)
   const accountName = dbName
-  res.render("TrialBalance", { isocode, accountName, totalCostIncome, totalCostExpenses });
+  res.render("trialBalance", { isocode, accountName, totalCostIncome, totalCostExpenses });
 });
 
 //===========================================================================================
@@ -784,7 +784,7 @@ app.get('/Categories', async (req, res) => {
   const sessionId = actualSessionId.split(':')[1].split('.')[0];
 
   const { isocode } = await getCategories(req, sessionId)
-  res.render("Categories", { isocode });
+  res.render("categories", { isocode });
   // res.render("Categories", { isocode }, { sessionId });
 });
 
