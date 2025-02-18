@@ -32,7 +32,7 @@ import {
 import { getadvancedHeaderStatusArray, saveHeaderStatusAdv } from './Controllers/advaCashMngmentHeadersSettingsController.js';
 import { getpayInHeaderStatusArray, saveHeaderStatusPayIn } from './Controllers/payInHeadersSettingsController.js';
 import { getpayOutHeaderStatusArray, saveHeaderStatusPayOut } from './Controllers/payOutHeadersSettingsController.js';
-import { exportingArray, arrayForImport } from './Controllers/exportImportController.js';
+import { exportingArray } from './Controllers/exportImportController.js';
 import { insertCategory, getCategories, updateCategoryRow, deleteCategory, getCategoryTotals, updateAssignedCategories } from './Controllers/categoriesController.js';
 
 
