@@ -1,6 +1,8 @@
 // import { link } from "fs";
 
 let userCredentials = []
+//GET THE SESSION ID FROM THE LOCALSTORAGE
+const sessionId = localStorage.getItem('sessionId')
 fetch('/dbname')
     .then(response => response.json())
     .then(data => {
@@ -85,49 +87,9 @@ fetch('/dbname')
         const closeBtn = document.querySelector(".iconbtn");
         let allIcons = document.querySelectorAll('.nav-icon')
         let subMenus = document.querySelectorAll('.sub-menu');
-        // closeBtn.addEventListener("click", function () {
-        //     sidebarMenu.classList.toggle("close");
-        //    
-        //     subMenus.forEach(subMenu => {
-        //         if (subMenu.classList.contains('open')) {
-        //             subMenu.classList.remove('open');  // Close the currently open sub-menu
-        //         }
-        //     })
-        // })
-        // let isClicked = false
-        // allIcons.forEach(element => {
-        //     element.addEventListener("click", (e) => {
-        //         if (sidebarMenu.classList.contains("close")) {
-        //             // Now, toggle the clicked sub-menu
-        //             const currentSubMenu = element.querySelector('.sub-menu');
-        //             isClicked = currentSubMenu.classList.contains('open')
-        //             if (isClicked) {
-        //                 element.classList.remove('show');  // Close the currently open sub-menu
-        //                 currentSubMenu.classList.remove('open'); // Toggle the open/close state of the clicked sub-menu
-        //             }
-        //             else {
-        //                 //first check if there are any dropdowns open
-        //                 let subMenus = document.querySelectorAll('.sub-menu');
-        //                 subMenus.forEach(subMenu => {
-        //                     if (subMenu.classList.contains('open')) {
-        //                         subMenu.classList.remove('open');  // Close the currently open sub-menu
-        //                     }
-        //                 })
-        //                 element.classList.remove('show');  // Close the currently open sub-menu
-        //                 currentSubMenu.classList.toggle('open'); // Toggle the open/close state of the clicked sub-menu
-        //             }
-        //         }
-        //         else {
-        //             //first check if there are any dropdowns open
-        //             // allIcons.forEach(icon => {
-        //             //     if (icon.classList.contains('show')) {
-        //             //         icon.classList.remove('show');  // Close the currently open sub-menu
-        //             //     }
-        //             // })
-        //             element.classList.toggle("show");
-        //         }
-        //     });
-        // });
+        //GET THE SESSION ID FROM THE LOCALSTORAGE
+        const sessionId = localStorage.getItem('sessionId')
+
         // Function to close all dropdown menus
         function closeAllDropdowns() {
             subMenus.forEach(subMenu => {
@@ -179,16 +141,13 @@ fetch('/dbname')
         // Call this function when the user clicks the logout button
         document.getElementById("logoutButton").addEventListener("click", (e) => {
             e.preventDefault(); // Prevent the default form submission behavior
-            let databaseName = data.dbName
-            let signingCriteria = localStorage.getItem('buttonContent')
             fetch('/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    databaseName,
-                    signingCriteria
+                    sessionId
                 })
             })
                 .then(response => response.json())
