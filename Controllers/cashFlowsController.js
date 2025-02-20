@@ -943,6 +943,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                 }
 
             }
+            
             for (let i = 0; i < itemsToProcess.length; i++) {
                 const data = itemsToProcess[i];
                 if (checkTemplateStatus === 'loyverseHeaders') {
@@ -1054,6 +1055,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                 // return { isSaving: false, insertedDocuments: [] };
             }
             //then save any new categories
+            console.log(categoriesToDb.length)
             if(categoriesToDb.length>0){
             async function saveCategoryToDb(categoryData) {
                 try {
