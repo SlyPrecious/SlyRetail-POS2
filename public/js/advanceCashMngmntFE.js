@@ -77,7 +77,7 @@ fetch('/currencies')
                         //     // Redirect to the template file download link
                         //     location.href = '/payOut';
                         // });
-                        const editBtn = document.querySelector('.editBtn');
+                       
                         //=======================================================================================
                         //FUNCTION TO TRUNCATE(KUGURA LONG TEXT TICHIZOISA MA DOTS)
                         function truncateText(text, maxLength) {
@@ -909,6 +909,7 @@ fetch('/currencies')
                         }
 
                         //EDIT MODE OPERATIONS
+                         const editBtn = document.querySelector('.editBtn');
                         editBtn.addEventListener('click', function (event) {
                              event.preventDefault()
                                   console.log(editBtn.textContent)
