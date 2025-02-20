@@ -28,7 +28,6 @@ fetch('/currencies')
                 fetch('/getAdvHeaderStatus')
                     .then(response => response.json())
                     .then(advancedHeaderStatus => {
-
                         advancedHeaderStatus.forEach((stat) => {
                             headersStatus.push(stat);
                         });
@@ -912,9 +911,7 @@ fetch('/currencies')
                          const editBtn = document.querySelector('.editBtn');
                         editBtn.addEventListener('click', function (event) {
                              event.preventDefault()
-                                  console.log(editBtn.textContent)
                             if (editBtn.textContent === 'Edit') {
-                                  console.log('am to run display')
                                 //load the loader here
                                 displaySpinner()
                                 localStorage.removeItem('advCurrentPage')
