@@ -2198,7 +2198,7 @@ fetch('/currencies')
                                                     .then(data => {
                                                         // Show alert
                                                         if (data.isSaving === true) {
-alert('uypdated)
+alert('uypdated')
                                                             spinner.style.display = 'none'//remove progress bar
                                                             notification('Updated')
 
