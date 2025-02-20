@@ -898,7 +898,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                         payInCat["CategoryLimitRange"] = "";
                         payInCat["Balance"] = "PayIn";
                         // If the category doesn't exist, insert the new record
-                       categoriesToDb.push(payInCat)
+                        await saveCategoryToDb(payInCat)
                     }
 
                 }
@@ -939,7 +939,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                         payOutCat["CategoryLimitRange"] = "";
                         payOutCat["Balance"] = "PayOut";
                         // If the category doesn't exist, insert the new record
- categoriesToDb.push(payOutCat)
+                           await saveCategoryToDb(payOutCat)
                     }
                 }
 
@@ -983,7 +983,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                                 payOutCat["CategoryLimitRange"] = "";
                                 payOutCat["Balance"] = "PayOut";
                                 // If the category doesn't exist, insert the new record
-                              categoriesToDb.push(payOutCat)
+                           await saveCategoryToDb(payOutCat)
                             }
                             const relativeRate = data.Rate / baseCurrency.RATE;
                             const cashEquivValue = Number(parseFloat(data.Amount) / parseFloat(relativeRate)).toFixed(2);
@@ -1056,12 +1056,9 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                 // return { isSaving: false, insertedDocuments: [] };
             }
             //then save any new categories
-            console.log(categoriesToDb.length)
-            if(categoriesToDb.length>0){
-            async function saveCategoryToDb(categoriesToDb) {
+           
+            async function saveCategoryToDb(categorToDb) {
                 try {
-                      for (let i = 0; i < categoriesToDb.length; i++) {
-                const categoryData = categoriesToDb[i];
                     const categoryEntry = new myCategoriesModel(categoryData);
                     try {
                         const result = await categoryEntry.save();
@@ -1073,7 +1070,6 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                         console.error('Error saving cash flow entry:', saveError);
                         isSaving = false;
                     }
-                      }
                 } catch (error) {
                     console.error('Error inserting documents:', error);
                     // return { isSaving: false };
