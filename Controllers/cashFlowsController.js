@@ -958,12 +958,12 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                 if (checkTemplateStatus === 'slyRetailHeaders') {
                     if (data.Id === '') {
                    //check for the category if its empty
-                        if(data.Category===''){
-                            data.Category='suspense'
-                        }
-                        else{
-                            data.Category=data.Category
-                        }
+                        // if(data.Category===''){
+                        //     data.Category='suspense'
+                        // }
+                        // else{
+                        //     data.Category=data.Category
+                        // }
                         // id = data.Id
                         date = data.Date; shift = data.ShiftNo; type = data.Type; invoiceNo = data.InvoiceRef;
                         description = data.Description; currency = data.Currency; category = data.Category;
