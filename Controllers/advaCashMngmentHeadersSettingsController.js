@@ -42,7 +42,7 @@ export async function saveHeaderStatusAdv(req, headerNamefcb, headerisDisplayed,
                     isSaving = true;
                 }
                 else if (modifiedCount === 0) {
-                    // isSaving = false;
+                    isSaving = false;
                     
                 }
             })
