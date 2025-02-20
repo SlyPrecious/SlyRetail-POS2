@@ -2154,6 +2154,131 @@ fetch('/currencies')
                                 }
                             })
 
+
+                            //WHEN THE USER CLICKS ON cashequiv CHECKBOX
+                            cashEquivCheckbox.addEventListener('click', () => {
+                                if (cashEquivCheckbox.checked === true) {
+                                    cashEquivCheckbox.checked = true;
+                                    const tableHeaders = document.querySelectorAll('.shiftListTable thead th'); // get all table headers
+                                    tableHeaders.forEach((theader, index) => {
+                                        headerNamefcb = theader.innerText.replace(/[\n\u2191\u2193]/g, '').split(/[\(\{\"]/)[0].trim(); // get the text content of the header cell
+                                        if ("CashEquiv" === headerNamefcb) {
+                                            if (index !== 1) {//DO NOT SHOW THE HIDDEN ID COLUMN
+                                                theader.style.display = 'table-cell';
+                                                headerisDisplayed = true
+                                                //NOW LOOP IN THE HEADERSTATUS ARRAY UPDATING THE ISDISPLAYED VALUE
+                                                for (let i = 0; i < headersStatus.length; i++) {
+                                                    if (headersStatus[i].HeaderName === 'CashEquiv') {
+                                                        headersStatus[i].isDisplayed = true;
+                                                        break; // Assuming there is only one object with 'ShiftNo', exit the loop after updating
+                                                    }
+                                                }
+                                                console.log(headersStatus)
+                                                //THEN ALSO THE TDs SHOULD BE TRUE
+                                                //GET ALL THE TD IN THE TABLE UNDER INVOICE 
+                                                const myTableColumns = document.querySelectorAll('.cashEquivClass'); // get shift table rows
+
+                                                myTableColumns.forEach(column => {
+                                                    column.style.display = 'table-cell'//LOOP DISPLAYING THE TDS
+                                                });
+                                                //THEN SEND INFORMATION TO THE DATABASE, UPDATING ONLY THE SHIFT STATUS NOT THE ENTIRE COLLECTION
+                                                spinner.style.display = 'block'//display progress bar
+                                                fetch('/updateHeaderStatusAdv', { //THIS IS AN API END POINT TO CARRY THE VARIABLE NAMES TO ANOTHER JS MODULE WHICH WILL BE THE SEVER
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify({
+                                                        headerNamefcb,
+                                                        headerisDisplayed,
+                                                        sessionId
+                                                    })
+                                                })
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        // Show alert
+                                                        if (data.isSaving === true) {
+
+                                                            spinner.style.display = 'none'//remove progress bar
+                                                            notification('Updated')
+
+                                                        }
+                                                        else {
+                                                            notification("Not updated..error occured");
+
+                                                        }
+                                                    })
+
+                                                    .catch(error => {
+                                                        console.error(`Error updating Date field `, error);
+                                                    });
+
+                                            }
+
+                                        }
+                                    });
+                                }
+                                else if (cashEquivCheckbox.checked === false) {
+                                    cashEquivCheckbox.checked = false;
+                                    isChecked = false
+                                    const tableHeaders = document.querySelectorAll('.shiftListTable thead th'); // get all table rows
+                                    tableHeaders.forEach((theader, index) => {
+                                        headerNamefcb = theader.innerText.replace(/[\n\u2191\u2193]/g, '').split(/[\(\{\"]/)[0].trim(); // get the text content of the header cell
+                                        if ("CashEquiv" === headerNamefcb) {
+                                            if (index !== 1) {//DO NOT SHOW THE HIDDEN ID COLUMN
+                                                theader.style.display = 'none';
+                                                //THEN SEND INFORMATION TO THE DATABASE, UPDATING ONLY THE SHIFT STATUS NOT THE ENTIRE COLLECTION
+                                                headerisDisplayed = false
+                                                //NOW LOOP IN THE HEADERSTATUS ARRAY UPDATING THE ISDISPLAYED VALUE
+                                                for (let i = 0; i < headersStatus.length; i++) {
+                                                    if (headersStatus[i].HeaderName === 'CashEquiv') {
+                                                        headersStatus[i].isDisplayed = false;
+                                                    }
+                                                }
+                                                //GET ALL THE TD IN THE TABLE UNDER invoice 
+                                                const myTableColumns = document.querySelectorAll('.cashEquivClass'); // get invoice table rows
+
+                                                myTableColumns.forEach(column => {
+                                                    column.style.display = 'none'//LOOP HIDDING THE TDS
+                                                });
+                                                //THEN SEND INFORMATION TO THE DATABASE, UPDATING ONLY THE SHIFT STATUS NOT THE ENTIRE COLLECTION
+                                                spinner.style.display = 'block'//display progress bar
+                                                fetch('/updateHeaderStatusAdv', { //THIS IS AN API END POINT TO CARRY THE VARIABLE NAMES TO ANOTHER JS MODULE WHICH WILL BE THE SEVER
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify({
+                                                        headerNamefcb,
+                                                        headerisDisplayed,
+                                                        sessionId
+                                                    })
+                                                })
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        // Show alert
+                                                        if (data.isSaving === true) {
+
+                                                            spinner.style.display = 'none'//remove progress bar
+                                                            notification('Updated')
+
+                                                        } else {
+                                                            notification("Not updated..error occured");
+
+                                                        }
+
+                                                    })
+
+                                                    .catch(error => {
+                                                        console.error(`Error updating Date field `, error);
+                                                    });
+
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+
                             //WHEN THE USER CLICKS ON RUNNING BALANCE CHECKBOX
                             BalanceCheckbox.addEventListener('click', () => {
                                 if (BalanceCheckbox.checked === true) {
