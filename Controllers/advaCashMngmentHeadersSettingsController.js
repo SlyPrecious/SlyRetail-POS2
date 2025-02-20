@@ -40,11 +40,9 @@ export async function saveHeaderStatusAdv(req, headerNamefcb, headerisDisplayed,
                 modifiedCount = result.modifiedCount
                 if (modifiedCount !== 0) {
                     isSaving = true;
-                    console.log('saved header')
                 }
                 else if (modifiedCount === 0) {
-                    isSaving = false;
-                    console.log('not saved header')
+                    // isSaving = false;
                     
                 }
             })
