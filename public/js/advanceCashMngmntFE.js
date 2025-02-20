@@ -1726,9 +1726,7 @@ fetch('/currencies')
                             addNewRow()
                             document.getElementById('Table_messages').style.display = 'none'
                         })
-                        function setEventListeners(newEmptyRow) {
-                            //when the user selects what rows to display
-                            let isChecked = false
+                        let isChecked = false
                             let amChecked = false
                             const selectioncheckboxes = document.querySelectorAll('.custom-control-input');
 
@@ -2198,7 +2196,6 @@ fetch('/currencies')
                                                     .then(data => {
                                                         // Show alert
                                                         if (data.isSaving === true) {
-alert('uypdated')
                                                             spinner.style.display = 'none'//remove progress bar
                                                             notification('Updated')
 
@@ -2403,6 +2400,9 @@ alert('uypdated')
                                     });
                                 }
                             })
+                        function setEventListeners(newEmptyRow) {
+                            //when the user selects what rows to display
+                            
                             //==============================================================================================
 
                             const allTypesList = newEmptyRow.querySelectorAll('.typeList-option')
