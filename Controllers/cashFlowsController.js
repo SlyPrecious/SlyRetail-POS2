@@ -781,7 +781,7 @@ export async function deleteCashFLow(req, checkedRowsId, sessionId) {
 //============================================================================================================
 
 export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatus, sessionId) {
-    let categoriesToDb = [];
+
     let insertedDocuments = [];
     let isSaving = false;
     function dateValidation(csvDate) {
@@ -972,7 +972,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
 
                     }
                     else if (data.Id !== '') {
-                        categoriesToDb=[]
+                      
                         try {
                             // Check if the shift exists
                             const existingCategory = await myCategoriesModel.findOne({ category: data.Category });
