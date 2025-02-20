@@ -781,7 +781,7 @@ export async function deleteCashFLow(req, checkedRowsId, sessionId) {
 //============================================================================================================
 
 export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatus, sessionId) {
-    let filteredItemsToProcess = [];
+    let categoriesToDb = [];
     let insertedDocuments = [];
     let isSaving = false;
     function dateValidation(csvDate) {
@@ -832,8 +832,6 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
     try {
         const db = await connectDB(req, databaseName, signingCriteria, sessionId);
         if (db) {
-        console.log(checkTemplateStatus + 'my  fisrt status')
-            
             // Create the model with the specific connection
             const myCashflowModel = CashflowModel(db);
             const myCurrenciesModel = CurrenciesModel(db);
@@ -900,7 +898,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                         payInCat["CategoryLimitRange"] = "";
                         payInCat["Balance"] = "PayIn";
                         // If the category doesn't exist, insert the new record
-                        await saveCategoryToDb(payInCat)
+                       categoriesToDb.push(payInCat)
                     }
 
                 }
@@ -940,8 +938,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                         payOutCat["CategoryLimitRange"] = "";
                         payOutCat["Balance"] = "PayOut";
                         // If the category doesn't exist, insert the new record
-                        await saveCategoryToDb(payOutCat)
-
+ categoriesToDb.push(payOutCat)
                     }
                 }
 
@@ -977,7 +974,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                                 payOutCat["CategoryLimitRange"] = "";
                                 payOutCat["Balance"] = "PayOut";
                                 // If the category doesn't exist, insert the new record
-                                await saveCategoryToDb(payOutCat)
+                                .push(payOutCat)
                             }
                             const relativeRate = data.Rate / baseCurrency.RATE;
                             const cashEquivValue = Number(parseFloat(data.Amount) / parseFloat(relativeRate)).toFixed(2);
@@ -1050,6 +1047,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                 // return { isSaving: false, insertedDocuments: [] };
             }
             //then save any new categories
+            if(categoriesToDb.length>0){
             async function saveCategoryToDb(categoryData) {
                 try {
                     const categoryEntry = new myCategoriesModel(categoryData);
@@ -1068,6 +1066,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                     console.error('Error inserting documents:', error);
                     // return { isSaving: false };
                 }
+            }
             }
 
             return { isSaving, insertedDocuments, insertedCategories }
