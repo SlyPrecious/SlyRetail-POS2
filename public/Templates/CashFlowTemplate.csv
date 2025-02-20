@@ -1,1 +1,1 @@
-Id;Date;Type;ShiftNo;Vat;InvoiceRef;Description;Category;Currency;Amount;Rate;CashEquiv
+Id;Date;Type;ShiftNo;Tax;InvoiceRef;Description;Category;Currency;Amount;Rate;CashEquiv
