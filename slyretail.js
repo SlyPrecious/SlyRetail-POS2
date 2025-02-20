@@ -563,6 +563,7 @@ app.post('/cashFlowData', upload.single('csvFile'), (req, res) => {
 
         // Push the processed row to the itemsToProcess array
         itemsToProcess.push(row);
+        console.log(itemsToProcess.length + 'my lenth')
       })
       .on('end', async () => {
         try {
