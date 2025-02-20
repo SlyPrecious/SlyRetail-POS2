@@ -1075,8 +1075,6 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                     // return { isSaving: false };
                 }
             }
-            }
-
             return { isSaving, insertedDocuments, insertedCategories }
         }
     } catch (error) {
