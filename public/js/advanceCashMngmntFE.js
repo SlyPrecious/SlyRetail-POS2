@@ -6,7 +6,7 @@ let sign = ''; let openingBalance = 0; let currentPage; let isEditMode = false; 
 let totalCash = 0
 let totalPages = 0; let displayModal = false; let cashFlowArray = []; let advExportingCriteria = "FullExport"; let page = 0; let pageSize = 0; let hasId = false;
 let vatIsChecked = false; let taxtypeSelected = ''; let rowData = []; let rowDataFromDb = []; let itemsToProcess = []; let taxStatus = 'N';
-
+let errorMsgs = []
 fetch('/currencies')
     .then(response => response.json())
     .then(currencies => {
@@ -77,6 +77,7 @@ fetch('/currencies')
                         //     // Redirect to the template file download link
                         //     location.href = '/payOut';
                         // });
+                        const editBtn = document.querySelector('.editBtn');
                         //=======================================================================================
                         //FUNCTION TO TRUNCATE(KUGURA LONG TEXT TICHIZOISA MA DOTS)
                         function truncateText(text, maxLength) {
@@ -908,7 +909,6 @@ fetch('/currencies')
                         }
 
                         //EDIT MODE OPERATIONS
-                        const editBtn = document.querySelector('.editBtn');
                         editBtn.addEventListener('click', function (event) {
                             if (editBtn.textContent === 'Edit') {
                                 //load the loader here
@@ -1157,6 +1157,7 @@ fetch('/currencies')
                                     if (Number(data.totalIncomePerRangeAdv) === 0 && Number(data.totalExpensesPerRangeAdv) === 0) {
                                         //display message
                                         document.getElementById('Table_messages').style.display = 'block'
+                                        document.querySelector('.addRow').style.display = 'block'
                                         document.querySelector('.fa-plus').style.display = 'inline'
                                         document.querySelector('.noDataText').innerText = 'No Data To Display'
                                         document.querySelector('.noDataText2').innerText = 'There are no cashflows in the selected time period'
@@ -4190,8 +4191,8 @@ fetch('/currencies')
                                                     if (document.querySelector(".myCheck").checked === true) {
                                                         document.querySelector(".myCheck").checked = false
                                                     }
-                                                    location.href = "/advanceCashMngmnt"
-                                                    // defaultDisplayContent2(startDate, endDate)
+                                                    // location.href = "/advanceCashMngmnt"
+                                                    defaultDisplayContent2(startDate, endDate)
 
                                                 }
                                                 else {
@@ -5074,6 +5075,7 @@ fetch('/currencies')
 
                                         //display message
                                         document.getElementById('Table_messages').style.display = 'block'
+                                        document.querySelector('.addRow').style.display = 'none'
                                         document.querySelector('.noDataText').innerText = 'No Data To Display'
                                         document.querySelector('.noDataText2').innerText = 'There are no cashflows in the selected time period'
                                     }
@@ -6115,7 +6117,7 @@ fetch('/currencies')
                             else if (fileInput.value !== '' && extension === '.csv') {
                                 const file = document.getElementById('csv-file').files[0];
                                 if (file) {
-                                    displaySpinner()
+                                    errorMsgs = []
                                     importForm.style.display = 'none';
                                     uploadCSV(file);  // Call the function to upload the file
                                 }
@@ -6132,15 +6134,83 @@ fetch('/currencies')
                                 importForm.style.display = 'none';
                             }
                         });
+                        // Function to read the CSV file and return its rows
+                        function readCSVFile(file) {
+                            return new Promise((resolve, reject) => {
+                                const reader = new FileReader();
+
+                                // Once the file is read, process the content
+                                reader.onload = () => {
+                                    const csvText = reader.result; // Get the CSV content as text
+                                    const rows = csvText.split('\n'); // Split the CSV by new lines (each row)
+                                    resolve(rows); // Resolve the promise with the rows of the CSV
+                                };
+
+                                // Handle errors during file reading
+                                reader.onerror = reject;
+
+                                // Read the file as text
+                                reader.readAsText(file);
+                            });
+                        }
 
                         // Function to handle CSV file upload and send to the server
+
                         async function uploadCSV(csvFile) {
                             const formData = new FormData();
-                            formData.append("csvFile", csvFile);  // Append the CSV file to the FormData object
-                            //append also the sessionid to the form data
-                            formData.append('sessionId', sessionId);
-                            try {
+                            formData.append("csvFile", csvFile); // Append the CSV file to the FormData object
+                            formData.append('sessionId', sessionId); // Append the sessionId to the form data
+                            // Check CSV length (number of rows)
+                            const csvContent = await readCSVFile(csvFile);
+                            const rowCount = csvContent.length; // Length of the CSV (number of rows)
+                            if (rowCount >= 2000) {
+                                const error = 'Your CSV file of (' + csvContent.length + ' ) exceeds the maximum row limit (2000). Please upload a smaller file.'
+                                errorMsgs.push(error)
 
+                            }
+                            //upload as per shift
+                            // Get the first shift number (in the first row) for comparison
+                            const firstShift = csvContent[1].split(',')[3]; //  Shift number is in the 4th column (index 3)
+                            console.log(csvContent)
+                            // Check for different shifts in the CSV
+                            for (let i = 1; i < csvContent.length - 1; i++) { // Start from 1 to skip the header row
+                                const row = csvContent[i].split(','); // Split each row by commas
+                                const shift = row[3]; //  Shift number is in the 4th column (index 3)
+                                // If a different shift number is found, alert an error and stop processing
+                                if (shift !== firstShift) {
+                                    const error = 'CSV file contains different shift numbers. Please upload a file with the same shift number.'
+                                    errorMsgs.push(error)
+                                    break;
+                                }
+                            }
+                            //display the errors if they exist
+                            if (errorMsgs.length > 0) {
+                                successModal.style.display = 'block'
+                                document.querySelector('.importText').innerText = 'Fix the following ' + errorMsgs.length + ' error(s)'
+                                document.querySelector('.importText').style.color = 'red'
+                                document.querySelector('.importText').style.marginBottom = '25px'
+                                document.querySelector('.uploadData').style.display = 'none'
+                                document.querySelector('.checkmark-circle').style.display = 'none'
+                                // document.querySelector('#okay').style.display = 'none'
+                                const errorOrderdList = document.createElement('ol');
+                                errorOrderdList.style.listStylePosition = 'inside';  // Ensures numbers are inside the list
+                                errorOrderdList.style.paddingLeft = '20px'; // Add padding for better alignment
+                                errorOrderdList.style.textAlign = 'left'; // Align text to the left
+                                for (let a = 0; a < errorMsgs.length; a++) {
+                                    const element = errorMsgs[a];
+                                    const errorList = document.createElement('li');
+                                    errorList.style.fontSize = '18px'
+                                    errorList.classList.add('errorList-option');
+                                    const optionText = document.createTextNode(element);
+                                    errorList.appendChild(optionText);
+                                    errorOrderdList.appendChild(errorList);
+                                }
+                                document.querySelector('.uploadError').appendChild(errorOrderdList);
+                                return; //  prevent uploading if the errors exist
+
+                            }
+                            try {
+                                displaySpinner()
                                 const response = await fetch("/cashFlowData", {
                                     method: "POST",
                                     body: formData,  // Send the FormData with the file
@@ -6169,7 +6239,10 @@ fetch('/currencies')
                                     // display the modal with the total inserted count
                                     successModal.style.display = 'block'
                                     successModalText.innerText = data.documents.length
+                                    document.querySelector('.importText').innerText = 'Import Completed'
                                     document.querySelector('.uploadData').style.display = 'block'
+                                    document.querySelector('.checkmark-circle').style.display = 'block'
+                                    document.querySelector('.uploadError').style.display = 'none'
                                     displaySpinner()
                                     const sDate = localStorage.getItem('firstDate');//DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
                                     const eDate = localStorage.getItem('lastDate');
@@ -6198,6 +6271,8 @@ fetch('/currencies')
                                     successModal.style.display = 'block'
                                     successModalText.innerText = payOutArray.length
                                     document.querySelector('.uploadData').style.display = 'block'
+                                    document.querySelector('.checkmark-circle').style.display = 'block'
+                                    document.querySelector('.uploadError').style.display = 'none'
                                     //after the upload process is successfully done,show the table and remove spinner
                                     removeSpinner()
                                     const sDate = localStorage.getItem('firstDate');//DATE STORED IN LOCAL STORAGE FROM OTHER JS FILES
