@@ -955,6 +955,8 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                     //call the function that populates the arrays
                     await populateArrays(date, shift, invoiceNo, description, currency, category, amount, rate)
                 }
+                        console.log(checkTemplateStatus)
+                
                 if (checkTemplateStatus === 'slyRetailHeaders') {
                     if (data.Id === '') {
                    //check for the category if its empty
