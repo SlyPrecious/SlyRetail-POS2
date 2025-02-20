@@ -23,12 +23,13 @@ export async function getadvancedHeaderStatusArray(req, sessionId) {
 }
 export async function saveHeaderStatusAdv(req, headerNamefcb, headerisDisplayed, sessionId) {
    
-        // Create the model with the specific connection
-        const myadvHeadersModel = advaHeadersModel(db);
+      
         try {
              // process the database connection request
     const db = await connectDB(req, databaseName, signingCriteria, sessionId);
     if (db) {
+          // Create the model with the specific connection
+        const myadvHeadersModel = advaHeadersModel(db);
             //THERE ARE OTHER HEADERS LIKE VAT THAT SHOULD BE OPENED AFTER SUBSCRIPTIONS, ALL THOSE LOGIC WILL BE MANAGED HERE
             await myadvHeadersModel.updateOne({ HeaderName: headerNamefcb }, {
                 $set: {
