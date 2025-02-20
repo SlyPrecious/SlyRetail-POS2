@@ -32,7 +32,7 @@ import {
 import { getadvancedHeaderStatusArray, saveHeaderStatusAdv } from './Controllers/advaCashMngmentHeadersSettingsController.js';
 import { getpayInHeaderStatusArray, saveHeaderStatusPayIn } from './Controllers/payInHeadersSettingsController.js';
 import { getpayOutHeaderStatusArray, saveHeaderStatusPayOut } from './Controllers/payOutHeadersSettingsController.js';
-import { exportingArray } from './Controllers/exportImportController.js';
+import { exportingArray, arrayForImport } from './Controllers/exportImportController.js';
 import { insertCategory, getCategories, updateCategoryRow, deleteCategory, getCategoryTotals, updateAssignedCategories } from './Controllers/categoriesController.js';
 
 
@@ -521,7 +521,7 @@ app.post('/saveCashflow', async (req, res) => { // CONNECT THE API END POINT
 // ==========================================================================================
 app.post('/cashFlowData', upload.single('csvFile'), (req, res) => {
   // Access the sessionid from the form data
-  const sessionId = req.body.sessionid;
+  const sessionId = req.body.sessionId;
   console.log(sessionId)
   // Get the file path using __dirname and the uploaded file's filename
   const filePath = path.join(__dirname, 'uploads', req.file.filename);
@@ -907,6 +907,7 @@ app.delete('/deletePaymentTypeRows', async (req, res) => {
   }
 })
 //================================================================================================
+
 app.listen(2000, function () {
   console.log("Server started on port 2000");
 });
