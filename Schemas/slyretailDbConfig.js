@@ -130,7 +130,7 @@ const logout = async (req, sessionId) => {
                             const connection = connections[myDatabase];
                             connection.close(); //THIS ONE CLOSES THE SPECIFIC
                             //ALSO REMOVE FROM THE CONNECTION ARRAY
-                          delete connections[databaseName];   
+                          delete connections[myDatabase];   
                         }
                         console.log('Session destroyed successfully.');
                         resolve();
