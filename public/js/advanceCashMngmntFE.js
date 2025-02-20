@@ -910,6 +910,7 @@ fetch('/currencies')
 
                         //EDIT MODE OPERATIONS
                         editBtn.addEventListener('click', function (event) {
+                             event.preventDefault()
                                   console.log(editBtn.textContent)
                             if (editBtn.textContent === 'Edit') {
                                   console.log('am to run display')
