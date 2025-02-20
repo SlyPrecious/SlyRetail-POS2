@@ -141,7 +141,6 @@ async function signUpSignIn(req, databaseName, email, databasePassword, signingC
                         const credentials = await myCredentialsModelModel.findOne({ DbPassword: databasePassword });
                         if (credentials.DbPassword) { //THEN CHECK ALSO IF THE PASSWORD IS THERE AND MATCHING
                             loggedInStatus = "True";
-                            dbName = databaseName
                             currencies = await myCurrenciesModelModel.find()
                         } else {
                             loggedInStatus = "Password Do Not Match";
