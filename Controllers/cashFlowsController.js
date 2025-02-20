@@ -931,8 +931,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                     }
                     // Check if the shift exists
                     const existingCategory = await myCategoriesModel.findOne({ category: category, Balance: "PayOut" });
-                    console.log(existingCategory)
-                    console.log(!existingCategory)
+                    
                     if (!existingCategory) {
                         let payOutCat = {}; //THE NEW DOCUMEN
                         payOutCat["category"] = category;
@@ -1059,8 +1058,10 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
             //then save any new categories
             console.log(categoriesToDb.length)
             if(categoriesToDb.length>0){
-            async function saveCategoryToDb(categoryData) {
+            async function saveCategoryToDb(categoriesToDb) {
                 try {
+                      for (let i = 0; i < categoriesToDb.length; i++) {
+                const categoryData = categoriesToDb[i];
                     const categoryEntry = new myCategoriesModel(categoryData);
                     try {
                         const result = await categoryEntry.save();
@@ -1072,7 +1073,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                         console.error('Error saving cash flow entry:', saveError);
                         isSaving = false;
                     }
-
+                      }
                 } catch (error) {
                     console.error('Error inserting documents:', error);
                     // return { isSaving: false };
