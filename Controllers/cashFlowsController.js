@@ -832,7 +832,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
     try {
         const db = await connectDB(req, databaseName, signingCriteria, sessionId);
         if (db) {
-        console.log(itemsToProcess.length + 'my  fisrt lenth')
+        console.log(checkTemplateStatus + 'my  fisrt status')
             
             // Create the model with the specific connection
             const myCashflowModel = CashflowModel(db);
