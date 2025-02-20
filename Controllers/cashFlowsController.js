@@ -970,6 +970,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
 
                     }
                     else if (data.Id !== '') {
+                        categoriesToDb=[]
                         try {
                             // Check if the shift exists
                             const existingCategory = await myCategoriesModel.findOne({ category: data.Category });
@@ -980,7 +981,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                                 payOutCat["CategoryLimitRange"] = "";
                                 payOutCat["Balance"] = "PayOut";
                                 // If the category doesn't exist, insert the new record
-                                .push(payOutCat)
+                              categoriesToDb.push(payOutCat)
                             }
                             const relativeRate = data.Rate / baseCurrency.RATE;
                             const cashEquivValue = Number(parseFloat(data.Amount) / parseFloat(relativeRate)).toFixed(2);
