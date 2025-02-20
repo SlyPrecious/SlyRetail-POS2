@@ -931,6 +931,8 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                     }
                     // Check if the shift exists
                     const existingCategory = await myCategoriesModel.findOne({ category: category, Balance: "PayOut" });
+                    console.log(existingCategory)
+                    console.log(!existingCategory)
                     if (!existingCategory) {
                         let payOutCat = {}; //THE NEW DOCUMEN
                         payOutCat["category"] = category;
