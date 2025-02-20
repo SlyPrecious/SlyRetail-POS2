@@ -125,7 +125,7 @@ fetch('/currencies')
                             endDate = new Date(eDate)
                         }
                         //style the edit and export button on pagee reload
-                        document.querySelector(".editBtn").classList.add('editBtnStyle')
+                        // document.querySelector(".editBtn").classList.add('editBtnStyle')
                         //===================================================================================
                         const canvas = document.getElementById('myChart')
                         const myStyle =
@@ -919,7 +919,7 @@ fetch('/currencies')
                                 //display the import button
                                 document.querySelector('.importContainer').style.display = 'block';
                                 //remove the class with the default style
-                                document.querySelector(".editBtn").classList.remove('editBtnStyle')
+                                // document.querySelector(".editBtn").classList.remove('editBtnStyle')
                                 //now display the colums icon
                                 document.querySelector('.columns').style.display = 'block'
                                 //do remove the graph section
