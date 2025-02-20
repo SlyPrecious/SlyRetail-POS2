@@ -911,6 +911,7 @@ fetch('/currencies')
                         //EDIT MODE OPERATIONS
                         editBtn.addEventListener('click', function (event) {
                             if (editBtn.textContent === 'Edit') {
+                                  console.log('am to run display')
                                 //load the loader here
                                 displaySpinner()
                                 localStorage.removeItem('advCurrentPage')
@@ -1003,7 +1004,7 @@ fetch('/currencies')
                                 const eDate = localStorage.getItem('lastDate');
                                 let startDate = new Date(sDate);//ELSE CONVERT THE DATES IN LOCAL STORAGE TO DATE FORMAT
                                 let endDate = new Date(eDate);
-                                console.log('am to run display')
+                              
                                 defaultDisplayContent2(startDate, endDate)
                                 //SAVE THE STATUS OF EDIT BUTTON IN LOCAL STORAGE
                                 isEditMode = true
