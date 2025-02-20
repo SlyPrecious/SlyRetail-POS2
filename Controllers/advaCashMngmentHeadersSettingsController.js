@@ -10,9 +10,10 @@ export async function getadvancedHeaderStatusArray(req, sessionId) {
     const db = await connectDB(req, databaseName, signingCriteria, sessionId);
     if (db) {
         // Create the model with the specific connection
-        const myaccountingPeriodModelModel = advaHeadersModel(db);
+        const myadvHeadersModel = advaHeadersModel(db);
         try {
-            advancedHeaderStatus = await myaccountingPeriodModelModel.find()
+            advancedHeaderStatus = await myadvHeadersModel.find()
+            console.log(advancedHeaderStatus)
             return { advancedHeaderStatus };
         } catch (err) {
             console.error('Error fetching status:', err);
@@ -25,10 +26,10 @@ export async function saveHeaderStatusAdv(req, headerNamefcb, headerisDisplayed,
     const db = await connectDB(req, databaseName, signingCriteria, sessionId);
     if (db) {
         // Create the model with the specific connection
-        const myaccountingPeriodModelModel = advaHeadersModel(db);
+        const myadvHeadersModel = advaHeadersModel(db);
         try {
             //THERE ARE OTHER HEADERS LIKE VAT THAT SHOULD BE OPENED AFTER SUBSCRIPTIONS, ALL THOSE LOGIC WILL BE MANAGED HERE
-            await myaccountingPeriodModelModel.updateOne({ HeaderName: headerNamefcb }, {
+            await myadvHeadersModel.updateOne({ HeaderName: headerNamefcb }, {
                 $set: {
                     isDisplayed: headerisDisplayed
                 }
