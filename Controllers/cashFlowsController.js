@@ -956,7 +956,8 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                 }
                 if (checkTemplateStatus === 'slyRetailHeaders') {
                     if (data.Id === '') {
-                        id = data.Id
+                        console.log('array length'+itemsToProcess.length)
+                        // id = data.Id
                         date = data.Date; shift = data.ShiftNo; type = data.Type; invoiceNo = data.InvoiceRef;
                         description = data.Description; currency = data.Currency; category = data.Category;
                         amount = data.Amount; rate = data.Rate
