@@ -1059,7 +1059,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
            
             async function saveCategoryToDb(categorToDb) {
                 try {
-                    const categoryEntry = new myCategoriesModel(categoryData);
+                    const categoryEntry = new myCategoriesModel(categorToDb);
                     try {
                         const result = await categoryEntry.save();
                         if (result) {
