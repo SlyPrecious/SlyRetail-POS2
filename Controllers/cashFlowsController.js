@@ -82,6 +82,7 @@ export async function getCashFlowArray(req, startDate, endDate, pageSize, page, 
                         theBeforeIncome += parseFloat(row.CashFlowCashEquiv);
                     }
                 }
+                console.log("Ihave started my computation from" + theBeforeStartDate.getTime())
 
                 if (startDate.getTime() <= formattedDates2.getTime() && formattedDates2.getTime() <= endDate.getTime()) {
                     if (row.CashFlowType === 'Payout') {
@@ -172,7 +173,7 @@ export async function getCashFlowArray(req, startDate, endDate, pageSize, page, 
             // console.log(index2 +'index2')
             //THE OPENING BALANCE FOR THE SELECTED RANGE
             const openingBalance = parseFloat(theBeforeIncome) - parseFloat(theBeforeExpenses)
-            console.log("Iam The opening Bal " + openingBalance + " Ihave started my computation from" + theBeforeStartDate.getTime())
+            console.log("Iam The opening Bal " + openingBalance)
             //THEN CREATE THE ARRAY FOR PAYINS, FOR THE CURRENT RANGE 'this is the one to go to the client side js'
             const startIndex = (parseInt(page) - 1) * parseInt(pageSize);
             const endIndex = startIndex + parseInt(pageSize);
