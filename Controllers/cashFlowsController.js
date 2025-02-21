@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import { ObjectId } from 'mongodb';
 import { CashflowModel } from '../Schemas/slyretailCashflowSchemas.js';
 import { CurrenciesModel } from '../Schemas/slyretailCurrenciesSchemas.js';
@@ -931,7 +931,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                     }
                     // Check if the shift exists
                     const existingCategory = await myCategoriesModel.findOne({ category: category, Balance: "PayOut" });
-                    
+
                     if (!existingCategory) {
                         let payOutCat = {}; //THE NEW DOCUMEN
                         payOutCat["category"] = category;
@@ -939,12 +939,12 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                         payOutCat["CategoryLimitRange"] = "";
                         payOutCat["Balance"] = "PayOut";
                         // If the category doesn't exist, insert the new record
-                           await saveCategoryToDb(payOutCat)
+                        await saveCategoryToDb(payOutCat)
                     }
                 }
 
             }
-            
+
             for (let i = 0; i < itemsToProcess.length; i++) {
                 const data = itemsToProcess[i];
                 if (checkTemplateStatus === 'loyverseHeaders') {
@@ -955,11 +955,11 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                     //call the function that populates the arrays
                     await populateArrays(date, shift, invoiceNo, description, currency, category, amount, rate)
                 }
-                        console.log(checkTemplateStatus)
-                
+                console.log(checkTemplateStatus)
+
                 if (checkTemplateStatus === 'slyRetailHeaders') {
                     if (data.Id === '') {
-                   //check for the category if its empty
+                        //check for the category if its empty
                         // if(data.Category===''){
                         //     data.Category='suspense'
                         // }
@@ -974,7 +974,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
 
                     }
                     else if (data.Id !== '') {
-                      
+
                         try {
                             // Check if the shift exists
                             const existingCategory = await myCategoriesModel.findOne({ category: data.Category });
@@ -985,7 +985,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                                 payOutCat["CategoryLimitRange"] = "";
                                 payOutCat["Balance"] = "PayOut";
                                 // If the category doesn't exist, insert the new record
-                           await saveCategoryToDb(payOutCat)
+                                await saveCategoryToDb(payOutCat)
                             }
                             const relativeRate = data.Rate / baseCurrency.RATE;
                             const cashEquivValue = Number(parseFloat(data.Amount) / parseFloat(relativeRate)).toFixed(2);
@@ -1058,7 +1058,7 @@ export async function insertCashFlowData(req, itemsToProcess, checkTemplateStatu
                 // return { isSaving: false, insertedDocuments: [] };
             }
             //then save any new categories
-           
+
             async function saveCategoryToDb(categorToDb) {
                 try {
                     const categoryEntry = new myCategoriesModel(categorToDb);
